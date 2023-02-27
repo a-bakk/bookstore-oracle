@@ -18,15 +18,17 @@ vásárló a könyvet
 - Felhasználók kezelése, csak regisztrált felhasználó tud vásárolni
 - __NTL__ Készlet nyilvántartása boltonként
 - __T__ Figyelmeztetés készlet kimerüléséről
-- Zene, filmek, elektronikus könyvek kezelése az adatbázisban
+- Zene, filmek, elektronikus könyvek kezelése az adatbázisban (!!!!!!!!!!!)
 - „Olcsó könyvek” listázása árkategóriánkként
 - Törzsvásárlók nyilvántartása, törzsvásárlói kedvezmények
 - __T__ Törzsvásárlóvá válás
+- __T__ Törzsvásárlói státusz elveszítése, ha a felhasználó nem lép be 3 hónap leforgása alatt
 - __NTL__ Egy könyv adatlapjánál azon könyveket is kilistázni, amelyeket megvettek azok a vásárlók,
-amelyek az aktuális könyvet megvették
+akik az aktuális könyvet megvették
 - __NTL__ A legnépszerűbb könyvek műfajonként
 - __NTL__ Heti/havi toplista a vásárlások alapján (mindegy, hogy interneten vagy boltban vásárolták
 meg a könyvet)
+
 
 ## Határidők
 
@@ -71,3 +73,17 @@ meg a könyvet)
 - megfelel a dokumentációnak
 - hány százalékát lehet a tábláknak elérni az alkalmazásból
 - használhatóság/letisztultság
+
+## Munka felosztása
+
+1. Feladat szöveges leírása, követelménykatalógus (funkcionális- és nem funkcionális követelmények) - OK
+2. AFD - OK
+-> kedd
+3. EK - BÁ
+4. táblák leírása - BÁ
+-> szerda
+5. szerep-funkció - OK
+6. egyed-esemény - BÁ
+7. funkció megadása - OK
+8. képernyőterv - BÁ
+-> vasárnap
