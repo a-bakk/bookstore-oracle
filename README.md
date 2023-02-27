@@ -24,7 +24,7 @@ vásárló a könyvet
 - __T__ Törzsvásárlóvá válás
 - __T__ Törzsvásárlói státusz elveszítése, ha a felhasználó nem lép be 3 hónap leforgása alatt
 - __NTL__ Egy könyv adatlapjánál azon könyveket is kilistázni, amelyeket megvettek azok a vásárlók,
-amelyek az aktuális könyvet megvették
+akik az aktuális könyvet megvették
 - __NTL__ A legnépszerűbb könyvek műfajonként
 - __NTL__ Heti/havi toplista a vásárlások alapján (mindegy, hogy interneten vagy boltban vásárolták
 meg a könyvet)
