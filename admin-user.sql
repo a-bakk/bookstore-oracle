@@ -1,0 +1,2 @@
+CREATE USER bookstore IDENTIFIED BY password;
+GRANT CONNECT, RESOURCE, DBA TO bookstore;

@@ -1,0 +1,20 @@
+version: '3'
+services:
+  oracle:
+    image: truevoly/oracle-12c
+    container_name: bookstore-oracle12c
+    ports:
+      - "1521:1521"
+      - "8100:8080"
+    environment:
+      - ORACLE_ALLOW_REMOTE=true
+      - ORACLE_DISABLE_ASYNCH_IO=false
+      - ORACLE_ENABLE_XDB=true
+      - ORACLE_PASSWORD=oracle
+      - ORACLE_SID=XE
+      - ORACLE_SYSTEM_PASSWORD=oracle
+      - ORACLE_USER=system
+    volumes:
+      - oracle_data:/u01/app/oracle
+volumes:
+  oracle_data:
