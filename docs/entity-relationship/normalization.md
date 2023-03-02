@@ -1,6 +1,6 @@
 # Mapping, normalization
 
-Customer (<u>customerId</u>, email, firstName, lastName, createdAt, lastLogin, admin, street, stateOrRegion, postcode, country, regularSince, points)
+Customer (<u>customerId</u>, email, firstName, lastName, createdAt, lastLogin, admin, street, stateOrRegion, postcode, country, regularSince)
 
 Wishlist (<u>wishlistId</u>, name, createdAt, _customerId_)
 
