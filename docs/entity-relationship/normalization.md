@@ -21,7 +21,7 @@ Stock (<u>_bookId_</u>, <u>_storeId_</u>, count)
 PartOf (<u>_bookId_</u>, <u>_wishlistId_</u>, addedAt)
 
 1NF: Az összes séma megfelel az első normálforma előírásainak, hiszen leképezés után minden
-attribútom doméniuma atomi elemekből áll.
+attribútum atomi.
 
 2NF: A következő sémákban minden kulcs egy attribútumból áll, ezért lesznek 2NF-ben: Customer, Wishlist, Order, Invoice, Book, Store.
 
@@ -35,4 +35,4 @@ A maradék két sémában (Stock és PartOf) a kulcson kívüli egyetlen attrib�
 A Customer, Wishlist, Order, Invoice, Book, Store, Stock és PartOf sémák esetén kijelenthető, hogy nincs
 bennük tranzitív függés, ezért lesznek 3NF-ben.
 
-Megjegyzés: Változtatna a dolgon, ha az országok egyértelműen meghatároznák az irányítószámokat. Viszont ez nem teljesül, https://www.quora.com/Do-the-same-ZIP-codes-exist-in-different-countries . Ugyanilyen alapon jelenthető ki ez a városról is.
+Megjegyzés: Változtatna a dolgon, ha az országok egyértelműen meghatároznák az irányítószámokat. Viszont ez nem teljesül, https://www.quora.com/Do-the-same-ZIP-codes-exist-in-different-countries . Ugyanilyen alapon jelenthető ki ez a városokról is.
