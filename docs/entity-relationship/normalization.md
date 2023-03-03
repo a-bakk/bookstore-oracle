@@ -1,4 +1,4 @@
-# Mapping, normalization
+# Mapping, normalization - No longer updated!
 
 Customer (<u>customerId</u>, email, firstName, lastName, createdAt, lastLogin, admin, street, stateOrRegion, postcode, country, regularSince)
 
