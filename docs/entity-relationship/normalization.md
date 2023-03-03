@@ -20,17 +20,19 @@ Stock (<u>_bookId_</u>, <u>_storeId_</u>, count)
 
 PartOf (<u>_bookId_</u>, <u>_wishlistId_</u>, addedAt)
 
+Contains (<u>_orderId_</u>, <u>_bookId_</u>)
+
 1NF: Az összes séma megfelel az első normálforma előírásainak, hiszen leképezés után minden
 attribútum atomi.
 
 2NF: A következő sémákban minden kulcs egy attribútumból áll, ezért lesznek 2NF-ben: Customer, Wishlist, Order, Invoice, Book, Store.
 
-A következő sémákban nincs másodlagos attribútum, ezért lesznek 2NF-ben: Author, Genre.
+A következő sémákban nincs másodlagos attribútum, ezért lesznek 2NF-ben: Author, Genre, Contains.
 
 A maradék két sémában (Stock és PartOf) a kulcson kívüli egyetlen attribútum (count és addedAt) teljesen függ a kulcstól.
 (külön a bookId-től nem függ a count, a storeId-tól szintén nem, és hasonlóan, a bookId-tól nem függ az addedAt és a wishlistId-tól sem külön)
 
-3NF: Az Author és Genre témákban nincs másodlagos attribútum, ezért 3NF-ben vannak.
+3NF: Az Author, Genre és Contains sémákban nincs másodlagos attribútum, ezért 3NF-ben vannak.
 
 A Customer, Wishlist, Order, Invoice, Book, Store, Stock és PartOf sémák esetén kijelenthető, hogy nincs
 bennük tranzitív függés, ezért lesznek 3NF-ben.
