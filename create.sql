@@ -9,10 +9,10 @@ BEGIN
         EXECUTE IMMEDIATE '
         CREATE TABLE customer (
             customer_id         NUMBER(19)          PRIMARY KEY,
-            email               VARCHAR2(255),
-            first_name          VARCHAR2(30),
-            last_name           VARCHAR2(30),
-            created_at          DATE,
+            email               VARCHAR2(255)       NOT NULL,
+            first_name          VARCHAR2(30)        NOT NULL,
+            last_name           VARCHAR2(30)        NOT NULL,
+            created_at          DATE                NOT NULL,
             last_login          DATE,
             admin               NUMBER(1),
             street              VARCHAR2(50),
@@ -31,8 +31,8 @@ BEGIN
         EXECUTE IMMEDIATE '
         CREATE TABLE wishlist (
             wishlist_id         NUMBER(19)          PRIMARY KEY,
-            name                VARCHAR2(256),
-            created_at          DATE,
+            name                VARCHAR2(256)       NOT NULL,
+            created_at          DATE                NOT NULL,
             customer_id         NUMBER(19)          REFERENCES customer(customer_id)
         )
         ';
@@ -44,8 +44,8 @@ BEGIN
     IF table_count = 0 THEN
         EXECUTE IMMEDIATE '
         CREATE TABLE orders (
-            orders_id           NUMBER(19)          PRIMARY KEY,
-            created_at          DATE,
+            order_id            NUMBER(19)          PRIMARY KEY,
+            created_at          DATE                NOT NULL,
             shipped             NUMBER(1),
             pickup              NUMBER(1),
             customer_id         NUMBER(19)          REFERENCES customer(customer_id)
@@ -61,9 +61,9 @@ BEGIN
         CREATE TABLE invoice (
             invoice_id          NUMBER(19)          PRIMARY KEY,
             value               NUMBER(12),
-            paymentMode         VARCHAR2(10),
+            payment_mode        VARCHAR2(10),
             paid                NUMBER(1),
-            orders_id           NUMBER(19)          REFERENCES orders(orders_id)
+            order_id            NUMBER(19)          REFERENCES orders(order_id)
         )
         ';
         DBMS_OUTPUT.PUT_LINE('"INVOICE" tábla létrehozva!');
@@ -75,17 +75,18 @@ BEGIN
         EXECUTE IMMEDIATE '
         CREATE TABLE book (
             book_id             NUMBER(19)          PRIMARY KEY,
+            name                VARCHAR2(128)       NOT NULL,
             description         VARCHAR2(1024),
             cover               VARCHAR2(16),
-            weight              NUMBER(5),
+            weight              FLOAT,
             contractor          VARCHAR2(50),
-            price               NUMBER(6),
+            price               FLOAT,
             number_of_pages     NUMBER(5),
             published_at        DATE,
             publisher           VARCHAR2(50),
-            isbn                VARCHAR2(13)        UNIQUE,
+            isbn                VARCHAR2(13)        UNIQUE NOT NULL,
             language            VARCHAR2(16),
-            discounted_price    NUMBER(6)
+            discounted_price    FLOAT
         )
         ';
         DBMS_OUTPUT.PUT_LINE('"BOOK" tábla létrehozva!');
@@ -124,7 +125,7 @@ BEGIN
         EXECUTE IMMEDIATE '
         CREATE TABLE store (
             store_id            NUMBER(19)          PRIMARY KEY,
-            name                VARCHAR2(50),
+            name                VARCHAR2(50)        NOT NULL,
             street              VARCHAR2(50),
             state_or_region     VARCHAR2(50),
             postcode            VARCHAR2(10),
@@ -155,7 +156,7 @@ BEGIN
         CREATE TABLE partof (
             book_id             NUMBER(19)          REFERENCES book(book_id),
             wishlist_id         NUMBER(19)          REFERENCES wishlist(wishlist_id),
-            addedAt             DATE,
+            added_at             DATE,
             PRIMARY KEY (book_id, wishlist_id)
         )
         ';
@@ -167,9 +168,9 @@ BEGIN
     IF table_count = 0 THEN
         EXECUTE IMMEDIATE '
         CREATE TABLE contains (
-            orders_id           NUMBER(19)          REFERENCES orders(orders_id),
+            order_id            NUMBER(19)          REFERENCES orders(order_id),
             book_id             NUMBER(19)          REFERENCES book(book_id),
-            PRIMARY KEY (orders_id, book_id)
+            PRIMARY KEY (order_id, book_id)
         )
         ';
         DBMS_OUTPUT.PUT_LINE('"CONTAINS" tábla létrehozva!');
