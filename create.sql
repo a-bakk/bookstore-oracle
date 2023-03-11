@@ -9,7 +9,7 @@ BEGIN
         EXECUTE IMMEDIATE '
         CREATE TABLE customer (
             customer_id         NUMBER(19)          PRIMARY KEY,
-            email               VARCHAR2(255)       NOT NULL,
+            email               VARCHAR2(255)       UNIQUE NOT NULL,
             first_name          VARCHAR2(30)        NOT NULL,
             last_name           VARCHAR2(30)        NOT NULL,
             created_at          DATE                NOT NULL,
