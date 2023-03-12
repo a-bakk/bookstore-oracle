@@ -24,6 +24,7 @@ INSERT INTO AUTHOR VALUES (4, 'Scalzi', 'John');
 --GENRE--
 
 INSERT INTO GENRE VALUES (1, 'sci-fi');
+INSERT INTO GENRE VALUES (1, 'another genre');
 INSERT INTO GENRE VALUES (2, 'sci-fi');
 INSERT INTO GENRE VALUES (3, 'sci-fi');
 INSERT INTO GENRE VALUES (4, 'sci-fi');
