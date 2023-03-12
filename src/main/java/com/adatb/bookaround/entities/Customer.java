@@ -20,6 +20,8 @@ public class Customer implements Serializable {
     @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
+    private String password;
+    @Column(nullable = false)
     private String firstName;
     @Column(nullable = false)
     private String lastName;
@@ -31,6 +33,8 @@ public class Customer implements Serializable {
     private boolean admin;
     @Column
     private String street;
+    @Column
+    private String city;
     @Column
     private String stateOrRegion;
     @Column

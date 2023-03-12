@@ -10,12 +10,14 @@ BEGIN
         CREATE TABLE customer (
             customer_id         NUMBER(19)          PRIMARY KEY,
             email               VARCHAR2(255)       UNIQUE NOT NULL,
+            password            VARCHAR2(255)       NOT NULL,
             first_name          VARCHAR2(30)        NOT NULL,
             last_name           VARCHAR2(30)        NOT NULL,
             created_at          DATE                NOT NULL,
             last_login          DATE,
             admin               NUMBER(1),
             street              VARCHAR2(50),
+            city                VARCHAR2(50),
             state_or_region     VARCHAR2(50),
             postcode            VARCHAR2(10),
             country             VARCHAR2(56),
@@ -61,7 +63,7 @@ BEGIN
         CREATE TABLE invoice (
             invoice_id          NUMBER(19)          PRIMARY KEY,
             value               NUMBER(12),
-            payment_mode        VARCHAR2(10),
+            payment_mode        VARCHAR2(30),
             paid                NUMBER(1),
             order_id            NUMBER(19)          REFERENCES orders(order_id)
         )
@@ -76,17 +78,17 @@ BEGIN
         CREATE TABLE book (
             book_id             NUMBER(19)          PRIMARY KEY,
             name                VARCHAR2(128)       NOT NULL,
-            description         VARCHAR2(1024),
-            cover               VARCHAR2(16),
+            description         VARCHAR2(2048),
+            cover               VARCHAR2(30),
             weight              FLOAT,
             contractor          VARCHAR2(50),
-            price               FLOAT,
+            price               NUMBER(10),
             number_of_pages     NUMBER(5),
             published_at        DATE,
             publisher           VARCHAR2(50),
             isbn                VARCHAR2(13)        UNIQUE NOT NULL,
             language            VARCHAR2(16),
-            discounted_price    FLOAT
+            discounted_price    NUMBER(10)
         )
         ';
         DBMS_OUTPUT.PUT_LINE('"BOOK" tábla létrehozva!');
@@ -127,6 +129,7 @@ BEGIN
             store_id            NUMBER(19)          PRIMARY KEY,
             name                VARCHAR2(50)        NOT NULL,
             street              VARCHAR2(50),
+            city                VARCHAR2(50),
             state_or_region     VARCHAR2(50),
             postcode            VARCHAR2(10),
             country             VARCHAR2(56)
@@ -183,8 +186,8 @@ BEGIN
         CREATE TABLE business_hours (
             hours_id            NUMBER(19)          PRIMARY KEY,
             day_of_week         NUMBER(1, 0),
-            opening_time        TIMESTAMP,
-            closing_time        TIMESTAMP,
+            opening_time        VARCHAR2(30),
+            closing_time        VARCHAR2(30),
             store_id            NUMBER(19)          REFERENCES store(store_id)
         )
         ';

@@ -19,12 +19,14 @@ public class CustomerDetails implements UserDetails {
 
     private Long customerId;
     private String email;
+    private String password;
     private String firstName;
     private String lastName;
     private Date createdAt;
     private Date lastLogin;
     private boolean admin;
     private String street;
+    private String city;
     private String stateOrRegion;
     private String postcode;
     private String country;
@@ -68,12 +70,14 @@ public class CustomerDetails implements UserDetails {
     public CustomerDetails(Customer customer) {
         this.customerId = customer.getCustomerId();
         this.email = customer.getEmail();
+        this.password = customer.getPassword();
         this.firstName = customer.getFirstName();
         this.lastName = customer.getLastName();
         this.createdAt = customer.getCreatedAt();
         this.lastLogin = customer.getLastLogin();
         this.admin = customer.isAdmin();
         this.street = customer.getStreet();
+        this.city = customer.getCity();
         this.stateOrRegion = customer.getStateOrRegion();
         this.postcode = customer.getPostcode();
         this.country = customer.getCountry();

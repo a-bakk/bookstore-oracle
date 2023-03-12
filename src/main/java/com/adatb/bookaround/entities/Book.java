@@ -28,7 +28,7 @@ public class Book implements Serializable {
     @Column
     private String contractor;
     @Column
-    private Double price;
+    private Long price;
     @Column
     private Integer numberOfPages;
     @Column
@@ -40,5 +40,5 @@ public class Book implements Serializable {
     @Column
     private String language;
     @Column
-    private Double discountedPrice;
+    private Long discountedPrice;
 }

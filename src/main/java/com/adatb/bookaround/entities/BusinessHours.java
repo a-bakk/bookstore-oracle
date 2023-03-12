@@ -9,7 +9,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,9 +24,9 @@ public class BusinessHours implements Serializable {
     @Column
     private Short dayOfWeek;
     @Column
-    private Timestamp openingTime;
+    private String openingTime;
     @Column
-    private Timestamp closingTime;
+    private String closingTime;
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "store_id", referencedColumnName = "store_id")

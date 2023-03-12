@@ -24,6 +24,8 @@ public class Store implements Serializable {
     @Column
     private String street;
     @Column
+    private String city;
+    @Column
     private String stateOrRegion;
     @Column
     private String postcode;
