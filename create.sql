@@ -81,7 +81,6 @@ BEGIN
             description         VARCHAR2(2048),
             cover               VARCHAR2(30),
             weight              FLOAT,
-            contractor          VARCHAR2(50),
             price               NUMBER(10),
             number_of_pages     NUMBER(5),
             published_at        DATE,

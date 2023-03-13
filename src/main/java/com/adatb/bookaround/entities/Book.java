@@ -26,8 +26,6 @@ public class Book implements Serializable {
     @Column
     private Double weight;
     @Column
-    private String contractor;
-    @Column
     private Long price;
     @Column
     private Integer numberOfPages;
