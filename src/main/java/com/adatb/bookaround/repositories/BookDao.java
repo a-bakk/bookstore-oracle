@@ -16,6 +16,11 @@ public class BookDao extends AbstractJpaDao<Book> {
     private static final Logger logger = LogManager.getLogger(BookDao.class);
     public BookDao() { this.setEntityClass(Book.class); }
 
+    /**
+     * Listázása a könyveknek a hozzájuk tartozó authorokkal és genrekkel,
+     * a BookWithAuthorsAndGenres modelbe helyezéssel.
+     * @return az ezekből alkotott lista
+     */
     public List<BookWithAuthorsAndGenres> findAllBooksWithAuthorsAndGenres() {
         String jpql = "SELECT b, a, g " +
                 "FROM Book b " +
