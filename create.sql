@@ -77,7 +77,7 @@ BEGIN
         EXECUTE IMMEDIATE '
         CREATE TABLE book (
             book_id             NUMBER(19)          PRIMARY KEY,
-            name                VARCHAR2(128)       NOT NULL,
+            title               VARCHAR2(128)       NOT NULL,
             description         VARCHAR2(2048),
             cover               VARCHAR2(30),
             weight              FLOAT,

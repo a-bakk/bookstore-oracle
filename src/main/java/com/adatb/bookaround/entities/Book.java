@@ -18,7 +18,7 @@ public class Book implements Serializable {
     @Column(name = "book_id")
     private Long bookId;
     @Column(nullable = false)
-    private String name;
+    private String title;
     @Column
     private String description;
     @Column
