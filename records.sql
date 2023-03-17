@@ -9,23 +9,23 @@ INSERT INTO BOOK VALUES (4, 'Az utolsó gyarmat', 'Katonai szolgálata végezté
 INSERT INTO BOOK VALUES (5, '2084', 'Mit tartogat számunkra a 2084-es év? A mesterséges intelligencia fejlesztése messze nem csupán az informatikusokat érinti, hanem kihat az egész emberiségre. John C. Lennox, az Oxfordi Egyetem nyugalmazott matematikaprofesszora 2084 című könyvében bemutatja, mit tud ma és mire lehet képes a technológia, majd bibliai nézőpontból értékeli az olyan népszerű jövőkutatók és sci-fi írók elképzeléseit, mint Harari, Dan Brown, Tegmark vagy C. S. Lewis.', 'kartonált', 350, 3315, 240, '04-NOV-21', 'Harmat Kiadó', 9789632886719, 'magyar', null);
 INSERT INTO BOOK VALUES (6, '2084', 'What will the year 2084 hold for you--for your friends, for your family, and for our society? Are we doomed to the grim dystopia imagined in George Orwell`s 1984? In 2084, scientist and philosopher John Lennox will introduce you to a kaleidoscope of ideas: the key developments in technological enhancement, bioengineering, and, in particular, artificial intelligence. You will discover the current capacity of AI, its advantages and disadvantages, the facts and the fiction, as well as potential future implications. The questions posed by AI are open to all of us. And they demand answers. A book that is written to challenge all readers, no matter your worldview, 2084 shows how the Christian worldview, properly understood, can provide evidence-based, credible answers that will bring you real hope for the future of humanity.', 'kartonált', 350, 3200, 240, '04-NOV-21', 'Harmat Kiadó', 9789632886718, 'angol', null);
 INSERT INTO BOOK VALUES (7, 'Szamurájmesék', 'A könyv nyolc jellemző történetet tartalmaz, melyek mindegyike a szamurájerkölcsök, elvek, viselkedés és erkölcs, azaz a busidó elvei köré csoportosulnak, és a mai modern japán társadalmat is át- meg átszövik. Ezt hangsúlyozza Mijamori könyvének rövid bevezetőjében. A történetek nemcsak egzotikusak és borzongatók, de a japán néplélek megértésében, sőt, a modern japán írók, akár Rjúnoszuke Akutagava, Abe Kobo és az irodalmi Nobel-díjas Oe Kenzaburo vagy a hazánkban is méltán népszerű Murakami Haruki motivációinak, társadalmi-történeti-kulturális hátterének megértésében is segítenek. Arról nem is beszélve, hogy remek olvasmány valamennyi.', 'keménytáblás', 320, 3350, 176, '1-DEC-22', 'Digi-Book Kiadó', 9789635596997, 'magyar', null);
-INSERT INTO BOOK VALUES (8, 'Az első ember - Neil Armstrong története', '1969. JÚLIUS 21-ÉN AZ EGÉSZ VILÁG LÉLEGZETVISSZAFOJTVA FIGYELTE, amint egy 38 éves amerikai űrhajós, Neil A. Armstrong első emberként a Holdra lép. Talán nincsenek az emberi történelemben ismertebb szavak azoknál, amelyeket abban a történelmi pillanatban kimondott. Az első ember egyaránt bemutatja Armstrongot, mint kiváló űrhajóst és mint egyedülálló egyéniséget.', 'keménytáblás', 550, 4740, 560, '12-OKT-18', 'Gabo Kiadó', 9789632521121, 'magyar', null);
+INSERT INTO BOOK VALUES (8, 'Az első ember - Neil Armstrong élete', '1969. JÚLIUS 21-ÉN AZ EGÉSZ VILÁG LÉLEGZETVISSZAFOJTVA FIGYELTE, amint egy 38 éves amerikai űrhajós, Neil A. Armstrong első emberként a Holdra lép. Talán nincsenek az emberi történelemben ismertebb szavak azoknál, amelyeket abban a történelmi pillanatban kimondott. Az első ember egyaránt bemutatja Armstrongot, mint kiváló űrhajóst és mint egyedülálló egyéniséget.', 'keménytáblás', 550, 4740, 560, '12-OKT-18', 'Gabo Kiadó', 9789632521121, 'magyar', null);
 INSERT INTO BOOK VALUES (9, 'Birmingham Bandája', 'A Birmingham Bandája tv-sorozat 2013-as megjelenése óta egy szűk réteg kultuszsorozatából világjelenséggé nőtte ki magát: hat évadot tudhat már maga mögött, és Tommy Shelby karaktere világszerte ismertté vált. A sorozatról szóló első hivatalos kiadvány elénk tárja a Shelby család bámulatos felemelkedésének történetét, egyszersmind betekintést enged a sorozat alkotóinak és szereplőinek világába. A könyvben exkluzív interjút olvashatnak Steven Knighttal a várva várt hatodik és egyben utolsó évaddal kapcsolatban. Fedezzük fel együtt, mi vár a bandára a drámai fináléban!', 'keménytáblás', 410, 5941, 330, '15-MAR-22', 'Unio Mystica Kiadó', 9786155546549, 'magyar', null);
 INSERT INTO BOOK VALUES (10, 'A tizedik lány', 'Üdvözlünk mindenkit a Vaccaro Iskolában! Dél-Amerika legdélebbi csücskében egy mindentől elzárt leányiskolát találunk. Különös erők sújtják ezt a szentségtelen szikladarabot, a legenda szerint mindenki el lesz átkozva, aki itt merészel letelepedni. Mavi számára viszont ez a hely az egyetlen kiút, hiszen édesanyját elragadta a kormányzó hatalom, így a neki el kell hagynia otthonát, Buenos Airest. Fiatal tanárként itt kezdhet új életet, Argentína leggazdagabb leánynövendékei között. Megpróbálja elfogadni a nagy múltú intézmény idegenszerűségét. De amikor tíz diákja közül az egyik eltűnik, és mindenki úgy kezd viselkedni, mintha megszállták volna, nem tud többé nem tudomást venni a szentségtelen sziklán kísértő erőkről. Meg akarja fejteni a hiányzó lány rejtélyét a figyelmeztetések ellenére is, hogy veszélyes éjszaka kószálnia. Ráadásul különös Másvilágiakról szóló pletykák is keringenek. Az egyik ilyen lélek, egy rejtélyes fiatalember olyan titkokat őriz, amelyek Mavinak puszta létezésére is hatással vannak.', 'kartonált', 550, 4250, 464, '06-OKT-22', 'Maxim Könyvkiadó', 9789634992905, 'magyar', null);
 INSERT INTO BOOK VALUES (11, 'Agykontroll', 'Bill Hodges, a nyugdíjas zsaru és társa, Holly Gibney egy öngyilkosság ügyében nyomoznak, amelyhez köze lehet Brady Hartsfieldnek, az ördögi Mercedeses Gyilkosnak. Igaz, Brady öt évvel azelőtt, amikor többször is fejbe vágták a zsúfolt koncertcsarnokban, amelyet fel akart robbantani, olyan súlyos agysérülést szenvedett, hogy azóta is kórházban van, csak üresen bambul, és az orvosok szerint reménye sincs a gyógyulásra. Ám a 217-es szobában, ahol az ártalmatlannak tartott gyilkos vegetál, egy titokzatos, gonosz erő ébred, amely hozzásegítheti Bradyt, hogy bosszút álljon ellenségein - sőt az egész városon... A Mr. Mercedes és az Aki kapja, marja után itt a Bill Hodges-trilógia csattanós fináléja, amelyben a hősöknek immár egy természetfölötti képességgel rendelkező, sátáni alakkal kell megküzdeniük életre-halálra.', 'füles kartonált', 570, 5750, 512, '18-SEP-19', 'Európa Kiadó', 9789635041046, 'magyar', null);
 INSERT INTO BOOK VALUES (12, 'End of Watch', 'The trilogy began with Mr. Mercedes and Finders Keepers-In End of Watch, the diabolical "Mercedes Killer" drives his enemies to suicide, and if Bill Hodges and Holly Gibney don`t figure out a way to stop him, they`ll be victims themselves.For nearly six years, in Room 217 of the Lakes Region Traumatic Brain Injury Clinic, Brady Hartsfield has been in a persistent vegetative state. A complete recovery seems unlikely for the insane perpetrator of the "Mercedes Massacre," in which eight people were killed and many more maimed for life. But behind the vacant stare, Brady is very much awake and aware, having been pumped full of experimental drugs...scheming, biding his time as he trains himself to take full advantage of the deadly new powers that allow him to wreak unimaginable havoc without ever leaving his hospital room. Brady Hartsfield is about to embark on a new reign of terror against thousands of innocents, hell-bent on taking revenge against anyone who crossed his path-with…', 'puhakötésű', 570, 5750, 512, '12-AUG-17', 'Európa Kiadó', 9789635041045, 'angol', null);
-INSERT INTO BOOK VALUES (13, 'Az első ember utolsó története', 'Kis Norbert evolúciófilozófiai kisregénye utazás az emberi tudás, a képzelet és a valóság határvidékén. A könyvben a mesterséges intelligencia mögötti Tudat és az utolsó Tudós nyolc napon át beszélget, amiből kirajzolódik a Mindenség evolúciója. Hogyan kezdődött a létezés és az élet? Mi ad életet az anyagnak? Mi az értelme és a célja az élet fejlődésének? Mi lesz az emberi élettel, ha száz éven belül Földünk lakhatatlanná válik? Eszmecseréjük meglepően kézenfekvő választ ad a természettudományok kétségeire, az élet múltjának és jövőjének talányaira. A regény végén elénk tárul az a nap, amikor eldől az emberi élet földi sorsa.', 'puhatáblás', 400, 4299, 346, '29-JUL-22', 'Pallas Athéné Könyvkiadó', 9789635731268, 'magyar', null);
+INSERT INTO BOOK VALUES (13, 'Az ember utolsó története', 'Kis Norbert evolúciófilozófiai kisregénye utazás az emberi tudás, a képzelet és a valóság határvidékén. A könyvben a mesterséges intelligencia mögötti Tudat és az utolsó Tudós nyolc napon át beszélget, amiből kirajzolódik a Mindenség evolúciója. Hogyan kezdődött a létezés és az élet? Mi ad életet az anyagnak? Mi az értelme és a célja az élet fejlődésének? Mi lesz az emberi élettel, ha száz éven belül Földünk lakhatatlanná válik? Eszmecseréjük meglepően kézenfekvő választ ad a természettudományok kétségeire, az élet múltjának és jövőjének talányaira. A regény végén elénk tárul az a nap, amikor eldől az emberi élet földi sorsa.', 'puhatáblás', 400, 4299, 346, '29-JUL-22', 'Pallas Athéné Könyvkiadó', 9789635731268, 'magyar', null);
 INSERT INTO BOOK VALUES (14, 'A Vezércsel', 'Beth Harmon csendes, morózus és első pillantásra jelentéktelen nyolcéves kislány, akit édesanyja halála után árvaházba küldenek. Legfőbb társasága egy másik árva, és a gyermekotthon gondnoka, aki sakkozni tanítja. A sakk szép lassan Beth életének értelmévé válik. Idővel a fiatal tehetség a nyugtatókhoz és az alkoholhoz nyúl, hogy elmenekülhessen a valóság elől. De a sakkpartik során kiélesednek az érzékei, tisztán gondolkodik, és úgy érzi, hogy talán visszanyerheti az irányítást. Tizenhat éves lányként a hidegháborús években már az USA nyílt bajnokságán küzd a győzelemért. Azonban, miközben szakmai képességei egyre fejlődnek, a tét is növekszik, egyre félelmetesebbnek tűnik számára az elszigeteltsége, és egyre csábítóbbá válik a menekülés gondolata. És eljön az a pillanat, amikor a világ legjobb játékosával kell megküzdenie a Szovjetunióban. Képes lesz-e nyerni, vagy végül függőségei áldozatává válik?', 'ragasztott', 381, 3990, 381, '06-FEB-19', 'Metropolis Media Group Kft.', 9786155859281, 'magyar', null);
 INSERT INTO BOOK VALUES (15, 'Kardok kora', 'Az istenekről kiderült, hogy ők is csak halandók, az elnyomott rhunák pedig fegyvert ragadtak uraik ellen. Ám a küzdelem még csak most kezdődik... Raithe, az Istenölő végzett egy fhreyjel, és ezzel kirobbantotta a lázadást, csakhogy a szolgaként tartott embereket ősidők óta megosztó viszályok meggátolják, hogy összefogjanak közös ellenségük ellen. De még ha a klánok egyesítenék is hadaikat, hogyan remélhetnék legyőzni az isteni varázserővel bíró fhreyjeket? A válasz a tengerentúlon rejlik egy messzi-messzi vidéken, amelyet egy magának való, konok faj népesít be, akik megvetik a fhreyeket és az embereket egyaránt. Mielőtt kifutnának az időből, Perszephoné kétségbeesett utazásra indul, hogy segítséget szerezzen kis csapatával, melynek tagja Suri, az ifjú látó, és Arion is. Útjuk egyenesen Elan sötét szívébe vezet, ahol egy ősi és félelmetes ellenfél várja őket...', 'kartonált', 620, 4245, 560, '04-DEC-21', 'Fumax Kiadó', 9789634702207, 'magyar', null);
 INSERT INTO BOOK VALUES (16, 'A Földre esett férfi', 'A férfi fontos küldetéssel érkezett Anthea távoli világából: a földi erőforrások segítségével kell kimenekítenie pusztuló bolygójáról fajának túlélőit. A háborúkban, természeti katasztrófákban megfogyatkozott antheaiak fejlett technológiáját pénzzé téve, identitását titokban tartva Newton nekifog egy űrhajó építésének. Ám miközben a küldetése teljesítésén dolgozik, szembesül vele, hogy a két világ közt több a hasonlóság, mint elsőre gondolta, és az ő sikerétől nemcsak a saját népe fennmaradása függ, hanem az emberiség sorsa is. Kérdés azonban, vajon egyetlen férfi - még ha egy fejlettebb világ örököse is - képes-e megbirkózni egy ilyen óriási teherrel, távol a szeretteitől, egy számára idegen bolygón.', 'kartonált', 340, 2800, 280, '17-JUN-22', 'Gabo Kiadó', 9789635662951, 'magyar', null);
 INSERT INTO BOOK VALUES (17, 'S.T.A.L.K.E.R. - Ház a Mocsárban', 'A 21. század elején a csernobili atomerőmű romjai körül létrejött a titokzatos, természetellenes Zóna, és a könnyű pénzkereset megszámlálhatatlan rajongója ideözönlött abban a reményben, hogy ritka, hatalmas pénzeket érő relikviákat talál. Nagyon hamar világossá vált azonban számukra, hogy bentről nem mindenki képes visszatérni. A Tüske névre hallgató stalkernek is megvoltak a saját elképzelései a meggazdagodásra. Nem akart áttörni a radioaktív területeken és a rejtélyes, kívánságokat teljesítő Monolitot övező halálos csapdákon, nem akart fosztogatókkal vagy kegyetlen mutánsokkal harcolni, egyszerűen csak ki akarta rabolni és meg akarta ölni a Mocsárban élő Doktort, aki önzetlenül kezelte a sebesült stalkereket. Tüske nem is sejtette, hogy emiatt nemcsak a stalker testvériségekkel, de az egész Zónával fog szembekerülni. Márpedig a Zóna ellen seki nem nyerhet...', 'ragasztott', 300, 2990, 323, '27-AUG-18', 'Metropolis Media Group Kft.', 9786155628832, 'magyar', null);
-INSERT INTO BOOK VALUES (18, 'Hálóban', 'Aznap, amikor Finnországban két népszerű influencer rejtélyes körülmények között eltűnik, egy fiatal mangaruhás nő holttestét sodorja partra a tenger. Jessica Niemi nyomozó versenyt fut az idővel, hogy megtalálja a bűnügyek közti összefüggést a Boszorkányvadász szerzőjének hátborzongató új regényében. Hat hónap telt el azóta, hogy Jessica találkozott a titokzatos boszorkányszektával, és meghalt a főnöke. A gyilkossági csoport új vezetővel az élen egy különös eltűnéssorozat felderítésén dolgozik: úgy tűnik, egy olyan bűnügyi hálózat mozgatja a szálakat, amelynek tagjai az Instagramon szerveződnek. Ráadásul valaki szórakozik a rendőrséggel. Valaki, akinek esze ágában sincs abbahagyni a halálos játékot. Miközben Jessica elszántan igyekszik az ügyre összpontosítani, éjjelente rémálmok gyötrik, melyek hirtelen túlságosan is valóságosnak tűnnek. Mintha halott édesanyja mondani akarna neki valamit, és a szekta, amely őt sok évvel ezelőtt elemésztette, most Jessica életére törne...', 'kartonált', WEIGHT, PRICE, 408, '28-OKT-21', 'Animus Könyvek', 9789633248973, 'magyar', null);
-INSERT INTO BOOK VALUES (19, 'Óvakodj a múlttól', 'A végtelen, kihalt mezőkkel teli angol lápvidék baljóslatú, sötét hely, ahol bármikor eltévedhetünk a köd leszállta után. Ezen a kietlen vidéken szembesül a fiatal Matt Ballard nyomozó az emberi természet sötét oldalával, miután a mocsárból három meggyilkolt gyermek holtteste bukkan elő. 25 évvel később Ballard főfelügyelő már a visszavonuláson gondolkodik sikerekben gazdag karrierje után, ám a múlt közbeszól: egy ismeretlen feladó az azóta is megoldatlan gyilkosságokról küld autentikus fotókat, majd újabb gyermek holtteste kerül elő. Az igazi gyilkos tért vissza vajon, vagy beteg elméjű követőre talált? Akárki is áll az új esetek hátterében, ezúttal Matt Ballard is a célpontok egyike találja magát - elvégre egy embert többféle módon is meg lehet semmisíteni... A bűnügyi thriller mesterei közé tartozó Joy Ellis sodró lendületű regénye arra figyelmeztet, hogy múltunk a legváratlanabb pillanatokban kérhet számon minket.', 'kartonált', WEIGHT, 3699, 336, '23-NOV-19', 'Alexandra Kiadó', 9789634475965, 'magyar', null);
-INSERT INTO BOOK VALUES (20, 'Fullasztó tél', 'A dermesztő nyár fullasztó télbe fordul. Dale Stewart azt hitte, gyerekkorában végleg megszabadult a sötétségtől, ám nagyobbat nem is tévedhetett volna. Az egykor köztiszteletben álló egyetemi oktató és regényíró élete kisiklott: felesége elhagyta, karrierje romokban, sőt egy katasztrofális viszonyt követően még öngyilkosságot is megkísérel. Úgy dönt, hogy mindent maga mögött hagy, és visszatér gyermekkora színhelyére, az egykor virágzó kisvárosnak számító Elm Haven összeaszott maradványai közé, ahol reményei szerint nyugalomra lel. Régi barátja házát bérli ki, hogy megírja élete első komoly regényét, ami történetesen a négy évtizeddel azelőtti nyár eseményeit dolgozza fel. Ám azzal, hogy a városka szélén álló, régóta elhagyatott házba vackolja be magát - ahol egykor legjobb barátja, az 1960 dermesztő nyarán szörnyű halált halt Duane McBride lakott -, csupán az eddig elkövetett hibáit tetézi. Mert nincs egyedül a házban: ide is követték saját bejáratú démonjai, akik valami szörnyű dologra készülnek. És a hó lassan mindent maga alá temet...', 'kartonált', WEIGHT, 4250, 400, '11-SEP-20', 'Alexandra Kiadó', 9789634477266, 'magyar', null);
+INSERT INTO BOOK VALUES (18, 'Hálóban', 'Aznap, amikor Finnországban két népszerű influencer rejtélyes körülmények között eltűnik, egy fiatal mangaruhás nő holttestét sodorja partra a tenger. Jessica Niemi nyomozó versenyt fut az idővel, hogy megtalálja a bűnügyek közti összefüggést a Boszorkányvadász szerzőjének hátborzongató új regényében. Hat hónap telt el azóta, hogy Jessica találkozott a titokzatos boszorkányszektával, és meghalt a főnöke. A gyilkossági csoport új vezetővel az élen egy különös eltűnéssorozat felderítésén dolgozik: úgy tűnik, egy olyan bűnügyi hálózat mozgatja a szálakat, amelynek tagjai az Instagramon szerveződnek. Ráadásul valaki szórakozik a rendőrséggel. Valaki, akinek esze ágában sincs abbahagyni a halálos játékot. Miközben Jessica elszántan igyekszik az ügyre összpontosítani, éjjelente rémálmok gyötrik, melyek hirtelen túlságosan is valóságosnak tűnnek. Mintha halott édesanyja mondani akarna neki valamit, és a szekta, amely őt sok évvel ezelőtt elemésztette, most Jessica életére törne...', 'kartonált', 340, 3999, 408, '28-OKT-21', 'Animus Könyvek', 9789633248973, 'magyar', null);
+INSERT INTO BOOK VALUES (19, 'Óvakodj a múlttól', 'A végtelen, kihalt mezőkkel teli angol lápvidék baljóslatú, sötét hely, ahol bármikor eltévedhetünk a köd leszállta után. Ezen a kietlen vidéken szembesül a fiatal Matt Ballard nyomozó az emberi természet sötét oldalával, miután a mocsárból három meggyilkolt gyermek holtteste bukkan elő. 25 évvel később Ballard főfelügyelő már a visszavonuláson gondolkodik sikerekben gazdag karrierje után, ám a múlt közbeszól: egy ismeretlen feladó az azóta is megoldatlan gyilkosságokról küld autentikus fotókat, majd újabb gyermek holtteste kerül elő. Az igazi gyilkos tért vissza vajon, vagy beteg elméjű követőre talált? Akárki is áll az új esetek hátterében, ezúttal Matt Ballard is a célpontok egyike találja magát - elvégre egy embert többféle módon is meg lehet semmisíteni... A bűnügyi thriller mesterei közé tartozó Joy Ellis sodró lendületű regénye arra figyelmeztet, hogy múltunk a legváratlanabb pillanatokban kérhet számon minket.', 'kartonált', 290, 3699, 336, '23-NOV-19', 'Alexandra Kiadó', 9789634475965, 'magyar', null);
+INSERT INTO BOOK VALUES (20, 'Fullasztó tél', 'A dermesztő nyár fullasztó télbe fordul. Dale Stewart azt hitte, gyerekkorában végleg megszabadult a sötétségtől, ám nagyobbat nem is tévedhetett volna. Az egykor köztiszteletben álló egyetemi oktató és regényíró élete kisiklott: felesége elhagyta, karrierje romokban, sőt egy katasztrofális viszonyt követően még öngyilkosságot is megkísérel. Úgy dönt, hogy mindent maga mögött hagy, és visszatér gyermekkora színhelyére, az egykor virágzó kisvárosnak számító Elm Haven összeaszott maradványai közé, ahol reményei szerint nyugalomra lel. Régi barátja házát bérli ki, hogy megírja élete első komoly regényét, ami történetesen a négy évtizeddel azelőtti nyár eseményeit dolgozza fel. Ám azzal, hogy a városka szélén álló, régóta elhagyatott házba vackolja be magát - ahol egykor legjobb barátja, az 1960 dermesztő nyarán szörnyű halált halt Duane McBride lakott -, csupán az eddig elkövetett hibáit tetézi. Mert nincs egyedül a házban: ide is követték saját bejáratú démonjai, akik valami szörnyű dologra készülnek. És a hó lassan mindent maga alá temet...', 'kartonált', 350, 4250, 400, '11-SEP-20', 'Alexandra Kiadó', 9789634477266, 'magyar', null);
 INSERT INTO BOOK VALUES (21, 'A Winter Haunting', 'A once-respected college professor and novelist, Dale Stewart has sabotaged his career and his marriage -- and now darkness is closing in on him. In the last hours of Halloween he has returned to the dying town of Elm Haven, his boyhood home, where he hopes to find peace in isolation. But moving into a long-deserted farmhouse on the far outskirts of town -- the one-time residence of a strange and brilliant friend who lost his young life in a grisly "accident" back in the terrible summer of 1960 -- is only the latest in his long succession of recent mistakes. Because Dale is not alone here. He has been followed to this house of shadows by private demons who are now twisting his reality into horrifying new forms. And a thick, blanketing early snow is starting to fall...', 'kartonált', 340, 3999, 400, '21-SEP-17', 'Alexandra Kiadó', 9789634477265, 'angol', null);
 INSERT INTO BOOK VALUES (22, 'Gyilkos társas', 'Jody JJ Johnson, fiatal PR-szakértő hölgy éppen Los Angeles legfelkapottabb éttermében ebédel, amikor álarcos fegyveres ront be robbanómellényben, és túszul ejti a vendégeket - Hollywood leggazdagabb sztárjait. JJ arról híres, hogy minden problémát képes elsimítani, a közönséges emberekből pedig szupersztárt faragni. Ebben a helyzetben azonban ő is tanácstalan. Miközben híre megy a túszejtésnek, az áldozatok az életükért alkudoznak egy zavart elméjű férfival, akit semmi sem tud megakadályozni abban, hogy megszerezze, amit akar. A bomba a fegyveres szívritmusának változásától felrobban, ezért a megölése szóba sem jöhet. Mivel csak négy órája van, hogy megállítsa, JJ-nek gyorsan megoldást kell találnia, hogy a fenyegető rémálom valósággá ne váljon.', 'kartonált', 360, 4999, 448, '29-NOV-17', 'Könyvmolyképző Kiadó', 9789634571117, 'magyar', null);
-INSERT INTO BOOK VALUES (23, 'Halállista', 'A Halállista az USA szigorúan titkos listája azokról, akik a világ biztonságát veszélyeztetik. A lista élén a Prédikátor áll, aki az interneten közvetített uszító beszédeivel arra buzdítja az iszlám híveit, hogy kövessenek el öngyilkos merényleteket a nyugati világ fontos vezetői ellen. Ennek nyomán szerte a világon szörnyű gyilkosságok történnek Isten nevében. Mintha csak valami rettenetes járvány szedné áldozatait. Ha valaki nem állítja meg ezt az őrületet, a világ káoszba zuhan. A szinte lehetetlen küldetéssel egy volt tengerészgyalogost bíznak meg, akit legközelebbi kollégái is csak Nyomkövetőként ismernek. A Nyomkövető egy zseniális, tinédzser hacker segítségével próbálja meg azonosítani a maszk mögött rejtőzködő Prédikátort. Az üldözés egyszerre zajlik a virtuális és a valós világban, de kétséges, hogy milyen eredménnyel zárul. Forsyth legújabb regénye bepillantást nyújt a terrorizmus lélektani motivációinak legsötétebb bugyraiba és a globális terrorizmus elleni harc titkos boszorkánykonyhájába.', 'kartonált', WEIGHT, 3999, 360, '12-JAN-23', 'General Press Kft.', 9789634527060, 'magyar', null);
-INSERT INTO BOOK VALUES (24, 'One by One', 'The Death List is a top secret US list of those who threaten the security of the world. At the top of the list is the Preacher, who, with his inciting speeches broadcast on the Internet, urges the followers of Islam to commit suicide attacks against important leaders of the Western world. As a result, terrible murders are taking place all over the world in the name of God. As if some terrible epidemic were taking its victims. If someone doesn`t stop this madness, the world will descend into chaos. The almost impossible mission is entrusted to an ex-marine, who is only known to his closest colleagues as the Tracker. The Tracker tries to identify the Preacher hiding behind the mask with the help of a brilliant teenage hacker. The chase takes place in both the virtual and the real world, but it is doubtful how it will end. Forsyth`s latest novel offers a glimpse into the darkest recesses of the psychological motivations of terrorism and the secret witch`s kitchen of the fight against global terrorism.', 'kartonált', WEIGHT, 3799, 360, '7-FEB-19', 'General Press Kft.', 9789634527671, 'angol', null);
+INSERT INTO BOOK VALUES (23, 'Halállista', 'A Halállista az USA szigorúan titkos listája azokról, akik a világ biztonságát veszélyeztetik. A lista élén a Prédikátor áll, aki az interneten közvetített uszító beszédeivel arra buzdítja az iszlám híveit, hogy kövessenek el öngyilkos merényleteket a nyugati világ fontos vezetői ellen. Ennek nyomán szerte a világon szörnyű gyilkosságok történnek Isten nevében. Mintha csak valami rettenetes járvány szedné áldozatait. Ha valaki nem állítja meg ezt az őrületet, a világ káoszba zuhan. A szinte lehetetlen küldetéssel egy volt tengerészgyalogost bíznak meg, akit legközelebbi kollégái is csak Nyomkövetőként ismernek. A Nyomkövető egy zseniális, tinédzser hacker segítségével próbálja meg azonosítani a maszk mögött rejtőzködő Prédikátort. Az üldözés egyszerre zajlik a virtuális és a valós világban, de kétséges, hogy milyen eredménnyel zárul. Forsyth legújabb regénye bepillantást nyújt a terrorizmus lélektani motivációinak legsötétebb bugyraiba és a globális terrorizmus elleni harc titkos boszorkánykonyhájába.', 'kartonált', 208, 3999, 360, '12-JAN-23', 'General Press Kft.', 9789634527060, 'magyar', null);
+INSERT INTO BOOK VALUES (24, 'The Kill List', 'The Kill List: a top secret catalogue of names held at the highest level of the US government. On it, those men and women who would threaten the world`s security. And at the top of it, The Preacher, a radical Islamic cleric whose sermons inspire his followers to kill high profile Western targets in the name of God. As the bodies begin to pile up in America, Great Britain and across Europe, the message goes out: discover this man`s identity, locate him and take him out. Tasked with what seems like an impossible job is an ex-US marine who has risen through the ranks to become one of America`s most effective intelligence chiefs. Now known only as The Tracker, he must gather what scant evidence there is, collate it and unmask The Preacher if he is to prevent the next spate of violent deaths. Aided only by a brilliant teenaged hacker, he must throw out the bait and see whether his deadly target can be drawn from his lair...', 'kartonált', 208, 3799, 360, '7-FEB-19', 'General Press Kft.', 9789634527671, 'angol', null);
 INSERT INTO BOOK VALUES (25, 'Hidegvér', 'Megcsonkított fiatalember testét rejtő, viharvert bőröndöt sodor a víz a Temze partjára. Erika Foster nyomozót sokkolja a látvány. Dolgozott már borzalmas ügyeken, de ilyet még sosem látott pályafutása során. Erika és csapata munkához lát, és sikerül összekötniük az ügyet egy másik áldozatéval - két héttel korábban egy hasonló bőröndben fiatal nő hullája került elő. A nyomozó hamar rájön, hogy olyan sorozatgyilkossal van dolga, aki máris a következő dobására készül. Ám alig talál használható nyomot, s eközben őt is brutális támadás éri. Persze Erikát semmi sem állíthatja meg. A holttestek száma egyre nő, továbbá kollégája, Marsh parancsnok ikerlányait elrabolják, így a tét minden eddiginél nagyobb. Meg tudja-e menteni a két ártatlan gyermeket, mielőtt még késő lesz? Kezd kifutni az időből, és ekkor újabb felkavaró felfedezést tesz... Lehet, hogy nem csak egy gyilkos van?', 'kartonált', 340, 3399, 434, '22-SEP-20', 'Insomnia', 9789634335726, 'magyar', null);
 INSERT INTO BOOK VALUES (26, 'A szerencsések', 'Amikor egy nő holttestére bukkannak az apátság romjainál, Imogen Evans nyomozó rögtön tudja, hogy a sorozatgyilkos ismét lecsapott. Fiona, akárcsak a korábbi áldozatok, békésen, nyitott szemmel, örökre az arcára fagyott mosollyal hever a hátán. Néhány mérföldnyire innen Ben Hofland, a gyermekét egyedül nevelő apa alig hiszi, hogy végre jóra fordul a sorsa. Válása után fiával együtt a szülővárosába menekült, ahol nehezen boldogulnak. Ám váratlanul minden megoldódni látszik: Bennek állást ajánlanak, a fiát zaklató kölykök pedig eltűnnek. A hónapokon át tartó mélyrepülés után a férfi úgy érzi, végre mellé szegődött a szerencse. Nem is sejti, hogy valaki figyeli őt és Ollie-t. Valaki, aki nem akar mást, csak boldogságot Bennek. Boldogságot... és halált.', 'kartonált', 340, 5220, 416, '28-JUN-21', 'Alexandra Kiadó', 9789634479192, 'magyar', null);
 INSERT INTO BOOK VALUES (27, 'The Lucky Ones', 'It was the happiest day of her life. Little did she know it was also the last. When a woman`s body is found in the grounds of a ruined priory, Detective Imogen Evans realises she is dealing with a serial killer—a killer whose victims appear to die in a state of bliss, eyes open, smiles forever frozen on their faces. A few miles away, single dad Ben Hofland believes his fortunes are changing at last. Forced to move back to the sleepy village where he grew up following the breakdown of his marriage, Ben finally finds work. What`s more, the bullies who have been terrorising his son, Ollie, disappear. For the first time in months, Ben feels lucky. But he is unaware that someone is watching him and Ollie. Someone who wants nothing but happiness for Ben. Happiness…and death.', 'kartonált', 320, 5250, 416, '21-JUL-18', 'Alexandra Kiadó', 9789634479387, 'angol', null);
@@ -126,18 +126,147 @@ INSERT INTO AUTHOR VALUES (55, 'Jacek', 'Dukaj');
 
 
 
+
 --GENRE--
 
+--INSERT INTO GENRE VALUES (ID, 'GENRE_NAME');
+
+INSERT INTO GENRE VALUES (1, 'szórakoztató irodalom');
 INSERT INTO GENRE VALUES (1, 'sci-fi');
+INSERT INTO GENRE VALUES (2, 'szórakoztató irodalom');
 INSERT INTO GENRE VALUES (2, 'sci-fi');
+INSERT INTO GENRE VALUES (3, 'szórakoztató irodalom');
 INSERT INTO GENRE VALUES (3, 'sci-fi');
+INSERT INTO GENRE VALUES (4, 'szórakoztató irodalom');
 INSERT INTO GENRE VALUES (4, 'sci-fi');
 INSERT INTO GENRE VALUES (5, 'sci-fi');
-INSERT INTO GENRE VALUES (5, 'ismeretterjesztő');
+INSERT INTO GENRE VALUES (5, 'társadalomtudomány');
 INSERT INTO GENRE VALUES (6, 'sci-fi');
-INSERT INTO GENRE VALUES (6, 'ismeretterjesztő');
-INSERT INTO GENRE VALUES (7, 'regény');
+INSERT INTO GENRE VALUES (6, 'társadalomtudomány');
+INSERT INTO GENRE VALUES (7, 'szépirodalom');
+INSERT INTO GENRE VALUES (7, 'történelmi');
 INSERT INTO GENRE VALUES (8, 'életrajz');
+INSERT INTO GENRE VALUES (9, 'életrajz');
+INSERT INTO GENRE VALUES (10, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (10, 'krimi');
+INSERT INTO GENRE VALUES (10, 'thriller');
+INSERT INTO GENRE VALUES (11, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (11, 'krimi');
+INSERT INTO GENRE VALUES (11, 'thriller');
+INSERT INTO GENRE VALUES (12, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (12, 'kimi');
+INSERT INTO GENRE VALUES (12, 'thiller');
+INSERT INTO GENRE VALUES (13, 'természettudomány');
+INSERT INTO GENRE VALUES (13, 'biológia');
+INSERT INTO GENRE VALUES (14, 'szépirodalom');
+INSERT INTO GENRE VALUES (14, 'regény');
+INSERT INTO GENRE VALUES (15, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (15, 'fantasy');
+INSERT INTO GENRE VALUES (16, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (16, 'sci-fi');
+INSERT INTO GENRE VALUES (17, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (17, 'sci-fi');
+INSERT INTO GENRE VALUES (18, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (18, 'krimi');
+INSERT INTO GENRE VALUES (18, 'thiller');
+INSERT INTO GENRE VALUES (19, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (19, 'krimi');
+INSERT INTO GENRE VALUES (19, 'thriller');
+INSERT INTO GENRE VALUES (20, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (20, 'krimi');
+INSERT INTO GENRE VALUES (20, 'thriller');
+INSERT INTO GENRE VALUES (21, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (21, 'krimi');
+INSERT INTO GENRE VALUES (21, 'thriller');
+INSERT INTO GENRE VALUES (22, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (22, 'krimi');
+INSERT INTO GENRE VALUES (22, 'thriller');
+INSERT INTO GENRE VALUES (23, 'történelem');
+INSERT INTO GENRE VALUES (23, 'egytemes történelem');
+INSERT INTO GENRE VALUES (23, 'hadtörténet');
+INSERT INTO GENRE VALUES (24, 'történelem');
+INSERT INTO GENRE VALUES (24, 'egytemes történelem');
+INSERT INTO GENRE VALUES (24, 'hadtörténet');
+INSERT INTO GENRE VALUES (25, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (25, 'krimi');
+INSERT INTO GENRE VALUES (25, 'thriller');
+INSERT INTO GENRE VALUES (26, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (26, 'krimi');
+INSERT INTO GENRE VALUES (26, 'thriller');
+INSERT INTO GENRE VALUES (27, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (27, 'krimi');
+INSERT INTO GENRE VALUES (27, 'thriller');
+INSERT INTO GENRE VALUES (28, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (28, 'fantasy');
+INSERT INTO GENRE VALUES (29, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (29, 'fantasy');
+INSERT INTO GENRE VALUES (30, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (30, 'fantasy');
+INSERT INTO GENRE VALUES (31, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (31, 'krimi');
+INSERT INTO GENRE VALUES (31, 'thriller');
+INSERT INTO GENRE VALUES (32, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (32, 'krimi');
+INSERT INTO GENRE VALUES (32, 'thriller');
+INSERT INTO GENRE VALUES (33, 'szépirodalom');
+INSERT INTO GENRE VALUES (33, 'ifjúsági irodalom');
+INSERT INTO GENRE VALUES (33, 'regény');
+INSERT INTO GENRE VALUES (34, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (34, 'fantasy');
+INSERT INTO GENRE VALUES (35, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (35, 'krimi');
+INSERT INTO GENRE VALUES (35, 'thriller');
+INSERT INTO GENRE VALUES (36, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (36, 'krimi');
+INSERT INTO GENRE VALUES (36, 'thriller');
+INSERT INTO GENRE VALUES (37, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (37, 'krimi');
+INSERT INTO GENRE VALUES (37, 'thriller');
+INSERT INTO GENRE VALUES (38, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (38, 'krimi');
+INSERT INTO GENRE VALUES (38, 'thriller');
+INSERT INTO GENRE VALUES (39, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (39, 'fantasy');
+INSERT INTO GENRE VALUES (40, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (40, 'sci-fi');
+INSERT INTO GENRE VALUES (41, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (41, 'krimi');
+INSERT INTO GENRE VALUES (41, 'thriller');
+INSERT INTO GENRE VALUES (42, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (42, 'krimi');
+INSERT INTO GENRE VALUES (42, 'thriller');
+INSERT INTO GENRE VALUES (43, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (43, 'sci-fi');
+INSERT INTO GENRE VALUES (44, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (44, 'sci-fi');
+INSERT INTO GENRE VALUES (45, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (45, 'sci-fi');
+INSERT INTO GENRE VALUES (46, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (46, 'akció');
+INSERT INTO GENRE VALUES (46, 'kaland');
+INSERT INTO GENRE VALUES (47, 'szépirodalom');
+INSERT INTO GENRE VALUES (47, 'ifjúsági irodalom');
+INSERT INTO GENRE VALUES (47, 'regény');
+INSERT INTO GENRE VALUES (48, 'szépirodalom');
+INSERT INTO GENRE VALUES (48, 'romantikus');
+INSERT INTO GENRE VALUES (48, 'kaland');
+INSERT INTO GENRE VALUES (49, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (49, 'akció');
+INSERT INTO GENRE VALUES (49, 'kaland');
+INSERT INTO GENRE VALUES (50, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (50, 'akció');
+INSERT INTO GENRE VALUES (50, 'kaland');
+INSERT INTO GENRE VALUES (51, 'szépirodalom');
+INSERT INTO GENRE VALUES (51, 'regény');
+INSERT INTO GENRE VALUES (52, 'szépirodalom');
+INSERT INTO GENRE VALUES (52, 'regény');
+INSERT INTO GENRE VALUES (53, 'szépirodalom');
+INSERT INTO GENRE VALUES (53, 'regény');
+INSERT INTO GENRE VALUES (54, 'szépirodalom');
+INSERT INTO GENRE VALUES (54, 'regény');
+INSERT INTO GENRE VALUES (55, 'szórakoztató irodalom');
+INSERT INTO GENRE VALUES (55, 'sci-fi');
+
 
 
 
@@ -147,6 +276,7 @@ INSERT INTO GENRE VALUES (8, 'életrajz');
 INSERT INTO STORE VALUES (1, 'BookAround Szeged Pláza Könyvesbolt', 'Kossuth Lajos sgrt. 119', 'Szeged', 'Csongrád-Csanád vármegye', '6724', 'Magyarország');
 INSERT INTO STORE VALUES (2, 'Bookaround Westend Könyvesbolt', 'Váci út 1-3', 'Budapest', 'Budapest', '1062', 'Magyarország');
 INSERT INTO STORE VALUES (3, 'Győri BookAround', 'Árpád út 60', 'Győr', 'Győr-Moson-Sopron vármegye', '9022', 'Magyarország');
+
 
 
 
@@ -163,6 +293,7 @@ INSERT INTO STOCK VALUES (3, 2, 20);
 INSERT INTO STOCK VALUES (2, 3, 13);
 INSERT INTO STOCK VALUES (3, 3, 13);
 INSERT INTO STOCK VALUES (4, 3, 15);
+
 
 
 
@@ -191,11 +322,13 @@ INSERT INTO BUSINESS_HOURS VALUES (18, 7, '12:00 PM', '04:00 PM', 3);
 
 
 
+
 --CUSTOMER--
 
 INSERT INTO CUSTOMER VALUES (1, 'admin@bookaround.com', '$2a$12$phBRcK.bDG.6jLthGprAw.zGKLjErxfnkYiuKgBouMIfbGnd42ezG', 'John', 'Doe', '11-MAR-23', null, 1, '905 John Calvin Drive', 'Oak Lawn', 'Illinois', '60453', 'United States of America', null);
 INSERT INTO CUSTOMER VALUES (2, 'sallayambrus@rhyta.com', '$2a$12$phBRcK.bDG.6jLthGprAw.zGKLjErxfnkYiuKgBouMIfbGnd42ezG', 'Ambrus', 'Sallay', '11-MAR-23', null, 0, '59 Belgrád rkp.', 'Vasvár', 'Vas vármegye', '9800', 'Magyarország', null);
 INSERT INTO CUSTOMER VALUES (3, 'smidpanna@dayrep.com', '$2a$12$phBRcK.bDG.6jLthGprAw.zGKLjErxfnkYiuKgBouMIfbGnd42ezG', 'Panna', 'Smid', '11-MAR-23', null, 0, '80 Kárpát utca', 'Lovászpatona', 'Veszprém vármegye', '8553', 'Magyarország', null);
+
 
 
 
@@ -207,11 +340,13 @@ INSERT INTO NOTIFICATION VALUES (1, 'Kívánságlistán lévő könyvek újra ka
 
 
 
+
 --ORDERS--
 
 INSERT INTO ORDERS VALUES (1, '11-MAR-23', null, 0, 1);
 INSERT INTO ORDERS VALUES (2, '11-MAR-23', 1, 1, 3);
 INSERT INTO ORDERS VALUES (3, '11-MAR-23', 0, 1, 2);
+
 
 
 
@@ -228,6 +363,7 @@ INSERT INTO CONTAINS VALUES (3, 2);
 
 
 
+
 --INVOICE--
 
 INSERt INTO INVOICE VALUES (1, 11040, 'készpénz', 1, 1);
@@ -237,8 +373,10 @@ INSERt INTO INVOICE VALUES (3, 7270, 'bankkártya', 0, 3);
 
 
 
+
 --WHISLIST--
 INSERT INTO WISHLIST VALUES (1, 'Szülinaposak', '11-MAR-23', 1);
+
 
 
 
