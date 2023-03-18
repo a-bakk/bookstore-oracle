@@ -273,9 +273,38 @@ INSERT INTO GENRE VALUES (55, 'sci-fi');
 
 --STORE--
 
+--INSERT INTO STORE VALUES (ID, 'STORE_NAME', 'STREET', 'CITY', 'REGION', 'POSTCODE', 'COUNTRY');
+
 INSERT INTO STORE VALUES (1, 'BookAround Szeged Pláza Könyvesbolt', 'Kossuth Lajos sgrt. 119', 'Szeged', 'Csongrád-Csanád vármegye', '6724', 'Magyarország');
 INSERT INTO STORE VALUES (2, 'Bookaround Westend Könyvesbolt', 'Váci út 1-3', 'Budapest', 'Budapest', '1062', 'Magyarország');
 INSERT INTO STORE VALUES (3, 'Győri BookAround', 'Árpád út 60', 'Győr', 'Győr-Moson-Sopron vármegye', '9022', 'Magyarország');
+INSERT INTO STORE VALUES (4, 'Debreceni Kis-Bookaround', 'Aulich utca 7', 'Debrecen', 'Hajdú-Bihar-Bereg vármegye', '4002', 'Magyarország');
+INSERT INTO STORE VALUES (5, 'Bookaround Debreceni Nagykönyvesbolt', 'Kerekerdő utca 11', 'Debrecen', 'Hajdú-Bihar-Bereg vármegye', '4020', 'Magyarország');
+INSERT INTO STORE VALUES (6, 'Dózsa György Bookaround', 'Dózsa György út 63', 'Miskolc', 'Borsod-Abaúj-Zemplén vármegye', '3528', 'Magyarország');
+INSERT INTO STORE VALUES (7, 'Pécsi Bookaround Könyvesbolt', 'Kossuth Lajos u. 5', 'Pécs', 'Baranya vármegye', '7634', 'Magyarország');
+INSERT INTO STORE VALUES (8, 'Acél Bookaround', 'Acél utca 40', 'Nyíregyháza', 'Szabolcs-Szatmár-Bereg vármegye', '4400', 'Magyarország');
+INSERT INTO STORE VALUES (9, 'Kecskeméti Tesco Bookaround Könyvesboltja', 'Levél utca 18', 'Kecskemét', 'Bács-Kiskun vármegye', '6044', 'Magyarország');
+INSERT INTO STORE VALUES (10, 'Gyimesi Könyvesbolt', 'Gyimesi utca 6', 'Székesfehérvár', 'Fejér vármegye', '8017', 'Magyarország');
+INSERT INTO STORE VALUES (11, 'Szombathelyi Bookaround', 'Hét vezér utca 28', 'Szombathely', 'Vas vármegye', '9700', 'Magyarország');
+INSERT INTO STORE VALUES (12, 'Bookaround Érdi Könyvesboltja', 'Tétényi út 11', 'Érd', 'Pest vármegye', '2030', 'Magyarország');
+INSERT INTO STORE VALUES (13, 'Szolnok Bookaround', 'Zerge utca 23', 'Szolnok', 'Jász-Nagykun-Szolnok vármegye', '5000', 'Magyarország');
+INSERT INTO STORE VALUES (14, 'Tatabányai Bookaround Könyvesbolt', 'Márna utca 55', 'Tatabánya', 'Komárom-Esztergom vármegye', '2800', 'Magyarország');
+INSERT INTO STORE VALUES (15, 'Sopron Bookaround', 'Selmeci utca 31', 'Sopron', 'Győr-Moson-Sopron vármegye', '9400', 'Magyarország');
+INSERT INTO STORE VALUES (16, 'Kaposvári Tesco Bookaround Könyvesboltja', 'Gróf Apponyi Albert utca 1-3', 'Kaposvár', 'Somogy vármegye', '7451', 'Magyarország');
+INSERT INTO STORE VALUES (17, 'Békéscsaba Bookaround Könyvesbolt', 'Fiumei utca 14', 'Békéscsaba', '	Békés vármegye', '5623', 'Magyarország');
+INSERT INTO STORE VALUES (18, 'Veszprémi Bookaround Könyvesbolt', 'József Attila utca 7', 'Veszprém', 'Veszprém vármegye', '8200', 'Magyarország');
+INSERT INTO STORE VALUES (19, 'Bookaround Zalaegerszeg', 'Csavargyár u. 47', 'Zalaegerszeg', 'Zala vármegye', '8900', 'Magyarország');
+INSERT INTO STORE VALUES (20, 'Egri Bookaround Könyvesbolt', 'Hősök utca 7', 'Eger', 'Heves vármegye', '3304', 'Magyarország');
+INSERT INTO STORE VALUES (21, 'Bookaround Hódmezővásárhelyi Kisüzlet', 'Őszirózsa utca 1', 'Hódmezővásárhely', 'Csongrád-Csanád vármegye', 'Lepke utca', 'Magyarország');
+INSERT INTO STORE VALUES (22, 'Lepke Bookaround', 'Lepke utca 30', 'Szeged', 'Csongrád-Csanád vármegye', '6753', 'Magyarország');
+INSERT INTO STORE VALUES (23, 'Ceglédi Bookaround Könyvesbolt', 'Borona utca 15', 'Cegléd', 'Pest vármegye', '2700', 'Magyarország');
+INSERT INTO STORE VALUES (24, 'Budapesti Istenhegyi Tesco Bookaround', 'Istenhegyi út 29', 'Budapest', 'Budapest', '1112', 'Magyarország');
+INSERT INTO STORE VALUES (25, 'Vác Bookaround Könyvesbolt', 'Csillag utca 32', 'Vác', 'Pest vármegye', '2600', 'Magyarország');
+INSERT INTO STORE VALUES (26, 'Ügető Bookaround', 'Ügető utca 71', 'Budapest', 'Budapest', '1124', 'Magyarország');
+INSERT INTO STORE VALUES (27, 'Bookaround Siófok', 'Dózsa György utca 8', 'Siófok', 'Somogy vármegye', '8600', 'Magyarország');
+INSERT INTO STORE VALUES (28, 'Budapest Ápád fejedelem Bookaround', ' Árpád fejedelem utca 10', 'Budapest', 'Budapest', '1162', 'Magyarország');
+INSERT INTO STORE VALUES (29, 'Szegedi Kis-Bookaround', 'Nagyrét út 7', 'Szeged', 'Csongrád-Csanád vármegye', '6721', 'Magyarország');
+INSERT INTO STORE VALUES (30, 'Budapesti Bookaround Csabai kapu Könyvesboltja', 'Csabai kapu 23', 'Budapest', 'Budapest', '1026', 'Magyarország');
 
 
 
