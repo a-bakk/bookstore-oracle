@@ -1,6 +1,5 @@
 package com.adatb.bookaround.controllers;
 
-import com.adatb.bookaround.entities.Book;
 import com.adatb.bookaround.models.BookWithAuthorsAndGenres;
 import com.adatb.bookaround.repositories.BookDao;
 import com.adatb.bookaround.repositories.GenreDao;
@@ -32,7 +31,7 @@ public class StoreController {
 
         list.forEach(e -> {
             logger.info("begin");
-            logger.info(e.getBook().getName());
+            logger.info(e.getBook().getTitle());
             e.getAuthors().forEach(author -> {
                 logger.info(author.getAuthorId().getFirstName());
             });
