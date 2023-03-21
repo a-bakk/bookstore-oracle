@@ -161,7 +161,7 @@ public class BookDao extends AbstractJpaDao<Book> {
     }
 
     /**
-     * A könyvek listázása a megjelenési időjük függvényében.
+     * A könyvek listázása a megjelenési idejük függvényében.
      * @return A megfelelő BookWithAuthorsAndGenres entitásokat tartalmazó lista.
      */
     public List<BookWithAuthorsAndGenres> findAllBooksWithAuthorsAndGenresOrderedByReleaseDate() {
