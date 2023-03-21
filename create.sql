@@ -79,7 +79,7 @@ BEGIN
             book_id             NUMBER(19)          PRIMARY KEY,
             title               VARCHAR2(128)       NOT NULL,
             description         VARCHAR2(2048),
-            cover               VARCHAR2(30),
+            cover               VARCHAR2(50),
             weight              FLOAT,
             price               NUMBER(10),
             number_of_pages     NUMBER(5),
@@ -113,7 +113,7 @@ BEGIN
         EXECUTE IMMEDIATE '
         CREATE TABLE genre (
             book_id             NUMBER(19)          REFERENCES book(book_id),
-            genre_name          VARCHAR2(20),
+            genre_name          VARCHAR2(30),
             PRIMARY KEY (book_id, genre_name)
         )
         ';
