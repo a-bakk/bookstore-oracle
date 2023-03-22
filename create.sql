@@ -47,7 +47,7 @@ BEGIN
             wishlist_id         NUMBER(19)          DEFAULT wishlist_seq.NEXTVAL PRIMARY KEY,
             name                VARCHAR2(256)       NOT NULL,
             created_at          DATE                NOT NULL,
-            customer_id         NUMBER(19)          REFERENCES customer(customer_id)
+            customer_id         NUMBER(19)          REFERENCES customer(customer_id) ON DELETE CASCADE
         )
         ';
         DBMS_OUTPUT.PUT_LINE('"WISHLIST" tábla létrehozva!');
@@ -68,7 +68,7 @@ BEGIN
             created_at          DATE                NOT NULL,
             shipped             NUMBER(1),
             pickup              NUMBER(1),
-            customer_id         NUMBER(19)          REFERENCES customer(customer_id)
+            customer_id         NUMBER(19)          REFERENCES customer(customer_id) ON DELETE CASCADE
         )
         ';
         DBMS_OUTPUT.PUT_LINE('"ORDERS" tábla létrehozva!');
@@ -89,7 +89,7 @@ BEGIN
             value               NUMBER(12),
             payment_mode        VARCHAR2(30),
             paid                NUMBER(1),
-            order_id            NUMBER(19)          REFERENCES orders(order_id)
+            order_id            NUMBER(19)          REFERENCES orders(order_id) ON DELETE SET NULL
         )
         ';
         DBMS_OUTPUT.PUT_LINE('"INVOICE" tábla létrehozva!');
@@ -128,7 +128,7 @@ BEGIN
     IF table_count = 0 THEN
         EXECUTE IMMEDIATE '
         CREATE TABLE author (
-            book_id             NUMBER(19)          REFERENCES book(book_id),
+            book_id             NUMBER(19)          REFERENCES book(book_id) ON DELETE CASCADE,
             first_name          VARCHAR2(30),
             last_name           VARCHAR2(30),
             PRIMARY KEY (book_id, first_name, last_name)
@@ -142,7 +142,7 @@ BEGIN
     IF table_count = 0 THEN
         EXECUTE IMMEDIATE '
         CREATE TABLE genre (
-            book_id             NUMBER(19)          REFERENCES book(book_id),
+            book_id             NUMBER(19)          REFERENCES book(book_id) ON DELETE CASCADE,
             genre_name          VARCHAR2(30),
             PRIMARY KEY (book_id, genre_name)
         )
@@ -178,8 +178,8 @@ BEGIN
     IF table_count = 0 THEN
         EXECUTE IMMEDIATE '
         CREATE TABLE stock (
-            book_id             NUMBER(19)          REFERENCES book(book_id),
-            store_id            NUMBER(19)          REFERENCES store(store_id),
+            book_id             NUMBER(19)          REFERENCES book(book_id) ON DELETE CASCADE,
+            store_id            NUMBER(19)          REFERENCES store(store_id) ON DELETE CASCADE,
             count               NUMBER(6),
             PRIMARY KEY (book_id, store_id)
         )
@@ -192,8 +192,8 @@ BEGIN
     IF table_count = 0 THEN
         EXECUTE IMMEDIATE '
         CREATE TABLE partof (
-            book_id             NUMBER(19)          REFERENCES book(book_id),
-            wishlist_id         NUMBER(19)          REFERENCES wishlist(wishlist_id),
+            book_id             NUMBER(19)          REFERENCES book(book_id) ON DELETE CASCADE,
+            wishlist_id         NUMBER(19)          REFERENCES wishlist(wishlist_id) ON DELETE CASCADE,
             added_at             DATE,
             PRIMARY KEY (book_id, wishlist_id)
         )
@@ -206,8 +206,8 @@ BEGIN
     IF table_count = 0 THEN
         EXECUTE IMMEDIATE '
         CREATE TABLE contains (
-            order_id            NUMBER(19)          REFERENCES orders(order_id),
-            book_id             NUMBER(19)          REFERENCES book(book_id),
+            order_id            NUMBER(19)          REFERENCES orders(order_id) ON DELETE CASCADE,
+            book_id             NUMBER(19)          REFERENCES book(book_id) ON DELETE CASCADE,
             PRIMARY KEY (order_id, book_id)
         )
         ';
@@ -229,7 +229,7 @@ BEGIN
             day_of_week         NUMBER(1, 0),
             opening_time        VARCHAR2(30),
             closing_time        VARCHAR2(30),
-            store_id            NUMBER(19)          REFERENCES store(store_id)
+            store_id            NUMBER(19)          REFERENCES store(store_id) ON DELETE CASCADE
         )
         ';
         DBMS_OUTPUT.PUT_LINE('"BUSINESS_HOURS" tábla létrehozva!');
@@ -248,7 +248,7 @@ BEGIN
         CREATE TABLE notification (
             notification_id     NUMBER(19)          DEFAULT notification_seq.NEXTVAL PRIMARY KEY,
             message             VARCHAR2(256),
-            customer_id         NUMBER(19)          REFERENCES customer(customer_id)
+            customer_id         NUMBER(19)          REFERENCES customer(customer_id) ON DELETE CASCADE
         )
         ';
         DBMS_OUTPUT.PUT_LINE('"NOTIFICATION" tábla létrehozva!');
