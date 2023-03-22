@@ -15,7 +15,8 @@ import java.io.Serializable;
 @Table(name = "invoice")
 public class Invoice implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invoice_seq")
+    @SequenceGenerator(name = "invoice_seq", sequenceName = "invoice_seq", allocationSize = 1)
     @Column(name = "invoice_id")
     private Long invoiceId;
     @Column

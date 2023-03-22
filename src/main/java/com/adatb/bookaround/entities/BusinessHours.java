@@ -18,7 +18,8 @@ import java.io.Serializable;
 @Table(name = "business_hours")
 public class BusinessHours implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "business_hours_seq")
+    @SequenceGenerator(name = "business_hours_seq", sequenceName = "business_hours_seq", allocationSize = 1)
     @Column(name = "hours_id")
     private Long hoursId;
     @Column

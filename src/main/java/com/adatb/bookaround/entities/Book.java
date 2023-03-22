@@ -14,7 +14,8 @@ import java.util.Date;
 @Table(name = "book")
 public class Book implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_seq")
+    @SequenceGenerator(name = "book_seq", sequenceName = "book_seq", allocationSize = 1)
     @Column(name = "book_id")
     private Long bookId;
     @Column(nullable = false)

@@ -16,7 +16,8 @@ import java.util.Date;
 @Table(name = "wishlist")
 public class Wishlist implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "wishlist_seq")
+    @SequenceGenerator(name = "wishlist_seq", sequenceName = "wishlist_seq", allocationSize = 1)
     @Column(name = "wishlist_id")
     private Long wishlistId;
     @Column(nullable = false)

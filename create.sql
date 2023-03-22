@@ -7,8 +7,14 @@ BEGIN
     SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'CUSTOMER';
     IF table_count = 0 THEN
         EXECUTE IMMEDIATE '
+            CREATE SEQUENCE customer_seq
+            START WITH 1
+            INCREMENT BY 1
+            CACHE 50
+        ';
+        EXECUTE IMMEDIATE '
         CREATE TABLE customer (
-            customer_id         NUMBER(19)          PRIMARY KEY,
+            customer_id         NUMBER(19)          DEFAULT customer_seq.NEXTVAL PRIMARY KEY,
             email               VARCHAR2(255)       UNIQUE NOT NULL,
             password            VARCHAR2(255)       NOT NULL,
             first_name          VARCHAR2(30)        NOT NULL,
@@ -31,8 +37,14 @@ BEGIN
     SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'WISHLIST';
     IF table_count = 0 THEN
         EXECUTE IMMEDIATE '
+            CREATE SEQUENCE wishlist_seq
+            START WITH 1
+            INCREMENT BY 1
+            CACHE 5
+        ';
+        EXECUTE IMMEDIATE '
         CREATE TABLE wishlist (
-            wishlist_id         NUMBER(19)          PRIMARY KEY,
+            wishlist_id         NUMBER(19)          DEFAULT wishlist_seq.NEXTVAL PRIMARY KEY,
             name                VARCHAR2(256)       NOT NULL,
             created_at          DATE                NOT NULL,
             customer_id         NUMBER(19)          REFERENCES customer(customer_id)
@@ -45,8 +57,14 @@ BEGIN
     SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'ORDERS';
     IF table_count = 0 THEN
         EXECUTE IMMEDIATE '
+            CREATE SEQUENCE order_seq
+            START WITH 1
+            INCREMENT BY 1
+            CACHE 20
+        ';
+        EXECUTE IMMEDIATE '
         CREATE TABLE orders (
-            order_id            NUMBER(19)          PRIMARY KEY,
+            order_id            NUMBER(19)          DEFAULT order_seq.NEXTVAL PRIMARY KEY,
             created_at          DATE                NOT NULL,
             shipped             NUMBER(1),
             pickup              NUMBER(1),
@@ -60,8 +78,14 @@ BEGIN
     SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'INVOICE';
     IF table_count = 0 THEN
         EXECUTE IMMEDIATE '
+            CREATE SEQUENCE invoice_seq
+            START WITH 1
+            INCREMENT BY 1
+            CACHE 20
+        ';
+        EXECUTE IMMEDIATE '
         CREATE TABLE invoice (
-            invoice_id          NUMBER(19)          PRIMARY KEY,
+            invoice_id          NUMBER(19)          DEFAULT invoice_seq.NEXTVAL PRIMARY KEY,
             value               NUMBER(12),
             payment_mode        VARCHAR2(30),
             paid                NUMBER(1),
@@ -75,8 +99,14 @@ BEGIN
     SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'BOOK';
     IF table_count = 0 THEN
         EXECUTE IMMEDIATE '
+            CREATE SEQUENCE book_seq
+            START WITH 1
+            INCREMENT BY 1
+            CACHE 100
+        ';
+        EXECUTE IMMEDIATE '
         CREATE TABLE book (
-            book_id             NUMBER(19)          PRIMARY KEY,
+            book_id             NUMBER(19)          DEFAULT book_seq.NEXTVAL PRIMARY KEY,
             title               VARCHAR2(128)       NOT NULL,
             description         VARCHAR2(2048),
             cover               VARCHAR2(50),
@@ -124,8 +154,14 @@ BEGIN
     SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'STORE';
     IF table_count = 0 THEN
         EXECUTE IMMEDIATE '
+            CREATE SEQUENCE store_seq
+            START WITH 1
+            INCREMENT BY 1
+            CACHE 10
+        ';
+        EXECUTE IMMEDIATE '
         CREATE TABLE store (
-            store_id            NUMBER(19)          PRIMARY KEY,
+            store_id            NUMBER(19)          DEFAULT store_seq.NEXTVAL PRIMARY KEY,
             name                VARCHAR2(50)        NOT NULL,
             street              VARCHAR2(50),
             city                VARCHAR2(50),
@@ -182,8 +218,14 @@ BEGIN
     SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'BUSINESS_HOURS';
     IF table_count = 0 THEN
         EXECUTE IMMEDIATE '
+            CREATE SEQUENCE business_hours_seq
+            START WITH 1
+            INCREMENT BY 1
+            CACHE 20
+        ';
+        EXECUTE IMMEDIATE '
         CREATE TABLE business_hours (
-            hours_id            NUMBER(19)          PRIMARY KEY,
+            hours_id            NUMBER(19)          DEFAULT business_hours_seq.NEXTVAL PRIMARY KEY,
             day_of_week         NUMBER(1, 0),
             opening_time        VARCHAR2(30),
             closing_time        VARCHAR2(30),
@@ -197,8 +239,14 @@ BEGIN
     SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'NOTIFICATION';
     IF table_count = 0 THEN
         EXECUTE IMMEDIATE '
+            CREATE SEQUENCE notification_seq
+            START WITH 1
+            INCREMENT BY 1
+            CACHE 10
+        ';
+        EXECUTE IMMEDIATE '
         CREATE TABLE notification (
-            notification_id     NUMBER(19)          PRIMARY KEY,
+            notification_id     NUMBER(19)          DEFAULT notification_seq.NEXTVAL PRIMARY KEY,
             message             VARCHAR2(256),
             customer_id         NUMBER(19)          REFERENCES customer(customer_id)
         )
