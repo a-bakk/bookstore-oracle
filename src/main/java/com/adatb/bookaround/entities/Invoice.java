@@ -26,7 +26,7 @@ public class Invoice implements Serializable {
     @Column
     private boolean paid;
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     private Order order;
 }
