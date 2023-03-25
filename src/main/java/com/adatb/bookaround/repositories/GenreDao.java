@@ -1,8 +1,10 @@
 package com.adatb.bookaround.repositories;
 
+import com.adatb.bookaround.entities.Book;
 import com.adatb.bookaround.entities.Genre;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,23 @@ public class GenreDao extends AbstractJpaDao<Genre> {
         }
 
         return resultsConverted;
+    }
+
+    public List<Book> getMostPopularBooksByGenre(String genreName) {
+        String jpql = "SELECT b, COUNT(*) AS order_count " +
+                "FROM Book b " +
+                "JOIN Genre g ON b.bookId = g.genreId.bookId " +
+                "JOIN Contains c ON b.bookId = c.containsId.book.bookId " +
+                "WHERE g.genreId.genreName = :genreName " +
+                "GROUP BY b " +
+                "ORDER BY order_count DESC " +
+                "FETCH FIRST 3 ROWS ONLY";
+
+        List<Object[]> resultList = entityManager.createQuery(jpql, Object[].class)
+                .setParameter("genreName", genreName)
+                .getResultList();
+
+        return resultList.stream().map(result -> (Book) result[0]).toList();
     }
 
 }

@@ -1,5 +1,7 @@
 package com.adatb.bookaround.controllers;
 
+import com.adatb.bookaround.entities.Book;
+import com.adatb.bookaround.entities.Genre;
 import com.adatb.bookaround.models.BookWithAuthorsAndGenres;
 import com.adatb.bookaround.repositories.BookDao;
 import com.adatb.bookaround.repositories.GenreDao;
@@ -27,25 +29,29 @@ public class StoreController {
     @GetMapping("/index")
     public String showIndex(Model model) {
 
-        List<BookWithAuthorsAndGenres> list = bookDao.findAllBooksWithAuthorsAndGenres();
+//        List<BookWithAuthorsAndGenres> list = bookDao.findAllBooksWithAuthorsAndGenres();
 
-        list.forEach(e -> {
-            logger.info("begin");
-            logger.info(e.getBook().getTitle());
-            e.getAuthors().forEach(author -> {
-                logger.info(author.getAuthorId().getFirstName());
-            });
-            e.getGenres().forEach(genre -> {
-                logger.info(genre.getGenreId().getGenreName());
-            });
-            logger.info("end");
-        });
+//        list.forEach(e -> {
+//            logger.info("begin");
+//            logger.info(e.getBook().getTitle());
+//            e.getAuthors().forEach(author -> {
+//                logger.info(author.getAuthorId().getFirstName());
+//            });
+//            e.getGenres().forEach(genre -> {
+//                logger.info(genre.getGenreId().getGenreName());
+//            });
+//            logger.info("end");
+//        });
+//
+//        Map<String, Long> NOBByGenre = genreDao.getNumberOfBooksByGenre();
+//
+//        for (Map.Entry<String, Long> entry : NOBByGenre.entrySet()) {
+//            logger.info(entry.getKey() + ": " + entry.getValue() + " db könyv");
+//        }
 
-        Map<String, Long> NOBByGenre = genreDao.getNumberOfBooksByGenre();
+        List<Book> books = genreDao.getMostPopularBooksByGenre("sci-fi");
 
-        for (Map.Entry<String, Long> entry : NOBByGenre.entrySet()) {
-            logger.info(entry.getKey() + ": " + entry.getValue() + " db könyv");
-        }
+        books.forEach(b -> logger.info(b.getTitle()));
 
         return "index";
     }
