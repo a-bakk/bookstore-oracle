@@ -22,8 +22,14 @@ public class StoreController {
 
     @GetMapping("/latest-additions")
     public String showLatestAdditions(Model model) {
-        model.addAttribute("bookList", bookService.getPopularBooks());
+        model.addAttribute("bookList", bookService.getLatestBooks());
         return "latest-additions";
+    }
+
+    @GetMapping("/bestsellers")
+    public String showPopularBooks(Model model) {
+        model.addAttribute("bookList", bookService.getPopularBooks());
+        return "bestsellers";
     }
 
 }

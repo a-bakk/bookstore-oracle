@@ -22,10 +22,19 @@ public class BookService {
      * A könyveket listázza megjelenési idejük függvényében.
      * @return a könyvek kiegészítve írókkal és műfajokkal
      */
-    public List<BookWithAuthorsAndGenres> getPopularBooks() {
+    public List<BookWithAuthorsAndGenres> getLatestBooks() {
         List<Book> books = bookDao.findBooksOrderedByPublicationDate();
         if (books == null) {
-            logger.info("No books could be retrieved!");
+            logger.warn("No books could be retrieved! (latest)");
+            return new ArrayList<>();
+        }
+        return books.stream().map(book -> bookDao.encapsulateBook(book)).toList();
+    }
+
+    public List<BookWithAuthorsAndGenres> getPopularBooks() {
+        List<Book> books = bookDao.findPopularBooksOrderedByOrderCount();
+        if (books == null) {
+            logger.warn("No books could be retrieved! (popularity)");
             return new ArrayList<>();
         }
         return books.stream().map(book -> bookDao.encapsulateBook(book)).toList();
