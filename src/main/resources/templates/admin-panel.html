@@ -21,6 +21,170 @@
 
                 <!-- content kezdete -->
 
+                <section class="p-5 bg-light" style="min-height: 100vh;">
+
+                    <div class="container text-center mb-5">
+                        <h1 style="font-family: cursive;">Adminisztrátori panel</h1>
+                    </div>
+
+                    <div class="accordion" id="adminAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Ügyfélkezelés
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                                data-bs-parent="#adminAccordion">
+                                <div class="accordion-body">
+                                    
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" style="font-size: 13px;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Email cím</th>
+                                                    <th>Név</th>
+                                                    <th>Cím</th>
+                                                    <th>Létrehozva</th>
+                                                    <th>Utolsó bejelentkezés</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>example@gmail.com</td>
+                                                    <td>John Doe</td>
+                                                    <td>123 Main St, Anytown, USA</td>
+                                                    <td>2022-01-01</td>
+                                                    <td>2022-03-15 12:34 PM</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary me-2">Módosítás</button>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger">Törlés</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Áruházak kezelése
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                data-bs-parent="#adminAccordion">
+                                <div class="accordion-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" style="font-size: 13px;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Név</th>
+                                                    <th>Cím</th>
+                                                    <th>Nyitvatartás</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>ASdasdasdas</td>
+                                                    <td>asdasdasdasdasdasd</td>
+                                                    <td>
+                                                        <table class="table table-hover">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>Hétfő 0800 - 0800</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Hétfő 0800 - 0800</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Hétfő 0800 - 0800</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Hétfő 0800 - 0800</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary me-2">Módosítás</button>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger">Törlés</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    Rendelések
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                                data-bs-parent="#adminAccordion">
+                                <div class="accordion-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" style="font-size: 13px;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Rendelő</th>
+                                                    <th>Létrehozva</th>
+                                                    <th>Tartalom</th>
+                                                    <th>Kiszállítva</th>
+                                                    <th>Személyes felvétel</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>ASdasdasdas</td>
+                                                    <td>asdasdasdasdasdasd</td>
+                                                    <td>
+                                                        <table class="table table-hover">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>4. mérföldkő</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td>Igen</td>
+                                                    <td>Nem</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary me-2">Módosítás</button>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger">Törlés</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </section>
+
             </div>
             <div class="col-md-2"></div>
         </div>
