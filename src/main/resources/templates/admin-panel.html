@@ -53,12 +53,14 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>example@gmail.com</td>
-                                                    <td>John Doe</td>
-                                                    <td>123 Main St, Anytown, USA</td>
-                                                    <td>2022-01-01</td>
-                                                    <td>2022-03-15 12:34 PM</td>
+                                                <tr th:each="customer : ${customerList}">
+                                                    <td th:text="${customer.getEmail()}">example@gmail.com</td>
+                                                    <td th:text="${customer.getFirstName()} + ' ' + ${customer.getLastName()}">
+                                                        John Doe</td>
+                                                    <td th:text="${customer.getStreet()} + ', ' + ${customer.getCity()} + ', ' + ${customer.getStateOrRegion()} + ', ' + ${customer.getCountry()} + ', ' + ${customer.getPostcode()}">
+                                                        123 Main St, Anytown, USA</td>
+                                                    <td th:text="${customer.getCreatedAt()}">2022-01-01</td>
+                                                    <td th:text="${customer.getLastLogin()}">2022-03-15 12:34 PM</td>
                                                     <td>
                                                         <button type="button" class="btn btn-primary me-2">Módosítás</button>
                                                     </td>
@@ -95,23 +97,26 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>ASdasdasdas</td>
-                                                    <td>asdasdasdasdasdasd</td>
+                                                <tr th:each="store : ${storeList}">
+                                                    <td th:text="${store.getStore().getName()}"></td>
+                                                    <td th:text="${store.getStore().getStreet()} + ', ' + ${store.getStore().getCity()} + ', ' + ${store.getStore().getStateOrRegion()} + ', ' + ${store.getStore().getCountry()} + ', ' + ${store.getStore().getPostcode()}"></td>
                                                     <td>
                                                         <table class="table table-hover">
                                                             <tbody>
-                                                                <tr>
-                                                                    <td>Hétfő 0800 - 0800</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Hétfő 0800 - 0800</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Hétfő 0800 - 0800</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Hétfő 0800 - 0800</td>
+                                                                <tr th:each="hours : ${store.getBusinessHours()}">
+                                                                    <td>
+                                                                        <th:block th:switch="${hours.getDayOfWeek()}">
+                                                                            <span th:case="'1'" th:text="'Hétfő: '"></span>
+                                                                            <span th:case="'2'" th:text="'Kedd: '"></span>
+                                                                            <span th:case="'3'" th:text="'Szerda: '"></span>
+                                                                            <span th:case="'4'" th:text="'Csütörtök: '"></span>
+                                                                            <span th:case="'5'" th:text="'Péntek: '"></span>
+                                                                            <span th:case="'6'" th:text="'Szombat: '"></span>
+                                                                            <span th:case="'7'" th:text="'Vasárnap: '"></span>
+                                                                        </th:block>
+                                                                        <span th:text="${hours.getOpeningTime()} + ' - '"></span>
+                                                                        <span th:text="${hours.getClosingTime()}"></span>
+                                                                    </td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -153,9 +158,9 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>ASdasdasdas</td>
-                                                    <td>asdasdasdasdasdasd</td>
+                                                <tr th:each="order : ${orderList}">
+                                                    <td th:text="${order.getCustomer().getEmail()} + ' (' + ${order.getCustomer().getFirstName()} + ' ' + ${order.getCustomer().getLastName()} + ')'"></td>
+                                                    <td th:text="${order.getCreatedAt()}"></td>
                                                     <td>
                                                         <table class="table table-hover">
                                                             <tbody>
@@ -165,8 +170,10 @@
                                                             </tbody>
                                                         </table>
                                                     </td>
-                                                    <td>Igen</td>
-                                                    <td>Nem</td>
+                                                    <td th:if="${order.isShipped()}">Igen</td>
+                                                    <td th:unless="${order.isShipped()}">Nem</td>
+                                                    <td th:if="${order.isPickup()}">Igen</td>
+                                                    <td th:unless="${order.isPickup()}">Nem</td>
                                                     <td>
                                                         <button type="button" class="btn btn-primary me-2">Módosítás</button>
                                                     </td>

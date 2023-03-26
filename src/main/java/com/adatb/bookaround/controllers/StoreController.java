@@ -2,6 +2,7 @@ package com.adatb.bookaround.controllers;
 
 import com.adatb.bookaround.services.BookService;
 import com.adatb.bookaround.services.CustomerService;
+import com.adatb.bookaround.services.StoreService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ public class StoreController {
     private BookService bookService;
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private StoreService storeService;
     private static final Logger logger = LogManager.getLogger(StoreController.class);
 
     @GetMapping("/index")
@@ -40,6 +43,14 @@ public class StoreController {
     public String showNotificationsForCustomer(Model model, @PathVariable Long cid) {
         model.addAttribute("notificationList", customerService.getNotificationsByCustomerId(cid));
         return "notifications";
+    }
+
+    @GetMapping("/admin-panel")
+    public String showAdminPanel(Model model) {
+        model.addAttribute("customerList", customerService.getCustomers());
+        model.addAttribute("storeList", storeService.getAllStores());
+        model.addAttribute("orderList", storeService.getAllOrders());
+        return "admin-panel";
     }
 
 }

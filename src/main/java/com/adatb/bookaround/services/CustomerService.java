@@ -39,11 +39,20 @@ public class CustomerService implements UserDetailsService {
 
     public List<Notification> getNotificationsByCustomerId(Long customerId) {
         List<Notification> notifs = notificationDao.findByCustomerId(customerId);
-        if (notifs == null) {
+        if (notifs == null || notifs.isEmpty()) {
             logger.warn("No notifications could be loaded for user with id: " + customerId);
             return new ArrayList<>();
         }
         return notifs;
+    }
+
+    public List<Customer> getCustomers() {
+        List<Customer> customers = customerDao.findAll();
+        if (customers == null || customers.isEmpty()) {
+            logger.warn("Customers could not be loaded!");
+            return new ArrayList<>();
+        }
+        return customers;
     }
 
 }
