@@ -13,9 +13,6 @@ import java.util.Map;
 @Repository
 public class GenreDao extends AbstractJpaDao<Genre> {
 
-    @Autowired
-    private BookDao bookDao;
-
     public GenreDao() { this.setEntityClass(Genre.class); }
 
     public List<Genre> findByBook(Book book) {
@@ -49,9 +46,6 @@ public class GenreDao extends AbstractJpaDao<Genre> {
     }
 
     public List<Book> findPopularBooksByGenreOrderedByOrderCount(String genreName) {
-        if (genreName.isEmpty())
-            return bookDao.findPopularBooksOrderedByOrderCount();
-
         String jpql = "SELECT b, COUNT(*) AS order_count " +
                 "FROM Book b " +
                 "JOIN Genre g ON b.bookId = g.genreId.bookId " +

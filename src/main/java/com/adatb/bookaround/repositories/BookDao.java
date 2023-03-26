@@ -197,7 +197,8 @@ public class BookDao extends AbstractJpaDao<Book> {
     public List<Book> findBooksOrderedByPublicationDate() {
         String jpql = "SELECT b " +
                 "FROM Book b " +
-                "ORDER BY b.publishedAt";
+                "ORDER BY b.publishedAt " +
+                "FETCH FIRST 5 ROWS ONLY";
 
         return entityManager.createQuery(jpql, Book.class).getResultList();
     }

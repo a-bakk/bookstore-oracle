@@ -8,9 +8,9 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -22,15 +22,15 @@ public class CustomerDetails implements UserDetails {
     private String password;
     private String firstName;
     private String lastName;
-    private Date createdAt;
-    private Date lastLogin;
+    private LocalDate createdAt;
+    private LocalDateTime lastLogin;
     private boolean admin;
     private String street;
     private String city;
     private String stateOrRegion;
     private String postcode;
     private String country;
-    private Date regularSince;
+    private LocalDateTime regularSince;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

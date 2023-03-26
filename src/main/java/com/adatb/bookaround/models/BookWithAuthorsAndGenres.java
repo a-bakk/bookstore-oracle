@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -17,6 +18,6 @@ import java.util.Set;
 @Setter
 public class BookWithAuthorsAndGenres implements Serializable {
     private Book book;
-    private Set<Author> authors;
-    private Set<Genre> genres;
+    private Set<Author> authors = new HashSet<>();
+    private Set<Genre> genres = new HashSet<>();
 }
