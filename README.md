@@ -1,5 +1,7 @@
 # Bookstore
 
+## nem frissített változat
+
 ## Követelmények
 
 - Könyvek felvétele és kezelése az adatbázisban (kiadás, kiadó, szerző, oldalszám, kötés,
