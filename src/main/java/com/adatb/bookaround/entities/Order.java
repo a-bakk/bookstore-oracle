@@ -6,7 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,7 +21,7 @@ public class Order implements Serializable {
     @Column(name = "order_id")
     private Long orderId;
     @Column(nullable = false)
-    private Date createdAt;
+    private LocalDate createdAt;
     @Column
     private boolean shipped;
     @Column

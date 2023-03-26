@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -22,6 +23,6 @@ import java.util.Date;
 public class PartOf implements Serializable {
     @EmbeddedId
     private PartOfId partOfId;
-    @Column
-    private Date addedAt;
+    @Column(name = "added_at", columnDefinition = "TIMESTAMP")
+    private LocalDateTime addedAt;
 }

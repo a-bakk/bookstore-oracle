@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,7 +31,7 @@ public class Book implements Serializable {
     @Column
     private Integer numberOfPages;
     @Column
-    private Date publishedAt;
+    private LocalDate publishedAt;
     @Column
     private String publisher;
     @Column(nullable = false, unique = true)

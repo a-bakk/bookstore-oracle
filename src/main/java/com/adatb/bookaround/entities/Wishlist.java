@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -22,8 +23,8 @@ public class Wishlist implements Serializable {
     private Long wishlistId;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
-    private Date createdAt;
+    @Column(nullable = false, name = "created_at", columnDefinition = "TIMESTAMP")
+    private LocalDateTime createdAt;
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")

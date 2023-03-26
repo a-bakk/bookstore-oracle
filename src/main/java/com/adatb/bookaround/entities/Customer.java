@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,9 +28,9 @@ public class Customer implements Serializable {
     @Column(nullable = false)
     private String lastName;
     @Column(nullable = false)
-    private Date createdAt;
-    @Column
-    private Date lastLogin;
+    private LocalDate createdAt;
+    @Column(name = "last_login", columnDefinition = "TIMESTAMP")
+    private LocalDateTime lastLogin;
     @Column
     private boolean admin;
     @Column
@@ -42,6 +43,6 @@ public class Customer implements Serializable {
     private String postcode;
     @Column
     private String country;
-    @Column
-    private Date regularSince;
+    @Column(name = "regular_since", columnDefinition = "TIMESTAMP")
+    private LocalDateTime regularSince;
 }
