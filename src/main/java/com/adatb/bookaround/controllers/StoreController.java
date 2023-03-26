@@ -49,7 +49,7 @@ public class StoreController {
 //            logger.info(entry.getKey() + ": " + entry.getValue() + " db könyv");
 //        }
 
-        List<Book> books = genreDao.getMostPopularBooksByGenre("sci-fi");
+        List<Book> books = genreDao.findPopularBooksByGenreOrderedByOrderCount("sci-fi");
 
         books.forEach(b -> logger.info(b.getTitle()));
 

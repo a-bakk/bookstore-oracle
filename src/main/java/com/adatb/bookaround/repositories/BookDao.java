@@ -6,6 +6,7 @@ import com.adatb.bookaround.entities.Genre;
 import com.adatb.bookaround.models.BookWithAuthorsAndGenres;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -14,6 +15,12 @@ import java.util.*;
 public class BookDao extends AbstractJpaDao<Book> {
 
     private static final Logger logger = LogManager.getLogger(BookDao.class);
+
+    @Autowired
+    private AuthorDao authorDao;
+    @Autowired
+    private GenreDao genreDao;
+
     public BookDao() { this.setEntityClass(Book.class); }
 
     /**
@@ -175,6 +182,72 @@ public class BookDao extends AbstractJpaDao<Book> {
                 .getResultList();
 
         return getEntitiesFromResultList(resultList);
+    }
+
+    public List<Book> findBooksBelowPrice(int price) {
+        String jpql = "SELECT b " +
+                "FROM Book b " +
+                "WHERE b.price <= :price";
+
+        return entityManager.createQuery(jpql, Book.class)
+                .setParameter("price", price)
+                .getResultList();
+    }
+
+    public List<Book> findBooksOrderedByPublicationDate() {
+        String jpql = "SELECT b " +
+                "FROM Book b " +
+                "ORDER BY b.publishedAt";
+
+        return entityManager.createQuery(jpql, Book.class).getResultList();
+    }
+
+    public List<Book> findBooksRecommendedByBook(Book book) {
+        String jpql = "SELECT b2, COUNT(*) AS order_count " +
+                "FROM Contains c1 " +
+                "JOIN Contains c2 ON c1.containsId.order.orderId = c2.containsId.order.orderId AND " +
+                "c1.containsId.book.bookId <> c2.containsId.book.bookId " +
+                "JOIN Book b1 ON c1.containsId.book.bookId = b1.bookId " +
+                "JOIN Book b2 ON c2.containsId.book.bookId = b2.bookId " +
+                "GROUP BY b2 " +
+                "ORDER BY order_count DESC " +
+                "FETCH FIRST 3 ROWS ONLY";
+
+        List<Object[]> resultList = entityManager.createQuery(jpql, Object[].class)
+                .getResultList();
+
+        return resultList.stream().map(result -> (Book) result[0]).toList();
+    }
+
+    public List<Book> findPopularBooksOrderedByOrderCount() {
+        String jpql = "SELECT b, COUNT(*) AS order_count " +
+                "FROM Book b " +
+                "JOIN Contains c ON b.bookId = c.containsId.book.bookId " +
+                "GROUP BY b " +
+                "ORDER BY order_count DESC";
+
+        List<Object[]> resultList = entityManager.createQuery(jpql, Object[].class)
+                .getResultList();
+
+        return resultList.stream().map(result -> (Book) result[0]).toList();
+    }
+
+    /**
+     * A könyv kiegészítése a szerzőivel és műfajaival.
+     * @param book melyik könyvhöz kell hozzárendelni az adatokat
+     * @return modelbe csomagolt könyvadatok
+     */
+    public BookWithAuthorsAndGenres encapsulateBook(Book book) {
+        BookWithAuthorsAndGenres res = new BookWithAuthorsAndGenres();
+        res.setBook(book);
+
+        authorDao.findByBook(book).forEach(author ->
+                res.getAuthors().add(author));
+
+        genreDao.findByBook(book).forEach(genre ->
+                res.getGenres().add(genre));
+
+        return res;
     }
 
     /**

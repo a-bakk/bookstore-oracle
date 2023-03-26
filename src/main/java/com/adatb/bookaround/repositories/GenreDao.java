@@ -2,6 +2,7 @@ package com.adatb.bookaround.repositories;
 
 import com.adatb.bookaround.entities.Book;
 import com.adatb.bookaround.entities.Genre;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,14 +12,24 @@ import java.util.Map;
 
 @Repository
 public class GenreDao extends AbstractJpaDao<Genre> {
+
+    @Autowired
+    private BookDao bookDao;
+
     public GenreDao() { this.setEntityClass(Genre.class); }
+
+    public List<Genre> findByBook(Book book) {
+        return entityManager.createQuery("SELECT g FROM Genre g WHERE g.genreId.bookId = :bookId", Genre.class)
+                .setParameter("bookId", book.getBookId())
+                .getResultList();
+    }
 
     /**
      * Feladat: Műfajok mellé kigyűjteni, hogy hány, az adott műfajba tartozó könyv található az
      * adatbázisban (triviális lekérdezéssel).
      * @return Műfaj neve és a hozzá tartozó könyvek száma.
      */
-    public Map<String, Long> getNumberOfBooksByGenre() {
+    public Map<String, Long> findNumberOfBooksByGenre() {
         String jpql = "SELECT genre.genreId.genreName, COUNT(genre.genreId.genreName) as numberOfBooks " +
                 "FROM Genre genre " +
                 "GROUP BY genre.genreId.genreName";
@@ -37,7 +48,10 @@ public class GenreDao extends AbstractJpaDao<Genre> {
         return resultsConverted;
     }
 
-    public List<Book> getMostPopularBooksByGenre(String genreName) {
+    public List<Book> findPopularBooksByGenreOrderedByOrderCount(String genreName) {
+        if (genreName.isEmpty())
+            return bookDao.findPopularBooksOrderedByOrderCount();
+
         String jpql = "SELECT b, COUNT(*) AS order_count " +
                 "FROM Book b " +
                 "JOIN Genre g ON b.bookId = g.genreId.bookId " +
