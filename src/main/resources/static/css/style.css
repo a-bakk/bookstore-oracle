@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+.scroll-along-linear {
+    background: linear-gradient(to bottom right, #ccffcc, rgb(244, 255, 244));
+    min-height: 100vh;
+    background-repeat: no-repeat;
+}
