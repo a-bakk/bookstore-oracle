@@ -44,44 +44,62 @@
                                 </div>
                             </div>
                             <div class="col-md-8">
-                                <div class="card mb-3" th:each="bookModel : ${bookList}">
-                                    <div class="card-body">
-                                        <h5 class="card-title fw-bold" th:text="${bookModel.getBook().getTitle()}">Book Title</h5>
-                                        <p class="card-text">
-                                            <th:block th:each="author : ${bookModel.getAuthors()}">
-                                                <span th:text="' | ' + ${author.getAuthorId().getFirstName()} + ' ' + ${author.getAuthorId().getLastName()}"></span>
-                                            </th:block>
-                                        </p>
-                                        <p class="card-text">
-                                            <th:block th:each="genre : ${bookModel.getGenres()}">
-                                                <span th:text="' | ' + ${genre.getGenreId().getGenreName()}"></span>
-                                            </th:block>
-                                        </p>
-                                        <div class="form-group mb-3">
-                                            <textarea class="form-control" rows="3" maxlength="200"
-                                                      disabled
-                                                      style="resize: none;"
-                                                      th:text="${bookModel.getBook().getDescription()}">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</textarea>
-                                        </div>
-                                        <div class="row align-items-center">
-                                            <div class="col">
-                                                <p class="card-text">
-                                                    <span th:text="'Ár: ' + ${bookModel.getBook().getPrice()} + ' Ft'"></span>
-                                                    <th:block th:if="${bookModel.getBook().getDiscountedPrice()} ne null">
-                                                        <br>
-                                                        <span th:text="'Leárazás: ' + ${bookModel.getBook().getDiscountedPrice()} + ' Ft'"></span>
-                                                    </th:block>
-                                                </p>
-                                            </div>
-                                            <div class="col-auto">
-                                                <a href="#" class="btn btn-primary">Több</a>
+                                <div class="row">
+                                    <div class="col-md-10 mx-auto">
+                                        <div class="card mb-3" th:each="bookModel : ${bookList}">
+                                            <div class="row">
+                                                <div class="col-md-4 d-flex align-items-center">
+                                                    <img th:src="@{/img/book-placeholder.png}" src=""
+                                                        class="img-fluid mx-auto px-2" alt="Book cover"
+                                                        style="max-height: 250px;">
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title fw-bold"
+                                                            th:text="${bookModel.getBook().getTitle()}">Book Title
+                                                        </h5>
+                                                        <p class="card-text">
+                                                            <th:block th:each="author : ${bookModel.getAuthors()}">
+                                                                <span
+                                                                    th:text="' | ' + ${author.getAuthorId().getFirstName()} + ' ' + ${author.getAuthorId().getLastName()}"></span>
+                                                            </th:block>
+                                                        </p>
+                                                        <p class="card-text">
+                                                            <th:block th:each="genre : ${bookModel.getGenres()}">
+                                                                <span
+                                                                    th:text="' | ' + ${genre.getGenreId().getGenreName()}"></span>
+                                                            </th:block>
+                                                        </p>
+                                                        <div class="form-group mb-3">
+                                                            <textarea class="form-control" rows="3" maxlength="200"
+                                                                disabled style="resize: none;"
+                                                                th:text="${bookModel.getBook().getDescription()}">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</textarea>
+                                                        </div>
+                                                        <div class="row align-items-center">
+                                                            <div class="col">
+                                                                <p class="card-text">
+                                                                    <span
+                                                                        th:text="'Ár: ' + ${bookModel.getBook().getPrice()} + ' Ft'"></span>
+                                                                    <th:block
+                                                                        th:if="${bookModel.getBook().getDiscountedPrice()} ne null">
+                                                                        <br>
+                                                                        <span
+                                                                            th:text="'Leárazás: ' + ${bookModel.getBook().getDiscountedPrice()} + ' Ft'"></span>
+                                                                    </th:block>
+                                                                </p>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <a href="#" class="btn btn-primary">Több</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </section>
 
             </div>

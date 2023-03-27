@@ -30,18 +30,21 @@ public class StoreController {
     @GetMapping("/latest-additions")
     public String showLatestAdditions(Model model) {
         model.addAttribute("bookList", bookService.getLatestBooks());
+        model.addAttribute("activePage", "latest-additions");
         return "latest-additions";
     }
 
     @GetMapping("/bestsellers")
     public String showPopularBooks(Model model) {
         model.addAttribute("bookList", bookService.getPopularBooks());
+        model.addAttribute("activePage", "bestsellers");
         return "bestsellers";
     }
 
     @GetMapping("/notifications/{cid}")
     public String showNotificationsForCustomer(Model model, @PathVariable Long cid) {
         model.addAttribute("notificationList", customerService.getNotificationsByCustomerId(cid));
+        model.addAttribute("activePage", "notifications");
         return "notifications";
     }
 
@@ -50,6 +53,7 @@ public class StoreController {
         model.addAttribute("customerList", customerService.getCustomers());
         model.addAttribute("storeList", storeService.getAllStores());
         model.addAttribute("orderList", storeService.getAllOrders());
+        model.addAttribute("activePage", "admin-panel");
         return "admin-panel";
     }
 
