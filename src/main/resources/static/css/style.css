@@ -9,3 +9,7 @@
     min-height: 100vh;
     background-repeat: no-repeat;
 }
+
+.main {
+    padding-top: 20px;
+}
