@@ -38,7 +38,7 @@ public class SecurityConfiguration {
                 .and()
                 .userDetailsService(userDetailsService())
                 .headers(headers -> headers.frameOptions().sameOrigin())
-                .httpBasic(Customizer.withDefaults())
+                .httpBasic().disable()
                 .build();
     }
 

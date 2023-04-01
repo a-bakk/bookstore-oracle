@@ -24,6 +24,11 @@ public class StoreController {
 
     @GetMapping("/index")
     public String showIndex(Model model) {
+
+        model.addAttribute("stockList", storeService.getStockForEachStore());
+
+        logger.warn("test");
+
         return "index";
     }
 

@@ -2,6 +2,7 @@ package com.adatb.bookaround.services;
 
 import com.adatb.bookaround.entities.Order;
 import com.adatb.bookaround.entities.Store;
+import com.adatb.bookaround.models.BookWithAuthorsAndGenres;
 import com.adatb.bookaround.models.StoreWithBusinessHours;
 import com.adatb.bookaround.repositories.OrderDao;
 import com.adatb.bookaround.repositories.StoreDao;
@@ -11,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StoreService {
@@ -38,6 +41,18 @@ public class StoreService {
             return new ArrayList<>();
         }
         return orders;
+    }
+
+
+    public Map<Store, List<BookWithAuthorsAndGenres>> getStockForEachStore() {
+        Map<Store, List<BookWithAuthorsAndGenres>> resultStock = storeDao.findStockForEachStore();
+
+        if (resultStock == null || resultStock.isEmpty()) {
+            logger.warn("Stock could not be loaded");
+            return new HashMap<>();
+        }
+
+        return resultStock;
     }
 
 }

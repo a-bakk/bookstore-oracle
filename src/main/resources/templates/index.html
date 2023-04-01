@@ -208,6 +208,13 @@
           </div>
       </section>
 
+        <div th:each="stock:${stockList}">
+            <span th:text="${stock.getKey().getName()}"></span>
+            <div th:each="book:${stock.getValue()}">
+                <span th:text="${book.getBook().getTitle()}"></span>
+            </div>
+        </div>
+
     </div>
     <div class="col-md-2"></div>
   </div>
