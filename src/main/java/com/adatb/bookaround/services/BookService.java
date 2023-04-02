@@ -62,6 +62,21 @@ public class BookService {
         return books;
     }
 
+    public BookWithAuthorsAndGenres getBookWithAuthorsAndGenresById(Long bookId) {
+        BookWithAuthorsAndGenres book = bookDao.findBookWithAuthorsAndGenresById(bookId);
+        if (book == null) {
+            logger.warn("No book could be loaded with the following id: " + bookId);
+            return new BookWithAuthorsAndGenres();
+        }
+        return book;
+    }
+
+    public List<BookWithAuthorsAndGenres> getRecommendationsByBookId(Long bookId) {
+        return bookDao.findBooksRecommendedByBook(bookDao.find(bookId))
+                .stream().map(b -> bookDao.encapsulateBook(b)
+        ).toList();
+    }
+
     public boolean createBookWithAuthorsAndGenres(Book book, String authors, String genres) {
         String[] required = new String[] {
                 book.getTitle(), book.getDescription(), book.getCover(),

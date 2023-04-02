@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookAround</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="icon" type="image/x-icon" th:href="@{/img/Ariil-Alphabet-Letter-B.256.png}">
+</head>
+
+<body>
+
+  <section>
+    <div th:replace="~{fragments/navigation :: navigation}"></div>
+  </section>
+
+  <div class="container-fluid scroll-along-linear">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+
+        <section class="p-5 bg-light">
+
+          <div class="container mb-5">
+            <div class="row">
+              <div class="col-md-4">
+                <img src="" th:src="@{/img/book-placeholder.png}" alt="Book Cover" class="img-fluid mb-3">
+                <ul>
+                  <li>Borító: <span th:text="${bookModel.getBook().getCover()}"></span></li>
+                  <li>Súly: <span th:text="${bookModel.getBook().getWeight()} + ' g'"></span></li>
+                  <li>Oldalak száma: <span th:text="${bookModel.getBook().getNumberOfPages()}"></span></li>
+                  <li>Nyelv: <span th:text="${bookModel.getBook().getLanguage()}"></span></li>
+                  <li>Kiadás dátuma: <span th:text="${bookModel.getBook().getPublishedAt()}"></span></li>
+                  <li>Kiadó: <span th:text="${bookModel.getBook().getPublisher()}"></span></li>
+                </ul>
+              </div>
+              <div class="col-md-8">
+                <h1 class="fw-bold" th:text="${bookModel.getBook().getTitle()}"></h1>
+                <p><strong>ISBN: </strong><span th:text="${bookModel.getBook().getIsbn()}"></span></p>
+                <p><strong>Író(k) </strong>
+                  <th:block th:each="author : ${bookModel.getAuthors()}">
+                    <span
+                      th:text="' | ' + ${author.getAuthorId().getFirstName()} + ' ' + ${author.getAuthorId().getLastName()}"></span>
+                  </th:block>
+                </p>
+                <p><strong>Műfaj(ok) </strong>
+                  <th:block th:each="genre : ${bookModel.getGenres()}">
+                    <span th:text="' | ' + ${genre.getGenreId().getGenreName()}"></span>
+                  </th:block>
+                </p>
+                <p th:text="${bookModel.getBook().getDescription()}"></p>
+                <p><strong>Ár: </strong><span th:text="${bookModel.getBook().getPrice()} + ' Ft'"></span></p>
+                <th:block th:if="${bookModel.getBook().getDiscountedPrice()} ne null">
+                  <p><strong>Leárazás: </strong>
+                    <br>
+                    <span th:text="${bookModel.getBook().getDiscountedPrice()} + ' Ft'"></span>
+                  </p>
+                </th:block>
+                <button type="button" class="btn btn-outline-primary me-3">Kívánságlistára</button>
+                <button type="button" class="btn btn-outline-success me-3">Kosárba</button>
+                <a th:href="@{/index}" class="btn btn-outline-secondary">Vissza a főoldalra</a>
+              </div>
+            </div>
+          </div>
+
+          <h4 class="text-center mb-5">Ezek is érdekelhetik...</h4>
+
+          <div class="row justify-content-evenly">
+            <div class="col-md-3 mb-4" th:each="recommendationModel : ${recommendationModels}">
+              <div class="card">
+                <img src="" th:src="@{/img/book-placeholder.png}" class="card-img-top" alt="Book Cover 1">
+                <div class="card-body">
+                  <h5 class="card-title fw-bold" th:text="${recommendationModel.getBook().getTitle()}"></h5>
+                  <p class="card-text">
+                    <th:block th:each="author : ${recommendationModel.getAuthors()}">
+                      <span
+                        th:text="' | ' + ${author.getAuthorId().getFirstName()} + ' ' + ${author.getAuthorId().getLastName()}"></span>
+                    </th:block>
+                  </p>
+                  <p class="card-text">Ár: <span th:text="${recommendationModel.getBook().getPrice()}"></span></p>
+                  <p class="card-text">Leárazás: 4000 Ft</p>
+                  <th:block th:if="${bookModel.getBook().getDiscountedPrice()} ne null">
+                    <p class="card-text">Leárazás:
+                      <span th:text="${bookModel.getBook().getDiscountedPrice()} + ' Ft'"></span>
+                    </p>
+                  </th:block>
+                  <div class="d-grid gap-2">
+                    <a th:href="@{/book/{bookId}(bookId=${recommendationModel.getBook().getBookId()})}"
+                      class="btn btn-primary">Megtekintés</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+  </div>
+
+  <section>
+    <div th:replace="~{fragments/footer :: footer}"></div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

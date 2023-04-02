@@ -76,7 +76,7 @@
                                                         </p>
                                                     </div>
                                                     <div class="col-auto">
-                                                        <a href="#" class="btn btn-primary">Több</a>
+                                                        <a th:href="@{/book/{bookId}(bookId=${bookModel.getBook().getBookId()})}" class="btn btn-primary">Több</a>
                                                     </div>
                                                 </div>
                                             </div>

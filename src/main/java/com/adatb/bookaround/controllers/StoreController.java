@@ -69,7 +69,16 @@ public class StoreController {
     @GetMapping("/admin-panel-create")
     public String showCreateAdminPanel(Model model) {
         model.addAttribute("newBook", new Book());
+        model.addAttribute("activePage", "admin-panel");
         return "admin-panel-create";
+    }
+
+    @GetMapping("/book/{bookId}")
+    public String showBookById(Model model,
+                               @PathVariable Long bookId) {
+        model.addAttribute("bookModel", bookService.getBookWithAuthorsAndGenresById(bookId));
+        model.addAttribute("recommendationModels", bookService.getRecommendationsByBookId(bookId));
+        return "book";
     }
 
     @PostMapping("/add-book")

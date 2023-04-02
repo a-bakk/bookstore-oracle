@@ -23,6 +23,20 @@ public class BookDao extends AbstractJpaDao<Book> {
 
     public BookDao() { this.setEntityClass(Book.class); }
 
+    public BookWithAuthorsAndGenres findBookWithAuthorsAndGenresById(Long bookId) {
+        String jpql = "SELECT b, a, g " +
+                "FROM Book b " +
+                "LEFT JOIN Author a ON b.bookId = a.authorId.bookId " +
+                "LEFT JOIN Genre g ON b.bookId = g.genreId.bookId " +
+                "WHERE b.bookId = :bookId";
+
+        List<Object[]> resultList = entityManager.createQuery(jpql, Object[].class)
+                .setParameter("bookId", bookId)
+                .getResultList();
+
+        return getEntitiesFromResultList(resultList).get(0);
+    }
+
     /**
      * Listázása a könyveknek a hozzájuk tartozó authorokkal és genrekkel,
      * a BookWithAuthorsAndGenres modelbe helyezéssel.
@@ -197,7 +211,7 @@ public class BookDao extends AbstractJpaDao<Book> {
     public List<Book> findBooksOrderedByPublicationDate() {
         String jpql = "SELECT b " +
                 "FROM Book b " +
-                "ORDER BY b.publishedAt " +
+                "ORDER BY b.publishedAt DESC " +
                 "FETCH FIRST 5 ROWS ONLY";
 
         return entityManager.createQuery(jpql, Book.class).getResultList();
