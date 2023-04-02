@@ -11,10 +11,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class StoreService {
@@ -53,6 +50,14 @@ public class StoreService {
         }
 
         return resultStock;
+    }
+
+    public static boolean checkForEmptyString(String[] args) {
+        for (String str : args) {
+            if (str.isEmpty())
+                return true;
+        }
+        return false;
     }
 
 }

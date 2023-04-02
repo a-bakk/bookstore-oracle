@@ -1,5 +1,6 @@
 package com.adatb.bookaround.controllers;
 
+import com.adatb.bookaround.entities.Book;
 import com.adatb.bookaround.services.BookService;
 import com.adatb.bookaround.services.CustomerService;
 import com.adatb.bookaround.services.StoreService;
@@ -10,6 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class StoreController {
@@ -26,8 +30,6 @@ public class StoreController {
     public String showIndex(Model model) {
 
         model.addAttribute("stockList", storeService.getStockForEachStore());
-
-        logger.warn("test");
 
         return "index";
     }
@@ -47,7 +49,8 @@ public class StoreController {
     }
 
     @GetMapping("/notifications/{cid}")
-    public String showNotificationsForCustomer(Model model, @PathVariable Long cid) {
+    public String showNotificationsForCustomer(Model model,
+                                               @PathVariable Long cid) {
         model.addAttribute("notificationList", customerService.getNotificationsByCustomerId(cid));
         model.addAttribute("activePage", "notifications");
         return "notifications";
@@ -55,11 +58,31 @@ public class StoreController {
 
     @GetMapping("/admin-panel")
     public String showAdminPanel(Model model) {
+        model.addAttribute("bookModelList", bookService.getAllBookModels());
         model.addAttribute("customerList", customerService.getCustomers());
         model.addAttribute("storeList", storeService.getAllStores());
         model.addAttribute("orderList", storeService.getAllOrders());
         model.addAttribute("activePage", "admin-panel");
         return "admin-panel";
+    }
+
+    @GetMapping("/admin-panel-create")
+    public String showCreateAdminPanel(Model model) {
+        model.addAttribute("newBook", new Book());
+        return "admin-panel-create";
+    }
+
+    @PostMapping("/add-book")
+    public String addBookWithAuthorsAndGenres(Book newBook,
+                                              @RequestParam(name = "authors") String authors,
+                                              @RequestParam(name = "genres") String genres,
+                                              RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("entityCreationVerdict",
+                bookService.createBookWithAuthorsAndGenres(newBook, authors, genres)
+                        ? "Új könyv sikeresen létrehozva!"
+                        : "Új könyv létrehozása sikertelen!"
+                );
+        return "redirect:/admin-panel-create";
     }
 
 }
