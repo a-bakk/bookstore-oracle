@@ -24,6 +24,12 @@
             <div class="col-md-2"></div>
             <div class="col-md-8">
 
+                <section th:if="${entityDeletionVerdict}" class="bg-light p-3 px-5">
+                    <div class="container">
+                        <div th:text="${entityDeletionVerdict}" class="alert alert-info text-center" />
+                    </div>
+                </section>
+
 
                 <!--TODO: List books which appearances are new/recent-->
                 <section id="new_books">

@@ -117,6 +117,16 @@ public class BookService {
         return true;
     }
 
+    public boolean deleteBookById(Long bookId) {
+        Book book = bookDao.find(bookId);
+        if (book == null) {
+            logger.warn("No book could be loaded with the following id: " + bookId);
+            return false;
+        }
+        bookDao.delete(bookId);
+        return true;
+    }
+
 
 
 }

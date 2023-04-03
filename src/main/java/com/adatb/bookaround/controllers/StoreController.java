@@ -94,4 +94,15 @@ public class StoreController {
         return "redirect:/admin-panel-create";
     }
 
+    @PostMapping("/delete-book")
+    public String deleteBookById(@RequestParam(name = "delete-book-id") Long deleteBookId,
+                                 RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("entityDeletionVerdict",
+                bookService.deleteBookById(deleteBookId)
+                ? "Könyv sikeresen törölve!"
+                : "Könyv törlése sikertelen! (id = " + deleteBookId + ")"
+                );
+        return "redirect:/index";
+    }
+
 }

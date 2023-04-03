@@ -27,6 +27,68 @@
         <section class="p-5 bg-light">
 
           <div class="container mb-5">
+            <h5>Adminisztrátori funkciók</h5>
+            <div class="row mx-5">
+              <!-- Modification modal button -->
+              <button type="button" class="btn btn-outline-info mb-3" data-bs-toggle="modal"
+                data-bs-target="#modifyBookModal">
+                Könyv módosítása
+              </button>
+
+              <!-- Modification modal -->
+              <div class="modal fade" id="modifyBookModal" tabindex="-1" aria-labelledby="modifyBookModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <form th:action="@{/modify-book}" method="post">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modifyBookModalLabel">Könyv módosítása</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        ...
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
+                        <button type="button" class="btn btn-primary">Módosítások mentése</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Delete modal button -->
+              <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal"
+                data-bs-target="#deleteBookModal">
+                Könyv törlése
+              </button>
+
+              <!-- Delete modal -->
+              <div class="modal fade" id="deleteBookModal" tabindex="-1" aria-labelledby="deleteBookModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <form th:action="@{/delete-book}" method="post">
+                      <input type="hidden" th:name="delete-book-id" th:value="${bookModel.getBook().getBookId()}">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="deleteBookModalLabel">Könyv törlése</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Biztosan törölni szeretné a könyvet? A könyvhöz tartozó műfajok és írók is törlődni fognak.
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
+                        <input type="submit" class="btn btn-primary" value="Törlés">
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="container mb-5">
             <div class="row">
               <div class="col-md-4">
                 <img src="" th:src="@{/img/book-placeholder.png}" alt="Book Cover" class="img-fluid mb-3">
