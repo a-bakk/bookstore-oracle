@@ -42,15 +42,103 @@
                   <div class="modal-content">
                     <form th:action="@{/modify-book}" method="post">
                       <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="modifyBookModalLabel">Könyv módosítása</h1>
+                        <h1 class="modal-title fs-5" id="modifyBookModalLabel">Könyv módosítása
+                        </h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                        ...
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="mb-3">
+                              <label for="title" class="form-label">Cím
+                                *</label>
+                              <input type="text" class="form-control" id="title" required
+                                th:value="${bookModel.getBook().getTitle()}" th:name="modifyTitle">
+                            </div>
+                            <div class="mb-3">
+                              <label for="description" class="form-label">Leírás
+                                *</label>
+                              <textarea class="form-control" id="description" rows="3" required
+                                th:text="${bookModel.getBook().getDescription()}" th:name="modifyDescription">
+                                                              </textarea>
+                            </div>
+                            <div class="mb-3">
+                              <label for="cover" class="form-label">Borító
+                                *</label>
+                              <input type="text" class="form-control" id="cover" required
+                                th:value="${bookModel.getBook().getCover()}" th:name="modifyCover">
+                            </div>
+                            <div class="mb-3">
+                              <label for="weight" class="form-label">Súly
+                                *</label>
+                              <input type="number" step="0.01" class="form-control" id="weight" required
+                                th:value="${bookModel.getBook().getWeight()}" th:name="modifyWeight">
+                            </div>
+                            <div class="mb-3">
+                              <label for="price" class="form-label">Ár (HUF)
+                                *</label>
+                              <input type="number" class="form-control" id="price" required
+                                th:value="${bookModel.getBook().getPrice()}" th:name="modifyPrice">
+                            </div>
+                            <div class="mb-3">
+                              <label for="pages" class="form-label">Oldalak
+                                száma *</label>
+                              <input type="number" class="form-control" id="pages" required
+                                th:value="${bookModel.getBook().getNumberOfPages()}" th:name="modifyNumberOfPages">
+                            </div>
+                            <div class="mb-3">
+                              <label for="published" class="form-label">Kiadás
+                                dátuma *</label>
+                              <input type="date" class="form-control" id="published" required
+                                th:value="${bookModel.getBook().getPublishedAt()}" th:name="modifyPublishedAt">
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="mb-3">
+                              <label for="publisher" class="form-label">Kiadó
+                                *</label>
+                              <input type="text" class="form-control" id="publisher" required
+                                th:value="${bookModel.getBook().getPublisher()}" th:name="modifyPublisher">
+                            </div>
+                            <div class="mb-3">
+                              <label for="isbn" class="form-label">ISBN
+                                *</label>
+                              <input type="text" class="form-control" id="isbn" required
+                                th:value="${bookModel.getBook().getIsbn()}" th:name="modifyIsbn">
+                            </div>
+                            <div class="mb-3">
+                              <label for="language" class="form-label">Nyelv
+                                *</label>
+                              <input type="text" class="form-control" id="language" required
+                                th:value="${bookModel.getBook().getLanguage()}" th:name="modifyLanguage">
+                            </div>
+                            <div class="mb-3">
+                              <label for="discounted" class="form-label">Leárazott
+                                ár
+                                (HUF)</label>
+                              <input type="number" step="0.01" class="form-control" id="discounted" th:if="${bookModel.getBook().getDiscountedPrice()} ne null"
+                                th:value="${bookModel.getBook().getDiscountedPrice()}" th:name="modifyDiscountedPrice">
+                              <input type="number" step="0.01" class="form-control" id="discountednull" th:if="${bookModel.getBook().getDiscountedPrice()} eq null"
+                                     th:name="modifyDiscountedPrice">
+                            </div>
+                            <div class="mb-3">
+                              <label for="authors" class="form-label">Szerzők
+                                (;-el elválasztva) *</label>
+                              <input type="text" class="form-control" id="authors" required th:name="modifyAuthors"
+                              th:value="${authorsAsString}">
+                            </div>
+                            <div class="mb-3">
+                              <label for="genres" class="form-label">Műfajok
+                                (;-el elválasztva) *</label>
+                              <input type="text" class="form-control" id="genres" required th:name="modifyGenres"
+                              th:value="${genresAsString}">
+                            </div>
+                          </div>
+                        </div>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
-                        <button type="button" class="btn btn-primary">Módosítások mentése</button>
+                        <input type="submit" class="btn btn-primary" value="Módosítások mentése">
                       </div>
                     </form>
                   </div>
@@ -71,11 +159,13 @@
                     <form th:action="@{/delete-book}" method="post">
                       <input type="hidden" th:name="delete-book-id" th:value="${bookModel.getBook().getBookId()}">
                       <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="deleteBookModalLabel">Könyv törlése</h1>
+                        <h1 class="modal-title fs-5" id="deleteBookModalLabel">Könyv törlése
+                        </h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                        Biztosan törölni szeretné a könyvet? A könyvhöz tartozó műfajok és írók is törlődni fognak.
+                        Biztosan törölni szeretné a könyvet? A könyvhöz tartozó műfajok és írók
+                        is törlődni fognak.
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
@@ -95,9 +185,11 @@
                 <ul>
                   <li>Borító: <span th:text="${bookModel.getBook().getCover()}"></span></li>
                   <li>Súly: <span th:text="${bookModel.getBook().getWeight()} + ' g'"></span></li>
-                  <li>Oldalak száma: <span th:text="${bookModel.getBook().getNumberOfPages()}"></span></li>
+                  <li>Oldalak száma: <span th:text="${bookModel.getBook().getNumberOfPages()}"></span>
+                  </li>
                   <li>Nyelv: <span th:text="${bookModel.getBook().getLanguage()}"></span></li>
-                  <li>Kiadás dátuma: <span th:text="${bookModel.getBook().getPublishedAt()}"></span></li>
+                  <li>Kiadás dátuma: <span th:text="${bookModel.getBook().getPublishedAt()}"></span>
+                  </li>
                   <li>Kiadó: <span th:text="${bookModel.getBook().getPublisher()}"></span></li>
                 </ul>
               </div>

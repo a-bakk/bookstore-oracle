@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class BookService {
@@ -125,6 +126,17 @@ public class BookService {
         }
         bookDao.delete(bookId);
         return true;
+    }
+
+    public static String joinStrings(Set<String> strings) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String str : strings) {
+            stringBuilder.append(str).append(";");
+        }
+        if (!stringBuilder.isEmpty()) {
+            stringBuilder.setLength(stringBuilder.length() - 1);
+        }
+        return stringBuilder.toString();
     }
 
 

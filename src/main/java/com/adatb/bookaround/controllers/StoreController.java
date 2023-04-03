@@ -1,6 +1,9 @@
 package com.adatb.bookaround.controllers;
 
+import com.adatb.bookaround.entities.Author;
 import com.adatb.bookaround.entities.Book;
+import com.adatb.bookaround.entities.Genre;
+import com.adatb.bookaround.models.BookWithAuthorsAndGenres;
 import com.adatb.bookaround.services.BookService;
 import com.adatb.bookaround.services.CustomerService;
 import com.adatb.bookaround.services.StoreService;
@@ -14,6 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class StoreController {
@@ -76,7 +82,16 @@ public class StoreController {
     @GetMapping("/book/{bookId}")
     public String showBookById(Model model,
                                @PathVariable Long bookId) {
-        model.addAttribute("bookModel", bookService.getBookWithAuthorsAndGenresById(bookId));
+        BookWithAuthorsAndGenres curr = bookService.getBookWithAuthorsAndGenresById(bookId);
+        Set<Author> authors = curr.getAuthors();
+        Set<Genre> genres = curr.getGenres();
+        model.addAttribute("bookModel", curr);
+        model.addAttribute("authorsAsString",
+                BookService.joinStrings(authors.stream().map(author -> author.getAuthorId().getFirstName()
+                        + " " + author.getAuthorId().getLastName()).collect(Collectors.toSet())));
+        model.addAttribute("genresAsString",
+                BookService.joinStrings(genres.stream().map(genre -> genre.getGenreId().getGenreName())
+                        .collect(Collectors.toSet())));
         model.addAttribute("recommendationModels", bookService.getRecommendationsByBookId(bookId));
         return "book";
     }
