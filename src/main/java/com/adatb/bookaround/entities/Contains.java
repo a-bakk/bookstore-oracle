@@ -1,6 +1,7 @@
 package com.adatb.bookaround.entities;
 
 import com.adatb.bookaround.entities.compositepk.ContainsId;
+import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -20,4 +21,6 @@ import java.io.Serializable;
 public class Contains implements Serializable {
     @EmbeddedId
     private ContainsId containsId;
+    @Column
+    private Integer count;
 }

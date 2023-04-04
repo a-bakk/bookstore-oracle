@@ -208,6 +208,7 @@ BEGIN
         CREATE TABLE contains (
             order_id            NUMBER(19)          REFERENCES orders(order_id) ON DELETE CASCADE,
             book_id             NUMBER(19)          REFERENCES book(book_id) ON DELETE CASCADE,
+            count               NUMBER(6),
             PRIMARY KEY (order_id, book_id)
         )
         ';
