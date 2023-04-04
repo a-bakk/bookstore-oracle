@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -118,6 +119,31 @@ public class StoreController {
                 : "Könyv törlése sikertelen! (id = " + deleteBookId + ")"
                 );
         return "redirect:/index";
+    }
+
+    @PostMapping("/modify-book")
+    public String modifyBookById(@RequestParam Long modifyBookId,
+                                 @RequestParam String modifyTitle,
+                                 @RequestParam String modifyDescription,
+                                 @RequestParam String modifyCover,
+                                 @RequestParam Double modifyWeight,
+                                 @RequestParam Long modifyPrice,
+                                 @RequestParam Integer modifyNumberOfPages,
+                                 @RequestParam LocalDate modifyPublishedAt,
+                                 @RequestParam String modifyPublisher,
+                                 @RequestParam String modifyIsbn,
+                                 @RequestParam String modifyLanguage,
+                                 // works with string only for some reason
+                                 @RequestParam(required = false) String modifyDiscountedPrice,
+                                 @RequestParam String modifyAuthors,
+                                 @RequestParam String modifyGenres) {
+        logger.info(modifyTitle);
+        logger.info(modifyWeight);
+        logger.info(modifyPrice);
+        logger.info(modifyPublishedAt);
+        logger.info(Double.parseDouble(modifyDiscountedPrice));
+        logger.info(modifyAuthors);
+        return "redirect:/book/" + modifyBookId;
     }
 
 }

@@ -41,6 +41,7 @@
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <form th:action="@{/modify-book}" method="post">
+                      <input type="hidden" th:value="${bookModel.getBook().getBookId()}" th:name="modifyBookId">
                       <div class="modal-header">
                         <h1 class="modal-title fs-5" id="modifyBookModalLabel">Könyv módosítása
                         </h1>

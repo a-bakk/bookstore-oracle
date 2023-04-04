@@ -14,10 +14,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -121,10 +120,91 @@ public class BookService {
     public boolean deleteBookById(Long bookId) {
         Book book = bookDao.find(bookId);
         if (book == null) {
-            logger.warn("No book could be loaded with the following id: " + bookId);
+            logger.warn("No book could be loaded with the following id: " + bookId + " (deletion)");
             return false;
         }
         bookDao.delete(bookId);
+        return true;
+    }
+
+    public boolean modifyBookById(Long mBookId, String mTitle, String mDescription,
+                                  String mCover, Double mWeight, Long mPrice,
+                                  Integer mNumberOfPages, LocalDate mPublishedAt,
+                                  String mPublisher, String mIsbn, String mLanguage,
+                                  Long mDiscountedPrice, String mAuthors, String mGenres) {
+        Book book = bookDao.find(mBookId);
+        if (book == null) {
+            logger.warn("No book could be loaded with the following id: " + mBookId + " (modification)");
+            return false;
+        }
+
+        String[] required = new String[] {
+                mTitle, mDescription, mCover,
+                mWeight.toString(), mPrice.toString(),
+                mNumberOfPages.toString(), mPublishedAt.toString(),
+                mPublisher, mIsbn, mLanguage,
+                mAuthors, mGenres
+        };
+
+        if (StoreService.checkForEmptyString(required))
+            return false;
+
+        // modify book first (equality check might not be needed, still safer)
+        book.setTitle(Objects.equals(book.getTitle(), mTitle) ? book.getTitle() : mTitle);
+        book.setDescription(Objects.equals(book.getDescription(), mDescription)
+                ? book.getDescription() : mDescription);
+        book.setCover(Objects.equals(book.getCover(), mCover) ? book.getCover() : mCover);
+        book.setWeight(Objects.equals(book.getWeight(), mWeight) ? book.getWeight() : mWeight);
+        book.setPrice(Objects.equals(book.getPrice(), mPrice) ? book.getPrice() : mPrice);
+        book.setNumberOfPages(Objects.equals(book.getNumberOfPages(), mNumberOfPages)
+                ? book.getNumberOfPages() : mNumberOfPages);
+        book.setPublishedAt(Objects.equals(book.getPublishedAt(), mPublishedAt)
+                ? book.getPublishedAt() : mPublishedAt);
+        book.setPublisher(Objects.equals(book.getPublisher(), mPublisher) ? book.getPublisher() : mPublisher);
+        book.setIsbn(Objects.equals(book.getIsbn(), mIsbn) ? book.getIsbn() : mIsbn);
+        book.setLanguage(Objects.equals(book.getLanguage(), mLanguage) ? book.getLanguage() : mLanguage);
+        book.setDiscountedPrice((mDiscountedPrice == null || mDiscountedPrice == 0)
+                ? null : (Objects.equals(book.getDiscountedPrice(), mDiscountedPrice)
+                ? book.getDiscountedPrice() : mDiscountedPrice));
+
+        bookDao.update(book);
+
+        // modify authors if required
+        Set<Author> authors = new HashSet<>(authorDao.findByBook(book));
+        String authorsAsString = BookService.joinStrings(authors.stream()
+                .map(author -> author.getAuthorId().getFirstName()
+                + " " + author.getAuthorId().getLastName()).collect(Collectors.toSet()));
+        if (!Objects.equals(authorsAsString, mAuthors)) {
+            Set<String> splitModifiedAuthors = Arrays.stream(mAuthors.split(";")).collect(Collectors.toSet());
+            // remove the authors that already belong to the book
+            for (Author author : authors) {
+                for (String modifiedAuthor : splitModifiedAuthors) {
+                    if (Objects.equals(author.getAuthorId().getFirstName() + " " + author.getAuthorId().getLastName(),
+                    modifiedAuthor)) {
+                        authors.remove(author);
+                        splitModifiedAuthors.remove(modifiedAuthor);
+                    }
+                }
+            }
+            // if authors contains elements that the new values don't, delete them
+            if (!authors.isEmpty()) {
+                authors.forEach(author -> {
+                    authorDao.delete(book.getBookId(),
+                            author.getAuthorId().getFirstName(), author.getAuthorId().getLastName());
+                });
+            }
+            // check if the new values contain authors that don't already exist, if so, create them
+            if (!splitModifiedAuthors.isEmpty()) {
+                splitModifiedAuthors.forEach(modifiedAuthor -> {
+                    String[] splitName = modifiedAuthor.split(" ");
+                    AuthorId authorId = new AuthorId(book.getBookId(), splitName[0], splitName[1]);
+                    authorDao.create(new Author(authorId));
+                });
+            }
+        }
+
+        // modify genres if required
+        // TODO
         return true;
     }
 
@@ -138,7 +218,5 @@ public class BookService {
         }
         return stringBuilder.toString();
     }
-
-
 
 }
