@@ -10,6 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ShoppingCartItem {
-    private BookWithAuthorsAndGenres book;
+    private BookWithAuthorsAndGenres bookModel;
     private int count;
 }
