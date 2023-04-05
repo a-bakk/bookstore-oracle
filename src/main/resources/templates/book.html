@@ -26,6 +26,12 @@
 
         <section class="p-5 bg-light">
 
+          <section th:if="${bookModificationVerdict}" class="bg-light p-3 px-5">
+            <div class="container">
+              <div th:text="${bookModificationVerdict}" class="alert alert-info text-center" />
+            </div>
+          </section>
+
           <div class="container mb-5">
             <h5>Adminisztrátori funkciók</h5>
             <div class="row mx-5">
@@ -78,7 +84,7 @@
                             <div class="mb-3">
                               <label for="price" class="form-label">Ár (HUF)
                                 *</label>
-                              <input type="number" class="form-control" id="price" required
+                              <input type="number" class="form-control" step="1" id="price" required
                                 th:value="${bookModel.getBook().getPrice()}" th:name="modifyPrice">
                             </div>
                             <div class="mb-3">
@@ -117,9 +123,9 @@
                               <label for="discounted" class="form-label">Leárazott
                                 ár
                                 (HUF)</label>
-                              <input type="number" step="0.01" class="form-control" id="discounted" th:if="${bookModel.getBook().getDiscountedPrice()} ne null"
+                              <input type="number" step="1" class="form-control" id="discounted" th:if="${bookModel.getBook().getDiscountedPrice()} ne null"
                                 th:value="${bookModel.getBook().getDiscountedPrice()}" th:name="modifyDiscountedPrice">
-                              <input type="number" step="0.01" class="form-control" id="discountednull" th:if="${bookModel.getBook().getDiscountedPrice()} eq null"
+                              <input type="number" step="1" class="form-control" id="discountednull" th:if="${bookModel.getBook().getDiscountedPrice()} eq null"
                                      th:name="modifyDiscountedPrice">
                             </div>
                             <div class="mb-3">

@@ -3,6 +3,7 @@ package com.adatb.bookaround.repositories;
 import com.adatb.bookaround.entities.Author;
 import com.adatb.bookaround.entities.Book;
 import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class AuthorDao extends AbstractJpaDao<Author> {
                 .getResultList();
     }
 
+    @Transactional
     public int delete(Long bookId, String firstName, String lastName) {
         Query query = entityManager.createQuery("DELETE FROM Author a " +
                 "WHERE a.authorId.bookId = :bookId AND " +

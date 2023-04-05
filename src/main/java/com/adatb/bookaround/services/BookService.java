@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
 @Service
@@ -127,6 +128,23 @@ public class BookService {
         return true;
     }
 
+    /**
+     * A könyvek módosítását elvégző metódus. Paraméterekben kapja az új értékeket, ezeknek megfelelően végzi el
+     * a módosításokat. Amennyiben egy érték nem változott, a régi értéke marad az adatbázisban. Az írók és
+     * műfajok módosítása a következőképpen működik: amennyiben az új értékek megegyeznek a régivel, nem történik semmi;
+     * ha új, az adatbázisban még nem létező értékek vagy elvault értékek vannak, ennek megfelelően új entitások lesznek
+     * létrehozva vagy törölve, tehát nem valódi update végződik el. Ez betudható annak, hogy mindkét entitás esetében
+     * a teljes entitások csak (összetett) kulcsból állnak, nehéz lenne a meglévőket módosítani/nem is lehetne.
+     * Utólagos észrevétel: annak az ellenőrzésére, hogy mely írók/műfajok léteznek már egy olyan megoldás lett
+     * alkalmazva, hogy az egyezőket eltávolítottam mindkét kollekcióból. Ez generált olyan problémákat, hogy
+     * a kollekción való átiterálás közben remove()-oltam elementet, melyet nem lehet. Ezért lett végül iterátor és
+     * ConcurrentSkipListSet használva, mely ezt képes kezelni exception dobása nélkül, viszont mindkét entitynek
+     * Comparable-nek kell lennie. Valószínüleg egyszerűbb lett volna két új kollekcióhoz hozzáadni a nem megegyezőket
+     * és ennek megfelelően létrehozni/törölni, nem kellett volna hozzá ConcurrentSkipListSet, Iterator meg a Comparable
+     * interfész implementációja.
+     * @return a művelet sikeressége, csak akkor true, ha a könyvet, az írókat és a műfajokat is frissíteni lehetett, ha
+     * az utóbbi kettő szükséges volt
+     */
     public boolean modifyBookById(Long mBookId, String mTitle, String mDescription,
                                   String mCover, Double mWeight, Long mPrice,
                                   Integer mNumberOfPages, LocalDate mPublishedAt,
@@ -170,23 +188,31 @@ public class BookService {
         bookDao.update(book);
 
         // modify authors if required
-        Set<Author> authors = new HashSet<>(authorDao.findByBook(book));
+        // ConcurrentSkipListSet is used so that items can be removed while iterating through the set
+        Set<Author> authors = new ConcurrentSkipListSet<>(authorDao.findByBook(book));
         String authorsAsString = BookService.joinStrings(authors.stream()
                 .map(author -> author.getAuthorId().getFirstName()
-                + " " + author.getAuthorId().getLastName()).collect(Collectors.toSet()));
+                + " " + author.getAuthorId().getLastName())
+                .collect(Collectors.toCollection(ConcurrentSkipListSet::new)));
         if (!Objects.equals(authorsAsString, mAuthors)) {
-            Set<String> splitModifiedAuthors = Arrays.stream(mAuthors.split(";")).collect(Collectors.toSet());
+            Set<String> splitModifiedAuthors = Arrays.stream(mAuthors.split(";"))
+                    .collect(Collectors.toCollection(ConcurrentSkipListSet::new));
             // remove the authors that already belong to the book
-            for (Author author : authors) {
-                for (String modifiedAuthor : splitModifiedAuthors) {
+            Iterator<Author> authorIterator = authors.iterator();
+            while (authorIterator.hasNext()) {
+                Author author = authorIterator.next();
+                Iterator<String> splitModifiedAuthorsIterator = splitModifiedAuthors.iterator();
+                while (splitModifiedAuthorsIterator.hasNext()) {
+                    String modifiedAuthor = splitModifiedAuthorsIterator.next();
                     if (Objects.equals(author.getAuthorId().getFirstName() + " " + author.getAuthorId().getLastName(),
-                    modifiedAuthor)) {
+                            modifiedAuthor)) {
                         authors.remove(author);
                         splitModifiedAuthors.remove(modifiedAuthor);
                     }
                 }
             }
-            // if authors contains elements that the new values don't, delete them
+
+            // if authors contain elements that the new values don't, delete them
             if (!authors.isEmpty()) {
                 authors.forEach(author -> {
                     authorDao.delete(book.getBookId(),
@@ -204,7 +230,45 @@ public class BookService {
         }
 
         // modify genres if required
-        // TODO
+        Set<Genre> genres = new ConcurrentSkipListSet<>(genreDao.findByBook(book));
+        String genresAsString = BookService.joinStrings(genres.stream()
+                .map(genre -> genre.getGenreId().getGenreName())
+                .collect(Collectors.toCollection(ConcurrentSkipListSet::new)));
+        if (!Objects.equals(genresAsString, mGenres)) {
+            Set<String> splitModifiedGenres = Arrays.stream(mGenres.split(";"))
+                    .collect(Collectors.toCollection(ConcurrentSkipListSet::new));;
+            // remove the genres that already belong to the book
+            Iterator<Genre> genreIterator = genres.iterator(); // iterators required because we are removing elements
+            // while iterating through them
+            while (genreIterator.hasNext()) {
+                Genre genre = genreIterator.next();
+                Iterator<String> splitModifiedGenresIterator = splitModifiedGenres.iterator();
+                while (splitModifiedGenresIterator.hasNext()) {
+                    String modifiedGenre = splitModifiedGenresIterator.next();
+                    if (Objects.equals(genre.getGenreId().getGenreName(), modifiedGenre)) {
+                        genres.remove(genre);
+                        splitModifiedGenres.remove(modifiedGenre);
+                    }
+                }
+            }
+
+            // if genres contain elements that the new values don't, delete them
+            if (!genres.isEmpty()) {
+                genres.forEach(genre -> {
+                    genreDao.delete(book.getBookId(), genre.getGenreId().getGenreName());
+                });
+            }
+
+            // if the new values contain genres that don't already exist, create them
+            if (!splitModifiedGenres.isEmpty()) {
+                splitModifiedGenres.forEach(modifiedGenre -> {
+                    GenreId genreId = new GenreId(book.getBookId(), modifiedGenre);
+                    genreDao.create(new Genre(genreId));
+                });
+            }
+        }
+
+        // modifications should be done
         return true;
     }
 

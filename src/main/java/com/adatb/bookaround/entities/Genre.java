@@ -18,7 +18,13 @@ import java.io.Serializable;
 @Setter
 @Entity
 @Table(name = "genre")
-public class Genre implements Serializable {
+public class Genre implements Serializable, Comparable<Genre> {
     @EmbeddedId
     private GenreId genreId;
+
+    // required by the book modification method which uses a ConcurrentSkipListSet
+    @Override
+    public int compareTo(Genre other) {
+        return this.genreId.getGenreName().compareTo(other.getGenreId().getGenreName());
+    }
 }

@@ -17,7 +17,14 @@ import java.io.Serializable;
 @Setter
 @Entity
 @Table(name = "author")
-public class Author implements Serializable {
+public class Author implements Serializable, Comparable<Author> {
     @EmbeddedId
     private AuthorId authorId;
+
+    // required for book modification's method
+    @Override
+    public int compareTo(Author other) {
+        return String.join(this.authorId.getFirstName(), this.authorId.getLastName())
+                .compareTo(String.join(other.authorId.getFirstName(), other.authorId.getLastName()));
+    }
 }

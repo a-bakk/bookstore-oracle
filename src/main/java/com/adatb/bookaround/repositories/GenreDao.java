@@ -2,6 +2,8 @@ package com.adatb.bookaround.repositories;
 
 import com.adatb.bookaround.entities.Book;
 import com.adatb.bookaround.entities.Genre;
+import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +21,16 @@ public class GenreDao extends AbstractJpaDao<Genre> {
         return entityManager.createQuery("SELECT g FROM Genre g WHERE g.genreId.bookId = :bookId", Genre.class)
                 .setParameter("bookId", book.getBookId())
                 .getResultList();
+    }
+
+    @Transactional
+    public int delete(Long bookId, String genreName) {
+        Query query = entityManager.createQuery("DELETE FROM Genre g " +
+                "WHERE g.genreId.bookId = :bookId AND " +
+                "g.genreId.genreName = :genreName")
+                .setParameter("bookId", bookId)
+                .setParameter("genreName", genreName);
+        return query.executeUpdate();
     }
 
     /**

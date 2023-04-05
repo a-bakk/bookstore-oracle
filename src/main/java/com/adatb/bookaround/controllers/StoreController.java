@@ -136,13 +136,19 @@ public class StoreController {
                                  // works with string only for some reason
                                  @RequestParam(required = false) String modifyDiscountedPrice,
                                  @RequestParam String modifyAuthors,
-                                 @RequestParam String modifyGenres) {
-        logger.info(modifyTitle);
-        logger.info(modifyWeight);
-        logger.info(modifyPrice);
-        logger.info(modifyPublishedAt);
-        logger.info(Double.parseDouble(modifyDiscountedPrice));
-        logger.info(modifyAuthors);
+                                 @RequestParam String modifyGenres,
+                                 RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("bookModificationVerdict",
+                bookService.modifyBookById(
+                        modifyBookId, modifyTitle, modifyDescription,
+                        modifyCover, modifyWeight, modifyPrice,
+                        modifyNumberOfPages, modifyPublishedAt,
+                        modifyPublisher, modifyIsbn, modifyLanguage,
+                        modifyDiscountedPrice.isEmpty() ? null : Long.parseLong(modifyDiscountedPrice),
+                        modifyAuthors, modifyGenres
+                )
+                ? "Könyv sikeresen módosítva!"
+                : "Könyv módosítása sikertelen! (id = " + modifyBookId + ")");
         return "redirect:/book/" + modifyBookId;
     }
 
