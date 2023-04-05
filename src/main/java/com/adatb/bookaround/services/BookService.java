@@ -63,6 +63,10 @@ public class BookService {
         return books;
     }
 
+    public BookWithAuthorsAndGenres getEncapsulatedBook(Long bookId) {
+        return bookDao.encapsulateBook(bookDao.find(bookId));
+    }
+
     public BookWithAuthorsAndGenres getBookWithAuthorsAndGenresById(Long bookId) {
         BookWithAuthorsAndGenres book = bookDao.findBookWithAuthorsAndGenresById(bookId);
         if (book == null) {

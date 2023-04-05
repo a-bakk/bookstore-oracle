@@ -32,6 +32,12 @@
             </div>
           </section>
 
+          <section th:if="${bookAdded}" class="bg-light p-3 px-5">
+            <div class="container">
+              <div th:text="${bookAdded}" class="alert alert-info text-center" />
+            </div>
+          </section>
+
           <div class="container mb-5">
             <h5>Adminisztrátori funkciók</h5>
             <div class="row mx-5">
@@ -123,22 +129,24 @@
                               <label for="discounted" class="form-label">Leárazott
                                 ár
                                 (HUF)</label>
-                              <input type="number" step="1" class="form-control" id="discounted" th:if="${bookModel.getBook().getDiscountedPrice()} ne null"
+                              <input type="number" step="1" class="form-control" id="discounted"
+                                th:if="${bookModel.getBook().getDiscountedPrice()} ne null"
                                 th:value="${bookModel.getBook().getDiscountedPrice()}" th:name="modifyDiscountedPrice">
-                              <input type="number" step="1" class="form-control" id="discountednull" th:if="${bookModel.getBook().getDiscountedPrice()} eq null"
-                                     th:name="modifyDiscountedPrice">
+                              <input type="number" step="1" class="form-control" id="discountednull"
+                                th:if="${bookModel.getBook().getDiscountedPrice()} eq null"
+                                th:name="modifyDiscountedPrice">
                             </div>
                             <div class="mb-3">
                               <label for="authors" class="form-label">Szerzők
                                 (;-el elválasztva) *</label>
                               <input type="text" class="form-control" id="authors" required th:name="modifyAuthors"
-                              th:value="${authorsAsString}">
+                                th:value="${authorsAsString}">
                             </div>
                             <div class="mb-3">
                               <label for="genres" class="form-label">Műfajok
                                 (;-el elválasztva) *</label>
                               <input type="text" class="form-control" id="genres" required th:name="modifyGenres"
-                              th:value="${genresAsString}">
+                                th:value="${genresAsString}">
                             </div>
                           </div>
                         </div>
@@ -222,9 +230,20 @@
                     <span th:text="${bookModel.getBook().getDiscountedPrice()} + ' Ft'"></span>
                   </p>
                 </th:block>
-                <button type="button" class="btn btn-outline-primary me-3">Kívánságlistára</button>
-                <button type="button" class="btn btn-outline-success me-3">Kosárba</button>
-                <a th:href="@{/index}" class="btn btn-outline-secondary">Vissza a főoldalra</a>
+                <div class="d-flex align-items-center">
+                  <button type="button" class="btn btn-outline-primary me-3">Kívánságlistára</button>
+                  <form th:action="@{/cart/addItemToCart}" method="post" class="d-flex align-items-center">
+                    <input type="hidden" required th:name="bookIdToAdd" th:value="${bookModel.getBook().getBookId()}">
+                    <div class="input-group me-3">
+                      <input type="number" class="form-control" value="1" required step="1" min="1" th:name="countToAdd"
+                        style="max-width: 75px;">
+                      <div class="input-group-append">
+                        <input type="submit" class="btn btn-outline-success d-block" value="Kosárba">
+                      </div>
+                    </div>
+                  </form>
+                  <a th:href="@{/index}" class="btn btn-outline-secondary">Vissza a főoldalra</a>
+                </div>
               </div>
             </div>
           </div>

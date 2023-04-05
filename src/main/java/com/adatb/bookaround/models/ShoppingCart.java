@@ -8,7 +8,6 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,16 +21,13 @@ public class ShoppingCart {
     }
 
     public void addItem(BookWithAuthorsAndGenres book, int count) {
-        items.stream().filter(item -> Objects.equals(item.getBookModel().getBook().getBookId(),
-                book.getBook().getBookId()))
-                .forEach(item -> item.setCount(item.getCount() + count));
-//        for (ShoppingCartItem item : items) {
-//            if (Objects.equals(item.getBookModel().getBook().getBookId(),
-//                    book.getBook().getBookId())) {
-//                item.setCount(item.getCount() + count);
-//                return;
-//            }
-//        }
+        for (ShoppingCartItem item : items) {
+            if (Objects.equals(item.getBookModel().getBook().getBookId(),
+                    book.getBook().getBookId())) {
+                item.setCount(item.getCount() + count);
+                return;
+            }
+        }
         items.add(new ShoppingCartItem(book, count));
     }
 
@@ -40,7 +36,11 @@ public class ShoppingCart {
                 book.getBook().getBookId()));
     }
 
-    public int getItemCount() {
-        return (int) items.stream().mapToInt(ShoppingCartItem::getCount).count();
+    public Long calculateSum() {
+        return items.stream().mapToLong(item -> {
+            Long price = item.getBookModel().getBook().getDiscountedPrice() == null
+                    ? item.getBookModel().getBook().getPrice() : item.getBookModel().getBook().getDiscountedPrice();
+            return price * item.getCount();
+        }).sum();
     }
 }
