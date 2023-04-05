@@ -13,8 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @SessionAttributes("shoppingCart")
 public class ShoppingCartController {
-    private static final Logger logger = LogManager.getLogger(ShoppingCartController.class);
-
     @Autowired
     private BookService bookService;
 

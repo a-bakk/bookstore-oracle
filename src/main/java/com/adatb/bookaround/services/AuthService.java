@@ -4,6 +4,8 @@ import com.adatb.bookaround.entities.Customer;
 import com.adatb.bookaround.models.CustomerCreate;
 import com.adatb.bookaround.repositories.CustomerDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,10 @@ public class AuthService {
     private CustomerDao customerDao;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public static boolean isAuthenticated() {
+        return !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken);
+    }
 
 
     public void register(CustomerCreate customerCreate) {
