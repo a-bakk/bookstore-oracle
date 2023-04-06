@@ -1,19 +1,20 @@
 package com.adatb.bookaround.services;
 
-import com.adatb.bookaround.entities.Customer;
-import com.adatb.bookaround.entities.Notification;
+import com.adatb.bookaround.entities.*;
+import com.adatb.bookaround.entities.compositepk.ContainsId;
 import com.adatb.bookaround.models.CustomerDetails;
-import com.adatb.bookaround.repositories.CustomerDao;
-import com.adatb.bookaround.repositories.NotificationDao;
+import com.adatb.bookaround.models.ShoppingCart;
+import com.adatb.bookaround.models.ShoppingCartItem;
+import com.adatb.bookaround.repositories.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,19 @@ public class CustomerService implements UserDetailsService {
     private CustomerDao customerDao;
 
     @Autowired
+    private OrderDao orderDao;
+
+    @Autowired
+    private ContainsDao containsDao;
+
+    @Autowired
+    private InvoiceDao invoiceDao;
+
+    @Autowired
     private NotificationDao notificationDao;
+
+    private static final boolean SHIPPED_ORDER = false;
+    private static final boolean PICKUP_ORDER = true;
 
     private static final Logger logger = LogManager.getLogger(CustomerService.class);
 
@@ -54,6 +67,35 @@ public class CustomerService implements UserDetailsService {
             return new ArrayList<>();
         }
         return customers;
+    }
+
+    public boolean createOrderWithShipping(ShoppingCart shoppingCart, CustomerDetails customerDetails) {
+        Customer customer = customerDao.find(customerDetails.getCustomerId());
+        Long orderSum = shoppingCart.calculateSum();
+
+        // creation of the order itself
+        Order order = new Order();
+        order.setCreatedAt(LocalDate.now());
+        order.setShipped(false);
+        order.setPickup(SHIPPED_ORDER);
+        order.setCustomer(customer);
+
+        order = orderDao.create(order);
+
+        // adding books to the order
+        for (ShoppingCartItem item : shoppingCart.getItems()) {
+            ContainsId containsId = new ContainsId(order, item.getBookModel().getBook());
+            containsDao.create(new Contains(containsId, item.getCount()));
+        }
+
+        // creating invoice for order
+        Invoice invoice = new Invoice();
+        invoice.setValue(orderSum);
+        invoice.setPaid(false);
+        invoice.setOrder(order);
+
+        invoiceDao.create(invoice);
+        return true;
     }
 
 }

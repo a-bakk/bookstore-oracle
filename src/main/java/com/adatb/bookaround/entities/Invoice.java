@@ -22,8 +22,6 @@ public class Invoice implements Serializable {
     @Column
     private Long value;
     @Column
-    private String paymentMode;
-    @Column
     private boolean paid;
     @ManyToOne
     @OnDelete(action = OnDeleteAction.NO_ACTION)

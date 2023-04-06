@@ -79,7 +79,9 @@
             <span th:text="${customerDetails.getStreet()} + ', ' + ${customerDetails.getCity()} + ', ' + ${customerDetails.getStateOrRegion()} + ', ' + ${customerDetails.getCountry()} + ' (' + ${customerDetails.getPostcode()} + ')'"></span>
             </p>
             <div class="text-end">
-              <button class="btn btn-primary" type="button">Rendelés</button>
+              <form th:action="@{/place-order-with-shipping}" method="post">
+                <input type="submit" class="btn btn-primary" value="Rendelés">
+              </form>
             </div>
           </div>
           <div class="tab-pane fade" id="pills-pickup" role="tabpanel" aria-labelledby="pills-pickup-tab">
