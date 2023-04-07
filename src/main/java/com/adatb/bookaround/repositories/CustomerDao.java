@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 
 @Repository
@@ -79,6 +80,21 @@ public class CustomerDao extends AbstractJpaDao<Customer> {
         return resultList;
     }
 
+    public static boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null)
+            return false;
+        return pat.matcher(email).matches();
+    }
+
+    public static boolean isValidPassword(String password) {
+        String passwordRegex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$";
+        Pattern pat = Pattern.compile(passwordRegex);
+        if (password == null)
+            return false;
+        return pat.matcher(password).matches();
+    }
 }
 
 

@@ -80,35 +80,56 @@
                       <form th:action="@{/register}" th:object="${newUser}" method="post">
                         <div class="form-floating mb-3">
                           <input type="email" class="form-control" id="reg-email" placeholder="johndoe@example.com"
-                            required />
+                            required th:field="*{email}" />
                           <label for="reg-email">E-mail cím</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                          <input type="text" class="form-control" placeholder="jdoe72" id="reg-tag" required />
-                          <label for="reg-tag">Tag</label>
                         </div>
                         <div class="form-floating mb-3">
                           <input type="text" class="form-control" placeholder="John" id="reg-first-name" required
                             th:field="*{firstName}" />
-                          <label for="reg-first-name">First Name</label>
+                          <label for="reg-first-name">Vezetéknév</label>
                         </div>
                         <div class="form-floating mb-3">
                           <input type="text" class="form-control" placeholder="Doe" id="reg-last-name" required
                             th:field="*{lastName}" />
-                          <label for="reg-last-name">Last Name</label>
+                          <label for="reg-last-name">Keresztnév</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                          <input type="text" class="form-control" id="reg-country" placeholder="Password" required
+                                 th:field="*{country}" />
+                          <label for="reg-country">Ország</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                          <input type="text" class="form-control" id="reg-region-or-state" placeholder="Password" required
+                                 th:field="*{stateOrRegion}" />
+                          <label for="reg-region-or-state">Régió/Terület</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                          <input type="text" class="form-control" id="reg-postcode" placeholder="Password" required
+                                 th:field="*{postcode}" />
+                          <label for="reg-postcode">Irányítószám</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                          <input type="text" class="form-control" id="reg-city" placeholder="Password" required
+                                 th:field="*{city}" />
+                          <label for="reg-city">Város</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                          <input type="text" class="form-control" id="reg-street" placeholder="Password" required
+                                 th:field="*{street}" />
+                          <label for="reg-street">Utca és házszám</label>
                         </div>
                         <div class="form-floating mb-3">
                           <input type="password" class="form-control" id="reg-password" placeholder="Password" required
-                            th:field="*{password}" />
-                          <label for="reg-password">Password</label>
+                                 th:field="*{password}" />
+                          <label for="reg-password">Jelszó</label>
                         </div>
                         <div class="form-floating mb-3">
                           <input type="password" class="form-control" id="reg-password-check"
-                            placeholder="Password Again" required th:field="*{repassword}" />
-                          <label for="reg-password-check">Password Again</label>
+                                 placeholder="Password Again" required th:field="*{repassword}" />
+                          <label for="reg-password-check">Jelszó megismétlése</label>
                         </div>
                         <div class="d-grid text-center">
-                          <p class="text-muted">All fields are required.</p>
+                          <p class="text-muted">Minden mező kötelező!</p>
                         </div>
                         <div class="d-grid">
                           <input type="submit" class="btn btn-success btn-login text-uppercase fw-bold"
