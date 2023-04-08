@@ -31,7 +31,7 @@ public class CustomerController {
                                   @SessionAttribute("shoppingCart") ShoppingCart shoppingCart,
                                   @AuthenticationPrincipal CustomerDetails currentCustomer) {
         if (!AuthService.isAuthenticated())
-            return "redirect:/index";
+            return "redirect:/auth";
         model.addAttribute("cartItems", shoppingCart.getItems());
         model.addAttribute("cartSum", shoppingCart.calculateSum());
         model.addAttribute("customerDetails", currentCustomer);
@@ -52,4 +52,12 @@ public class CustomerController {
         return "redirect:/my-orders";
     }
 
+    @GetMapping("/profile")
+    public String showProfile(Model model, @AuthenticationPrincipal CustomerDetails currentCustomer) {
+        if (!AuthService.isAuthenticated())
+            return "redirect:/auth";
+        model.addAttribute("activePage", "profile");
+        model.addAttribute("customerDetails", currentCustomer);
+        return "profile";
+    }
 }

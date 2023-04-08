@@ -22,7 +22,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id = "navigation">
+        <div id = "navigation">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
                     <a th:href="@{/index}" th:id = "${activePage == 'books' ? 'active' : ''}" class="nav-link text-white">Főoldal</a>
@@ -45,8 +45,8 @@
                 <li class="nav-item">
                     <a th:href="@{/notifications}" th:id="${activePage == 'notifications' ? 'active' : ''}" class="nav-link text-white">Értesítések</a>
                 </li>
-                <li class="nav-item list-inline-item">
-                    <a th:href="@{/profile}" th:id="${activePage == 'profile' ? 'active' : ''}" class="nav-link text-white">Profil<!--<i class="fa-solid fa-user"></i>--></a>
+                <li class="nav-item">
+                    <a th:href="@{/profile}" th:id="${activePage == 'profile' ? 'active' : ''}" class="nav-link text-white">profil</a>
                 </li>
                 <li class="nav-item">
                     <a th:href="@{/admin-panel}" th:id="${activePage == 'admin-panel' ? 'active' : ''}" class="nav-link text-white">Admin panel</a>

@@ -54,19 +54,6 @@ public class CustomerDao extends AbstractJpaDao<Customer> {
     }
 
     /**
-     * Egyezik-e a két jelszó
-     * @param customer a felhasználó
-     * @param password ellenőrizendő jelszó
-     * @return ha jó a jelszó true, különben false
-     */
-    /*TODO: Change password to hashed password??*/
-    public boolean isPasswordCorrect(Customer customer, String password) {
-        if (password == null || password.isEmpty()) return false;
-        if (customer == null) return false;
-        return customer.getPassword().equals(password);
-    }
-
-    /**
      * Összes felhasználó listázása
      * @return Az összes felhasználóból alkotott lista.
      */
@@ -80,7 +67,7 @@ public class CustomerDao extends AbstractJpaDao<Customer> {
         return resultList;
     }
 
-    public static boolean isValidEmail(String email) {
+    public boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pat = Pattern.compile(emailRegex);
         if (email == null)
@@ -88,7 +75,7 @@ public class CustomerDao extends AbstractJpaDao<Customer> {
         return pat.matcher(email).matches();
     }
 
-    public static boolean isValidPassword(String password) {
+    public boolean isValidPassword(String password) {
         String passwordRegex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$";
         Pattern pat = Pattern.compile(passwordRegex);
         if (password == null)

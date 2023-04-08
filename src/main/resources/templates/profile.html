@@ -27,104 +27,122 @@
 
             <section class="p-5 bg-light" style="min-height: 100vh;">
                 <div class="container text-center mb-5">
-                    <h1 style="font-family: cursive;">Üdvözöllek, placeholder!</h1>
+                    <h1><a style="font-family: cursive;">Üdvözöllek, </a><a style="font-family: cursive;" th:text="${customerDetails.getFirstName()}"></a><a>!</a></h1>
                 </div>
 
                 <div class="container">
                     <div class="row">
-                        <div class="d-flex flex-column align-items-center col-md-12">
-                            <form method="post" enctype="multipart/form-data">
-                                <h1 style="font-family: cursive;">Profil szerkesztése</h1>
+                        <div class="col-md-2"></div>
+                        <div class="d-flex flex-column col-md-8">
+                            <div class="align-items-center">
+                                <form th:action="@{/modify-profile}" method="post">
+                                    <h1 style="font-family: cursive;">Profil szerkesztése</h1>
 
-                                <br>
+                                    <br>
 
-                                <div>
-                                    <h4 style="font-family: cursive;">Név</h4>
+                                    <div>
+                                        <h4 style="font-family: cursive;">Név</h4>
 
-                                    <div class="col-md-10">
-                                        <label for="lastname" class="labels">Vezetéknév</label>
-                                        <input type="text" id="lastname" name="lastname" class="form-control" value="placeholder" required>
+                                        <div class="col-md-10">
+                                            <label for="lastname" class="labels">Vezetéknév</label>
+                                            <input type="text" id="lastname" name="lastname" class="form-control" th:value="${customerDetails.getLastName()}" required>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <label for="firstname" class="labels">Keresztnév</label>
+                                            <input type="text" id="firstname" name="firstname" class="form-control" th:value="${customerDetails.getFirstName()}" required>
+                                        </div>
                                     </div>
-                                    <div class="col-md-10">
-                                        <label for="firstname" class="labels">Keresztnév</label>
-                                        <input type="text" id="firstname" name="firstname" class="form-control" value="placeholder" required>
-                                    </div>
-                                </div>
 
-                                <br>
-                                <br>
+                                    <br>
+                                    <br>
 
-                                <div>
-                                    <h4 style="font-family: cursive;">Elérhetőség</h4>
+                                    <div>
+                                        <h4 style="font-family: cursive;">Elérhetőség</h4>
 
-                                    <div class="col-md-10">
-                                        <label for="email" class="labels">Email cím</label>
-                                        <input type="text" id="email" name="email" class="form-control" value="placeholder" required>
+                                        <div class="col-md-10">
+                                            <label for="email" class="labels">Email cím</label>
+                                            <input type="text" id="email" class="form-control" th:value="${customerDetails.getEmail()}" readonly required>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <label for="country" class="labels">Ország</label>
+                                            <input type="text" id="country" name="country" class="form-control" th:value="${customerDetails.getCountry()}" required>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <label for="region" class="labels">Megye/Régió</label>
+                                            <input type="text" id="region" name="region" class="form-control" th:value="${customerDetails.getStateOrRegion()}" required>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <label for="postcode" class="labels">Irányítószám</label>
+                                            <input type="text" id="postcode" name="postcode" class="form-control" th:value="${customerDetails.getPostcode()}" required>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <label for="city" class="labels">Város</label>
+                                            <input type="text" id="city" name="city" class="form-control" th:value="${customerDetails.getCity()}" required>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <label for="street" class="labels">Utca</label>
+                                            <input type="text" id="street" name="street" class="form-control" th:value="${customerDetails.getStreet()}" required>
+                                        </div>
                                     </div>
-                                    <div class="col-md-10">
-                                        <label for="country" class="labels">Ország</label>
-                                        <input type="text" id="country" name="country" class="form-control" value="placeholder" required>
-                                    </div>
-                                    <div class="col-md-10">
-                                        <label for="region" class="labels">Megye/Régió</label>
-                                        <input type="text" id="region" name="region" class="form-control" value="placeholder" required>
-                                    </div>
-                                    <div class="col-md-10">
-                                        <label for="postcode" class="labels">Irányítószám</label>
-                                        <input type="text" id="postcode" name="postcode" class="form-control" value="placeholder" required>
-                                    </div>
-                                    <div class="col-md-10">
-                                        <label for="city" class="labels">Város</label>
-                                        <input type="text" id="city" name="city" class="form-control" value="placeholder" required>
-                                    </div>
-                                    <div class="col-md-10">
-                                        <label for="street" class="labels">Utca</label>
-                                        <input type="text" id="street" name="street" class="form-control" value="placeholder" required>
-                                    </div>
-                                </div>
 
-                                <br>
-                                <br>
+                                    <br>
+                                    <br>
 
-                                <div>
-                                    <h4 style="font-family: cursive;">Jelszó módosítása</h4>
+                                    <div>
+                                        <h4 style="font-family: cursive;">Jelszó módosítása</h4>
 
-                                    <div class="col-md-10">
-                                        <label for="password_1" class="labels">Új jelszó</label>
-                                        <input type="password" id="password_1" name="password_1" class="form-control">
+                                        <div class="col-md-10">
+                                            <label for="password_1" class="labels">Új jelszó</label>
+                                            <input type="password" id="password_1" name="password_1" class="form-control">
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-10">
+                                            <label for="password_2" class="labels">Jelszó megerősítése</label>
+                                            <input type="password" id="password_2" name="password_2" class="form-control">
+                                        </div>
                                     </div>
-                                    <div class="col-md-2"></div>
-                                    <div class="col-md-10">
-                                        <label for="password_2" class="labels">Jelszó megerősítése</label>
-                                        <input type="password" id="password_2" name="password_2" class="form-control">
-                                    </div>
-                                </div>
 
-                                <br>
-                                <br>
+                                    <br>
+                                    <br>
 
-                                <div>
-                                    <div class="col-md-10">
-                                        <label for="old_password" class="labels">Erősítsd meg a változtatásokat a régi jelszóval:</label>
-                                        <input type="password" id="old_password" name="old_password" class="form-control" required>
+                                    <div>
+                                        <div class="col-md-10">
+                                            <label for="old_password" class="labels">Erősítsd meg a változtatásokat a régi jelszóval:</label>
+                                            <input type="password" id="old_password" name="old_password" class="form-control" required>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <br>
+                                    <br>
 
-                                <div class ="row">
-                                    <div class="col-md-6" style="margin-bottom: 3px;">
-                                        <input type="submit" value="Profil módosítása" class="btn btn-primary" style="width: 145px;">
+                                    <div class="row col-md-12">
+                                        <div style="margin-bottom: 3px;">
+                                            <input type="submit" value="Profil módosítása" class="btn btn-primary" style="width: 200px;">
+                                        </div>
                                     </div>
-                                    <div class="col-md-6"  style="margin-bottom: 3px;">
-                                        <input type="button" value="Kijelentkezés" class="btn btn-secondary" style="width: 145px;">
+                                </form>
+                            </div>
+                            <br>
+                            <div>
+                                <form th:action="@{/delete-profile}" method="post">
+                                    <div class="row col-md-12">
+                                        <div style="margin-bottom: 3px;">
+                                            <input type="submit" value="Profil törlése" class="btn btn-danger" style="width: 200px;">
+                                        </div>
                                     </div>
-                                    <div class="col-md-6"  style="margin-bottom: 3px;">
-                                        <input type="button" value="Profil törlése" class="btn btn-danger" style="width: 145px;">
+                                </form>
+                            </div>
+                            <br>
+                            <div>
+                                <form th:action="@{/logout}" method="post">
+                                    <div class="row col-md-12">
+                                        <div style="margin-bottom: 3px;">
+                                            <input type="submit" value="Kijelentkezés" class="btn btn-secondary" style="width: 200px;">
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
+                        <div class="col-md-2"></div>
                     </div>
                 </div>
 
