@@ -3,6 +3,7 @@ package com.adatb.bookaround.services;
 import com.adatb.bookaround.entities.*;
 import com.adatb.bookaround.entities.compositepk.ContainsId;
 import com.adatb.bookaround.models.CustomerDetails;
+import com.adatb.bookaround.models.OrderWithContentAndInvoice;
 import com.adatb.bookaround.models.ShoppingCart;
 import com.adatb.bookaround.models.ShoppingCartItem;
 import com.adatb.bookaround.repositories.*;
@@ -17,12 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService implements UserDetailsService {
@@ -73,6 +72,21 @@ public class CustomerService implements UserDetailsService {
             return new ArrayList<>();
         }
         return customers;
+    }
+
+    public List<OrderWithContentAndInvoice> getOrdersForCustomer(Long customerId) {
+        List<OrderWithContentAndInvoice> orders = orderDao.findOrdersForCustomer(customerId);
+        if (orders == null || orders.isEmpty()) {
+            logger.warn("No orders could be loaded for customer with id: " + customerId);
+            return new ArrayList<>();
+        }
+        orders.forEach(order -> {
+            order.setContentAsString(
+                    order.getBooks().stream().map(book -> book.getBook().getTitle())
+                            .collect(Collectors.joining(", "))
+            );
+        });
+        return orders;
     }
 
     public boolean createOrder(ShoppingCart shoppingCart, CustomerDetails customerDetails,

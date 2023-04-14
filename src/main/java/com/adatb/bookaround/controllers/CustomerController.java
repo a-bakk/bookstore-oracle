@@ -46,9 +46,11 @@ public class CustomerController {
     }
 
     @GetMapping("/my-orders")
-    public String showMyOrders(Model model) {
+    public String showMyOrders(Model model, @AuthenticationPrincipal CustomerDetails customerDetails) {
         if (!AuthService.isAuthenticated())
             return "redirect:/auth";
+        model.addAttribute("orderModels",
+                customerService.getOrdersForCustomer(customerDetails.getCustomerId()));
         return "my-orders";
     }
 
