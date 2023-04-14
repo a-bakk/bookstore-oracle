@@ -5,6 +5,7 @@ import com.adatb.bookaround.models.ShoppingCart;
 import com.adatb.bookaround.services.AuthService;
 import com.adatb.bookaround.services.CustomerService;
 import com.adatb.bookaround.services.StoreService;
+import com.adatb.bookaround.services.constants.OrderMode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -44,16 +47,32 @@ public class CustomerController {
 
     @GetMapping("/my-orders")
     public String showMyOrders(Model model) {
+        if (!AuthService.isAuthenticated())
+            return "redirect:/auth";
         return "my-orders";
     }
 
     @PostMapping("/place-order-with-shipping")
     public String addOrderWithShipping(@SessionAttribute("shoppingCart") ShoppingCart shoppingCart,
                                        @AuthenticationPrincipal CustomerDetails customerDetails,
-                                       RedirectAttributes redirectAttributes) {
-        if (customerService.createOrderWithShipping(shoppingCart, customerDetails)) {
+                                       RedirectAttributes redirectAttributes) throws Exception {
+        if (customerService.createOrder(shoppingCart, customerDetails, OrderMode.SHIPPED_ORDER)) {
             redirectAttributes.addFlashAttribute("orderVerdict", "A rendelés sikeresen leadva!");
-            shoppingCart.setItems(List.of());
+            shoppingCart.setItems(new ArrayList<>());
+            return "redirect:/my-orders";
+        }
+        redirectAttributes.addFlashAttribute("orderVerdict", "A rendelés nem sikerült!");
+        return "redirect:/my-orders";
+    }
+
+    @PostMapping("/place-order-with-pickup")
+    public String addOrderWithPickup(@SessionAttribute("shoppingCart") ShoppingCart shoppingCart,
+                                     @AuthenticationPrincipal CustomerDetails customerDetails,
+                                     @RequestParam(name = "pickupStoreId") Long pickupStoreId,
+                                     RedirectAttributes redirectAttributes) throws Exception {
+        if (customerService.createOrder(shoppingCart, customerDetails, OrderMode.PICKUP_ORDER, pickupStoreId)) {
+            redirectAttributes.addFlashAttribute("orderVerdict", "A rendelés sikeresen leadva!");
+            shoppingCart.setItems(new ArrayList<>());
             return "redirect:/my-orders";
         }
         redirectAttributes.addFlashAttribute("orderVerdict", "A rendelés nem sikerült!");

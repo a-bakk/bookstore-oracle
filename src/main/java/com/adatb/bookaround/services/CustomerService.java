@@ -6,6 +6,7 @@ import com.adatb.bookaround.models.CustomerDetails;
 import com.adatb.bookaround.models.ShoppingCart;
 import com.adatb.bookaround.models.ShoppingCartItem;
 import com.adatb.bookaround.repositories.*;
+import com.aspose.words.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +44,6 @@ public class CustomerService implements UserDetailsService {
 
     @Autowired
     private StockDao stockDao;
-
-    private static final boolean SHIPPED_ORDER = false;
-    private static final boolean PICKUP_ORDER = true;
 
     private static final Logger logger = LogManager.getLogger(CustomerService.class);
 
@@ -72,7 +75,13 @@ public class CustomerService implements UserDetailsService {
         return customers;
     }
 
-    public boolean createOrderWithShipping(ShoppingCart shoppingCart, CustomerDetails customerDetails) {
+    public boolean createOrder(ShoppingCart shoppingCart, CustomerDetails customerDetails,
+                               Boolean orderMode) throws Exception {
+        return createOrder(shoppingCart, customerDetails, orderMode, null);
+    }
+
+    public boolean createOrder(ShoppingCart shoppingCart, CustomerDetails customerDetails,
+                                           Boolean orderMode, Long storeId) throws Exception {
         Customer customer = customerDao.find(customerDetails.getCustomerId());
         Long orderSum = shoppingCart.calculateSum();
 
@@ -82,7 +91,7 @@ public class CustomerService implements UserDetailsService {
         Order order = new Order();
         order.setCreatedAt(LocalDate.now());
         order.setShipped(false);
-        order.setPickup(SHIPPED_ORDER);
+        order.setPickup(orderMode);
         order.setCustomer(customer);
 
         order = orderDao.create(order);
@@ -101,12 +110,67 @@ public class CustomerService implements UserDetailsService {
 
         invoiceDao.create(invoice);
 
+        createInvoicePdf(order, shoppingCart, customerDetails, invoice);
+
         // remove books from stock
         for (ShoppingCartItem item : shoppingCart.getItems()) {
             removeBooksFromStock(item.getBookModel().getBook(), item.getCount());
         }
 
         return true;
+    }
+
+    private void createInvoicePdf(Order order, ShoppingCart shoppingCart, CustomerDetails customerDetails,
+                                  Invoice invoice) throws Exception {
+        File file = ResourceUtils.getFile("classpath:static/invoice-template.docx");
+        Document document = new Document(file.getAbsolutePath());
+
+        document.getRange().replace("{date}", order.getCreatedAt().toString(), new FindReplaceOptions());
+        document.getRange().replace("{invoiceId}", invoice.getInvoiceId().toString(), new FindReplaceOptions());
+
+        document.getRange().replace("{customerName}", customerDetails.getFirstName() + " "
+                + customerDetails.getLastName(), new FindReplaceOptions());
+        document.getRange().replace("{customerEmail}", customerDetails.getEmail(), new FindReplaceOptions());
+        String address = customerDetails.getStreet() + ", " + customerDetails.getCity()
+                + ", " + customerDetails.getStateOrRegion() + ", " + customerDetails.getCountry()
+                + ", " + customerDetails.getPostcode();
+        document.getRange().replace("{customerAddress}", address, new FindReplaceOptions());
+
+        // books in the third table
+        Table table = (Table) document.getChild(NodeType.TABLE, 2, true);
+        Row template = table.getRows().get(1);
+
+        table.getRows().remove(template);
+
+        for (ShoppingCartItem item : shoppingCart.getItems()) {
+            Row newRow = (Row) template.deepClone(true);
+
+            newRow.getCells().get(0) // first row
+                    .getRange().replace("{bookTitle}",
+                            item.getBookModel().getBook().getTitle(), new FindReplaceOptions());
+            newRow.getCells().get(1)
+                    .getRange().replace("{quantity}",
+                            String.valueOf(item.getCount()), new FindReplaceOptions());
+            newRow.getCells().get(2)
+                    .getRange().replace("{pricePerUnit}",
+                            String.valueOf(item.getBookModel().getBook().getDiscountedPrice() == null
+                            ? item.getBookModel().getBook().getPrice()
+                                    : item.getBookModel().getBook().getDiscountedPrice()), new FindReplaceOptions());
+            newRow.getCells().get(3)
+                    .getRange().replace("{totalPrice}",
+                            String.valueOf(item.getCount()
+                                    * (item.getBookModel().getBook().getDiscountedPrice() == null
+                                    ? item.getBookModel().getBook().getPrice()
+                                    : item.getBookModel().getBook().getDiscountedPrice())), new FindReplaceOptions());
+
+            table.getRows().add(newRow);
+        }
+
+        document.getRange().replace("{total}", String.valueOf(shoppingCart.calculateSum()),
+                new FindReplaceOptions());
+
+        document.save("src/main/resources/static/invoices/invoice_"
+                + invoice.getInvoiceId() + ".pdf", SaveFormat.PDF);
     }
 
     private void removeBooksFromStock(Book book, Integer count) {
