@@ -14,6 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 public class CustomerController {
@@ -46,9 +49,14 @@ public class CustomerController {
 
     @PostMapping("/place-order-with-shipping")
     public String addOrderWithShipping(@SessionAttribute("shoppingCart") ShoppingCart shoppingCart,
-                                          @AuthenticationPrincipal CustomerDetails customerDetails) {
-        // TODO: additional checks here & in service
-        customerService.createOrderWithShipping(shoppingCart, customerDetails);
+                                       @AuthenticationPrincipal CustomerDetails customerDetails,
+                                       RedirectAttributes redirectAttributes) {
+        if (customerService.createOrderWithShipping(shoppingCart, customerDetails)) {
+            redirectAttributes.addFlashAttribute("orderVerdict", "A rendelés sikeresen leadva!");
+            shoppingCart.setItems(List.of());
+            return "redirect:/my-orders";
+        }
+        redirectAttributes.addFlashAttribute("orderVerdict", "A rendelés nem sikerült!");
         return "redirect:/my-orders";
     }
 

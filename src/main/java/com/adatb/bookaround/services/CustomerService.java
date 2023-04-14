@@ -36,6 +36,9 @@ public class CustomerService implements UserDetailsService {
     @Autowired
     private NotificationDao notificationDao;
 
+    @Autowired
+    private StockDao stockDao;
+
     private static final boolean SHIPPED_ORDER = false;
     private static final boolean PICKUP_ORDER = true;
 
@@ -73,6 +76,8 @@ public class CustomerService implements UserDetailsService {
         Customer customer = customerDao.find(customerDetails.getCustomerId());
         Long orderSum = shoppingCart.calculateSum();
 
+        // TODO: check if book is on stock
+
         // creation of the order itself
         Order order = new Order();
         order.setCreatedAt(LocalDate.now());
@@ -95,7 +100,27 @@ public class CustomerService implements UserDetailsService {
         invoice.setOrder(order);
 
         invoiceDao.create(invoice);
+
+        // remove books from stock
+        for (ShoppingCartItem item : shoppingCart.getItems()) {
+            removeBooksFromStock(item.getBookModel().getBook(), item.getCount());
+        }
+
         return true;
+    }
+
+    private void removeBooksFromStock(Book book, Integer count) {
+        List<Stock> stocks = stockDao.findStocksByBookId(book.getBookId());
+        for (Stock stock : stocks) {
+            int remove = Math.min(stock.getCount(), count);
+            stock.setCount(stock.getCount() - remove);
+            if (stock.getCount() == 0)
+                stockDao.deleteByStockId(stock.getStockId());
+            else stockDao.update(stock);
+            count -= remove;
+            if (count == 0)
+                return;
+        }
     }
 
 }
