@@ -56,7 +56,11 @@
                                 <td th:text="${orderModel.getInvoice().getValue()} + ' HUF'"></td>
                                 <td th:if="${orderModel.getInvoice().isPaid()} eq true">Fizetett</td>
                                 <td th:if="${orderModel.getInvoice().isPaid()} ne true">Fizetetlen</td>
-                                <td><button class="btn btn-primary">Számla letöltése</button></td>
+                                <td>
+                                    <form th:action="@{/invoices/download/{id}(id = ${orderModel.getInvoice().getInvoiceId()})}" method="get">
+                                        <input type="submit" class="btn btn-primary" value="Számla letöltése">
+                                    </form>
+                                </td>
                                 <td><button class="btn btn-secondary">Fizetés</button></td>
                                 <td><button class="btn btn-danger">Törlés</button></td>
                             </tr>
