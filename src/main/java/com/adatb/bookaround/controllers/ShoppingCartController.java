@@ -2,8 +2,6 @@ package com.adatb.bookaround.controllers;
 
 import com.adatb.bookaround.models.ShoppingCart;
 import com.adatb.bookaround.services.BookService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

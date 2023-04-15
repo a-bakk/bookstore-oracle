@@ -7,7 +7,9 @@ import java.util.List;
 
 @Repository
 public class NotificationDao extends AbstractJpaDao<Notification> {
-    public NotificationDao() { this.setEntityClass(Notification.class); }
+    public NotificationDao() {
+        this.setEntityClass(Notification.class);
+    }
 
     public List<Notification> findByCustomerId(Long customerId) {
         return entityManager.createQuery("SELECT n FROM Notification n WHERE n.customer.customerId = :customerId",

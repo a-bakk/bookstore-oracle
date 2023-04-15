@@ -32,8 +32,20 @@ public class BookService {
     @Autowired
     private GenreDao genreDao;
 
+    public static String joinStrings(Set<String> strings) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String str : strings) {
+            stringBuilder.append(str).append(";");
+        }
+        if (!stringBuilder.isEmpty()) {
+            stringBuilder.setLength(stringBuilder.length() - 1);
+        }
+        return stringBuilder.toString();
+    }
+
     /**
      * A könyveket listázza megjelenési idejük függvényében.
+     *
      * @return a könyvek kiegészítve írókkal és műfajokkal
      */
     public List<BookWithAuthorsAndGenres> getLatestBooks() {
@@ -54,6 +66,7 @@ public class BookService {
         return books.stream().map(book -> bookDao.encapsulateBook(book)).toList();
     }
 
+    @SuppressWarnings("unused")
     public List<BookWithAuthorsAndGenres> getAllBookModels() {
         List<BookWithAuthorsAndGenres> books = bookDao.findAllBooksWithAuthorsAndGenres();
         if (books == null) {
@@ -79,11 +92,11 @@ public class BookService {
     public List<BookWithAuthorsAndGenres> getRecommendationsByBookId(Long bookId) {
         return bookDao.findBooksRecommendedByBook(bookDao.find(bookId))
                 .stream().map(b -> bookDao.encapsulateBook(b)
-        ).toList();
+                ).toList();
     }
 
     public boolean createBookWithAuthorsAndGenres(Book book, String authors, String genres) {
-        String[] required = new String[] {
+        String[] required = new String[]{
                 book.getTitle(), book.getDescription(), book.getCover(),
                 book.getWeight().toString(), book.getPrice().toString(),
                 book.getNumberOfPages().toString(), book.getPublishedAt().toString(),
@@ -113,8 +126,8 @@ public class BookService {
 
         for (String genre : splitGenres) {
             Genre newGenre = new Genre(new GenreId(
-               book.getBookId(),
-               genre
+                    book.getBookId(),
+                    genre
             ));
             if (genreDao.create(newGenre) == null)
                 return false;
@@ -146,6 +159,7 @@ public class BookService {
      * Comparable-nek kell lennie. Valószínüleg egyszerűbb lett volna két új kollekcióhoz hozzáadni a nem megegyezőket
      * és ennek megfelelően létrehozni/törölni, nem kellett volna hozzá ConcurrentSkipListSet, Iterator meg a Comparable
      * interfész implementációja.
+     *
      * @return a művelet sikeressége, csak akkor true, ha a könyvet, az írókat és a műfajokat is frissíteni lehetett, ha
      * az utóbbi kettő szükséges volt
      */
@@ -160,7 +174,7 @@ public class BookService {
             return false;
         }
 
-        String[] required = new String[] {
+        String[] required = new String[]{
                 mTitle, mDescription, mCover,
                 mWeight.toString(), mPrice.toString(),
                 mNumberOfPages.toString(), mPublishedAt.toString(),
@@ -196,7 +210,7 @@ public class BookService {
         Set<Author> authors = new ConcurrentSkipListSet<>(authorDao.findByBook(book));
         String authorsAsString = BookService.joinStrings(authors.stream()
                 .map(author -> author.getAuthorId().getFirstName()
-                + " " + author.getAuthorId().getLastName())
+                        + " " + author.getAuthorId().getLastName())
                 .collect(Collectors.toCollection(ConcurrentSkipListSet::new)));
         if (!Objects.equals(authorsAsString, mAuthors)) {
             Set<String> splitModifiedAuthors = Arrays.stream(mAuthors.split(";"))
@@ -240,7 +254,7 @@ public class BookService {
                 .collect(Collectors.toCollection(ConcurrentSkipListSet::new)));
         if (!Objects.equals(genresAsString, mGenres)) {
             Set<String> splitModifiedGenres = Arrays.stream(mGenres.split(";"))
-                    .collect(Collectors.toCollection(ConcurrentSkipListSet::new));;
+                    .collect(Collectors.toCollection(ConcurrentSkipListSet::new));
             // remove the genres that already belong to the book
             Iterator<Genre> genreIterator = genres.iterator(); // iterators required because we are removing elements
             // while iterating through them
@@ -274,17 +288,6 @@ public class BookService {
 
         // modifications should be done
         return true;
-    }
-
-    public static String joinStrings(Set<String> strings) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String str : strings) {
-            stringBuilder.append(str).append(";");
-        }
-        if (!stringBuilder.isEmpty()) {
-            stringBuilder.setLength(stringBuilder.length() - 1);
-        }
-        return stringBuilder.toString();
     }
 
 }

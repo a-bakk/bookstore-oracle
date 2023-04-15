@@ -9,10 +9,9 @@ import java.util.List;
 
 public abstract class AbstractJpaDao<T extends Serializable> {
 
-    private Class<T> entityClass;
-
     @PersistenceContext
     EntityManager entityManager;
+    private Class<T> entityClass;
 
     protected final void setEntityClass(Class<T> classToSet) {
         this.entityClass = classToSet;

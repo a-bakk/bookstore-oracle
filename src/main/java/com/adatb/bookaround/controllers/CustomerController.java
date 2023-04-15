@@ -63,8 +63,8 @@ public class CustomerController {
             return "redirect:/index";
         redirectAttributes.addFlashAttribute("wishlistCreationVerdict",
                 customerService.createWishlist(wishlistName, customerDetails.getCustomerId())
-                ? "Kívánságlista sikeresen létrehozva!"
-                : "Kívánságlista létrehozása sikertelen!");
+                        ? "Kívánságlista sikeresen létrehozva!"
+                        : "Kívánságlista létrehozása sikertelen!");
         return "redirect:/wishlists";
     }
 
@@ -76,8 +76,8 @@ public class CustomerController {
             return "redirect:/index";
         redirectAttributes.addFlashAttribute("wishlistModificationVerdict",
                 customerService.modifyWishlist(wishListName, wishlistId)
-                ? "Kívánságlista sikeresen módosítva!"
-                : "Kívánságlista módosítása sikertelen!");
+                        ? "Kívánságlista sikeresen módosítva!"
+                        : "Kívánságlista módosítása sikertelen!");
         return "redirect:/wishlists";
     }
 
@@ -88,8 +88,8 @@ public class CustomerController {
             return "redirect:/index";
         redirectAttributes.addFlashAttribute("wishlistDeletionVerdict",
                 customerService.deleteWishlist(wishlistId)
-                ? "Kívánságlista sikeresen törölve!"
-                : "Kívánságlista törlése sikertelen!");
+                        ? "Kívánságlista sikeresen törölve!"
+                        : "Kívánságlista törlése sikertelen!");
         return "redirect:/wishlists";
     }
 
@@ -101,8 +101,8 @@ public class CustomerController {
             return "redirect:/index";
         redirectAttributes.addFlashAttribute("addToWishlistVerdict",
                 customerService.addBookToWishlist(wishlistId, bookId)
-                ? "A könyv sikeresen hozzáadva a kívánságlistához!"
-                : "A könyv hozzáadása sikertelen!");
+                        ? "A könyv sikeresen hozzáadva a kívánságlistához!"
+                        : "A könyv hozzáadása sikertelen!");
         return "redirect:/wishlists";
     }
 
@@ -114,8 +114,8 @@ public class CustomerController {
             return "redirect:/index";
         redirectAttributes.addFlashAttribute("removeFromWishlistVerdict",
                 customerService.removeBookFromWishlist(wishlistId, bookId)
-                ? "Sikeresen törölve a könyv a kívánságlistáról!"
-                : "A könyv törlése sikertelen!");
+                        ? "Sikeresen törölve a könyv a kívánságlistáról!"
+                        : "A könyv törlése sikertelen!");
         return "redirect:/wishlists";
     }
 
@@ -125,8 +125,8 @@ public class CustomerController {
         // needs to be changed if used for other than admin functionalities
         redirectAttributes.addFlashAttribute("customerDeletionVerdict",
                 customerService.deleteCustomerById(customerId)
-                ? "Az ügyfél törlése sikeres!"
-                : "Az ügyfél törlése sikertelen!");
+                        ? "Az ügyfél törlése sikeres!"
+                        : "Az ügyfél törlése sikertelen!");
         return "redirect:/admin-panel";
     }
 
@@ -164,8 +164,8 @@ public class CustomerController {
         // TODO check if invoice belongs to user
         redirectAttributes.addFlashAttribute("payVerdict",
                 customerService.payInvoice(id)
-                ? "A rendelés sikeresen ki lett fizetve."
-                : "A fizetés sikertelen!");
+                        ? "A rendelés sikeresen ki lett fizetve."
+                        : "A fizetés sikertelen!");
         return "redirect:/my-orders";
     }
 
@@ -176,8 +176,8 @@ public class CustomerController {
             return "redirect:/my-orders";
         redirectAttributes.addFlashAttribute("deleteOrderVerdict",
                 customerService.deleteOrderById(orderId)
-                ? "A rendelés sikeresen törölve!"
-                : "A rendelés törlése sikertelen!");
+                        ? "A rendelés sikeresen törölve!"
+                        : "A rendelés törlése sikertelen!");
         return "redirect:/my-orders";
     }
 

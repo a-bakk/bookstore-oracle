@@ -3,7 +3,6 @@ package com.adatb.bookaround.repositories;
 import com.adatb.bookaround.entities.Book;
 import com.adatb.bookaround.entities.PartOf;
 import com.adatb.bookaround.entities.Wishlist;
-import com.adatb.bookaround.entities.compositepk.PartOfId;
 import com.adatb.bookaround.models.WishlistWithContent;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +13,9 @@ import java.util.Map;
 
 @Repository
 public class WishlistDao extends AbstractJpaDao<Wishlist> {
-    public WishlistDao() { this.setEntityClass(Wishlist.class); }
+    public WishlistDao() {
+        this.setEntityClass(Wishlist.class);
+    }
 
     public List<WishlistWithContent> findWishlistsForCustomer(Long customerId) {
         String jpql = "SELECT w, p " +

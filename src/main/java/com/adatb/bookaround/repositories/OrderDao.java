@@ -2,27 +2,23 @@ package com.adatb.bookaround.repositories;
 
 import com.adatb.bookaround.entities.Order;
 import com.adatb.bookaround.models.OrderWithContentAndInvoice;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Repository
 public class OrderDao extends AbstractJpaDao<Order> {
-    public OrderDao () { this.setEntityClass(Order.class); }
-
     @Autowired
     private InvoiceDao invoiceDao;
-
     @Autowired
     private ContainsDao containsDao;
-
     @Autowired
     private BookDao bookDao;
+
+    public OrderDao() {
+        this.setEntityClass(Order.class);
+    }
 
     public List<OrderWithContentAndInvoice> findOrdersForCustomer(Long customerId) {
         List<Order> orders = entityManager.createQuery("SELECT o " +

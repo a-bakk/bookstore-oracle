@@ -1,25 +1,23 @@
 package com.adatb.bookaround.repositories;
 
 import com.adatb.bookaround.entities.Customer;
-import com.adatb.bookaround.models.BookWithAuthorsAndGenres;
 import jakarta.persistence.NoResultException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.regex.Pattern;
-
 
 @Repository
 public class CustomerDao extends AbstractJpaDao<Customer> {
-    public CustomerDao() { this.setEntityClass(Customer.class); }
-
     private static final Logger logger = LogManager.getLogger(CustomerDao.class);
 
+    public CustomerDao() {
+        this.setEntityClass(Customer.class);
+    }
 
     /**
      * Keresés email alapján felhasználóra
+     *
      * @param email felhasználó emailje
      * @return az emailhoz tartozó profil
      */
@@ -34,53 +32,6 @@ public class CustomerDao extends AbstractJpaDao<Customer> {
             return null;
         }
         return result;
-    }
-
-    /**
-     * Keresés felhasználóra id alapján
-     * @param id felhasználó idje
-     * @return az idhoz tartozó profil
-     */
-    public Customer findById(int id) {
-        Customer result;
-        try {
-            result = entityManager.createQuery("SELECT c FROM Customer c WHERE c.customerId = :id", Customer.class)
-                    .setParameter(id, id).getSingleResult();
-        } catch (NoResultException e) {
-            logger.warn("User could not be found with the following id: " + id);
-            return null;
-        }
-        return result;
-    }
-
-    /**
-     * Összes felhasználó listázása
-     * @return Az összes felhasználóból alkotott lista.
-     */
-    public List<Customer[]> findAllCustomers() {
-
-        String jpql = "SELECT Customer FROM Customer";
-
-        List<Customer[]> resultList = entityManager.createQuery(jpql, Customer[].class)
-                .getResultList();
-
-        return resultList;
-    }
-
-    public boolean isValidEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        Pattern pat = Pattern.compile(emailRegex);
-        if (email == null)
-            return false;
-        return pat.matcher(email).matches();
-    }
-
-    public boolean isValidPassword(String password) {
-        String passwordRegex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$";
-        Pattern pat = Pattern.compile(passwordRegex);
-        if (password == null)
-            return false;
-        return pat.matcher(password).matches();
     }
 }
 

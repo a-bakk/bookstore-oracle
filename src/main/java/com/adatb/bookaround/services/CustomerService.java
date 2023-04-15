@@ -26,34 +26,25 @@ import java.util.stream.Collectors;
 @Service
 public class CustomerService implements UserDetailsService {
 
+    private static final Logger logger = LogManager.getLogger(CustomerService.class);
     @Autowired
     private CustomerDao customerDao;
-
     @Autowired
     private OrderDao orderDao;
-
     @Autowired
     private ContainsDao containsDao;
-
     @Autowired
     private InvoiceDao invoiceDao;
-
     @Autowired
     private NotificationDao notificationDao;
-
     @Autowired
     private StockDao stockDao;
-
     @Autowired
     private WishlistDao wishlistDao;
-
     @Autowired
     private BookDao bookDao;
-
     @Autowired
     private PartOfDao partOfDao;
-
-    private static final Logger logger = LogManager.getLogger(CustomerService.class);
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -201,11 +192,11 @@ public class CustomerService implements UserDetailsService {
     }
 
     public boolean createOrder(ShoppingCart shoppingCart, CustomerDetails customerDetails,
-                                           Boolean orderMode, Long storeId) throws Exception {
+                               Boolean orderMode, Long storeId) throws Exception {
         Customer customer = customerDao.find(customerDetails.getCustomerId());
         Long orderSum = shoppingCart.calculateSum();
 
-        // TODO: check if book is on stock, implement store on invoices
+        // TODO: check if book is on stock
 
         // creation of the order itself
         Order order = new Order();
@@ -262,7 +253,7 @@ public class CustomerService implements UserDetailsService {
         document.getRange().replace("{customerAddress}", address, new FindReplaceOptions());
         document.getRange().replace("{orderType}",
                 store == null ? "A rendelés típusa: kiszállítás"
-                : "A rendelés átvehető innen: " + store.getName(), new FindReplaceOptions());
+                        : "A rendelés átvehető innen: " + store.getName(), new FindReplaceOptions());
 
         // books in the third table
         Table table = (Table) document.getChild(NodeType.TABLE, 2, true);
@@ -282,7 +273,7 @@ public class CustomerService implements UserDetailsService {
             newRow.getCells().get(2)
                     .getRange().replace("{pricePerUnit}",
                             String.valueOf(item.getBookModel().getBook().getDiscountedPrice() == null
-                            ? item.getBookModel().getBook().getPrice()
+                                    ? item.getBookModel().getBook().getPrice()
                                     : item.getBookModel().getBook().getDiscountedPrice()), new FindReplaceOptions());
             newRow.getCells().get(3)
                     .getRange().replace("{totalPrice}",

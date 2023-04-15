@@ -4,10 +4,8 @@ import com.adatb.bookaround.entities.Book;
 import com.adatb.bookaround.entities.Genre;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +13,9 @@ import java.util.Map;
 @Repository
 public class GenreDao extends AbstractJpaDao<Genre> {
 
-    public GenreDao() { this.setEntityClass(Genre.class); }
+    public GenreDao() {
+        this.setEntityClass(Genre.class);
+    }
 
     public List<Genre> findByBook(Book book) {
         return entityManager.createQuery("SELECT g FROM Genre g WHERE g.genreId.bookId = :bookId", Genre.class)
@@ -26,8 +26,8 @@ public class GenreDao extends AbstractJpaDao<Genre> {
     @Transactional
     public int delete(Long bookId, String genreName) {
         Query query = entityManager.createQuery("DELETE FROM Genre g " +
-                "WHERE g.genreId.bookId = :bookId AND " +
-                "g.genreId.genreName = :genreName")
+                        "WHERE g.genreId.bookId = :bookId AND " +
+                        "g.genreId.genreName = :genreName")
                 .setParameter("bookId", bookId)
                 .setParameter("genreName", genreName);
         return query.executeUpdate();
@@ -36,6 +36,7 @@ public class GenreDao extends AbstractJpaDao<Genre> {
     /**
      * Feladat: Műfajok mellé kigyűjteni, hogy hány, az adott műfajba tartozó könyv található az
      * adatbázisban (triviális lekérdezéssel).
+     *
      * @return Műfaj neve és a hozzá tartozó könyvek száma.
      */
     public Map<String, Long> findNumberOfBooksByGenre() {

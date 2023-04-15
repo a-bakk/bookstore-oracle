@@ -4,8 +4,6 @@ import com.adatb.bookaround.entities.Author;
 import com.adatb.bookaround.entities.Book;
 import com.adatb.bookaround.entities.Genre;
 import com.adatb.bookaround.models.BookWithAuthorsAndGenres;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -14,14 +12,14 @@ import java.util.*;
 @Repository
 public class BookDao extends AbstractJpaDao<Book> {
 
-    private static final Logger logger = LogManager.getLogger(BookDao.class);
-
     @Autowired
     private AuthorDao authorDao;
     @Autowired
     private GenreDao genreDao;
 
-    public BookDao() { this.setEntityClass(Book.class); }
+    public BookDao() {
+        this.setEntityClass(Book.class);
+    }
 
     public BookWithAuthorsAndGenres findBookWithAuthorsAndGenresById(Long bookId) {
         String jpql = "SELECT b, a, g " +
@@ -40,6 +38,7 @@ public class BookDao extends AbstractJpaDao<Book> {
     /**
      * Listázása a könyveknek a hozzájuk tartozó authorokkal és genrekkel,
      * a BookWithAuthorsAndGenres modelbe helyezéssel.
+     *
      * @return Az ezekből alkotott lista.
      */
     public List<BookWithAuthorsAndGenres> findAllBooksWithAuthorsAndGenres() {
@@ -56,6 +55,7 @@ public class BookDao extends AbstractJpaDao<Book> {
 
     /**
      * Filterezés szerző alapján.
+     *
      * @param author A könyv szerzője.
      * @return Egy lista, melyben a filterezésnek megfelelő BookWithAuthorsAndGenres példányok vannak.
      */
@@ -77,6 +77,7 @@ public class BookDao extends AbstractJpaDao<Book> {
 
     /**
      * Az előző overloadja, melyben címre filterezünk.
+     *
      * @param title A könyv címe, melyre keresni szeretnénk.
      * @return Egy lista, melyben a filterezésnek megfelelő BookWithAuthorsAndGenres példányok vannak.
      */
@@ -183,6 +184,7 @@ public class BookDao extends AbstractJpaDao<Book> {
 
     /**
      * A könyvek listázása a megjelenési idejük függvényében.
+     *
      * @return A megfelelő BookWithAuthorsAndGenres entitásokat tartalmazó lista.
      */
     public List<BookWithAuthorsAndGenres> findAllBooksWithAuthorsAndGenresOrderedByReleaseDate() {
@@ -198,6 +200,7 @@ public class BookDao extends AbstractJpaDao<Book> {
         return getEntitiesFromResultList(resultList);
     }
 
+    @SuppressWarnings("unused")
     public List<Book> findBooksBelowPrice(int price) {
         String jpql = "SELECT b " +
                 "FROM Book b " +
@@ -249,6 +252,7 @@ public class BookDao extends AbstractJpaDao<Book> {
 
     /**
      * A könyv kiegészítése a szerzőivel és műfajaival.
+     *
      * @param book melyik könyvhöz kell hozzárendelni az adatokat
      * @return modelbe csomagolt könyvadatok
      */
@@ -267,6 +271,7 @@ public class BookDao extends AbstractJpaDao<Book> {
 
     /**
      * A lekérés eredményének átmappolása az entityknek megfelelően.
+     *
      * @param resultList Általános objektum lista.
      * @return Egy olyan lista, melyben már BookWithAuthorsAndGenres példányok vannak.
      */

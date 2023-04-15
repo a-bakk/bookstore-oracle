@@ -1,6 +1,5 @@
 package com.adatb.bookaround.repositories;
 
-import com.adatb.bookaround.entities.Book;
 import com.adatb.bookaround.entities.BusinessHours;
 import com.adatb.bookaround.entities.Stock;
 import com.adatb.bookaround.entities.Store;
@@ -13,10 +12,12 @@ import java.util.*;
 
 @Repository
 public class StoreDao extends AbstractJpaDao<Store> {
-    public StoreDao() { this.setEntityClass(Store.class); }
-
     @Autowired
     private BookDao bookDao;
+
+    public StoreDao() {
+        this.setEntityClass(Store.class);
+    }
 
     public List<StoreWithBusinessHours> findAllStoresWithBusinessHours() {
         String jpql = "SELECT s, bh " +
@@ -47,7 +48,6 @@ public class StoreDao extends AbstractJpaDao<Store> {
     }
 
 
-
     public Map<Store, List<BookWithAuthorsAndGenres>> findStockForEachStore() {
         //SELECT s.name, st.book_id, st.count
         //FROM STORE s, STOCK st
@@ -61,9 +61,9 @@ public class StoreDao extends AbstractJpaDao<Store> {
 
         Map<Store, List<BookWithAuthorsAndGenres>> result = new HashMap<>();
 
-        for (Object[] obj: resultList) {
-            Store store = (Store)obj[0];
-            Stock stock = (Stock)obj[1];
+        for (Object[] obj : resultList) {
+            Store store = (Store) obj[0];
+            Stock stock = (Stock) obj[1];
 
             BookWithAuthorsAndGenres bookWithAuthorsAndGenres = null;
             if (stock != null) {

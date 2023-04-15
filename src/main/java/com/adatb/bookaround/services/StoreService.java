@@ -11,7 +11,10 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class StoreService {
@@ -22,6 +25,14 @@ public class StoreService {
     @Autowired
     private OrderDao orderDao;
 
+    public static boolean checkForEmptyString(String[] args) {
+        for (String str : args) {
+            if (str.isEmpty())
+                return true;
+        }
+        return false;
+    }
+
     public List<StoreWithBusinessHours> getAllStores() {
         List<StoreWithBusinessHours> stores = storeDao.findAllStoresWithBusinessHours();
         if (stores == null || stores.isEmpty()) {
@@ -31,6 +42,7 @@ public class StoreService {
         return stores;
     }
 
+    @SuppressWarnings("unused")
     public List<Order> getAllOrders() {
         List<Order> orders = orderDao.findAll();
         if (orders == null || orders.isEmpty()) {
@@ -39,7 +51,6 @@ public class StoreService {
         }
         return orders;
     }
-
 
     public Map<Store, List<BookWithAuthorsAndGenres>> getStockForEachStore() {
         Map<Store, List<BookWithAuthorsAndGenres>> resultStock = storeDao.findStockForEachStore();
@@ -50,14 +61,6 @@ public class StoreService {
         }
 
         return resultStock;
-    }
-
-    public static boolean checkForEmptyString(String[] args) {
-        for (String str : args) {
-            if (str.isEmpty())
-                return true;
-        }
-        return false;
     }
 
 }

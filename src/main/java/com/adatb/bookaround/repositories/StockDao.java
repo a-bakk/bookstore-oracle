@@ -10,7 +10,9 @@ import java.util.List;
 
 @Repository
 public class StockDao extends AbstractJpaDao<Stock> {
-    public StockDao() { this.setEntityClass(Stock.class); }
+    public StockDao() {
+        this.setEntityClass(Stock.class);
+    }
 
     public Integer findStockCountByBookId(Long bookId) {
         String jpql = "SELECT s " +
@@ -33,10 +35,10 @@ public class StockDao extends AbstractJpaDao<Stock> {
     }
 
     @Transactional
-    public int deleteByStockId(StockId stockId) {
+    public void deleteByStockId(StockId stockId) {
         Query query = entityManager.createQuery("DELETE FROM Stock s " +
-                "WHERE s.stockId = :stockId")
+                        "WHERE s.stockId = :stockId")
                 .setParameter("stockId", stockId);
-        return query.executeUpdate();
+        query.executeUpdate();
     }
 }

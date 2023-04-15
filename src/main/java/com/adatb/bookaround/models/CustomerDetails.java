@@ -37,6 +37,23 @@ public class CustomerDetails implements UserDetails {
     private String country;
     private LocalDateTime regularSince;
 
+    public CustomerDetails(Customer customer) {
+        this.customerId = customer.getCustomerId();
+        this.email = customer.getEmail();
+        this.password = customer.getPassword();
+        this.firstName = customer.getFirstName();
+        this.lastName = customer.getLastName();
+        this.createdAt = customer.getCreatedAt();
+        this.lastLogin = customer.getLastLogin();
+        this.admin = customer.isAdmin();
+        this.street = customer.getStreet();
+        this.city = customer.getCity();
+        this.stateOrRegion = customer.getStateOrRegion();
+        this.postcode = customer.getPostcode();
+        this.country = customer.getCountry();
+        this.regularSince = customer.getRegularSince();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
@@ -75,23 +92,6 @@ public class CustomerDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public CustomerDetails(Customer customer) {
-        this.customerId = customer.getCustomerId();
-        this.email = customer.getEmail();
-        this.password = customer.getPassword();
-        this.firstName = customer.getFirstName();
-        this.lastName = customer.getLastName();
-        this.createdAt = customer.getCreatedAt();
-        this.lastLogin = customer.getLastLogin();
-        this.admin = customer.isAdmin();
-        this.street = customer.getStreet();
-        this.city = customer.getCity();
-        this.stateOrRegion = customer.getStateOrRegion();
-        this.postcode = customer.getPostcode();
-        this.country = customer.getCountry();
-        this.regularSince = customer.getRegularSince();
     }
 
 }

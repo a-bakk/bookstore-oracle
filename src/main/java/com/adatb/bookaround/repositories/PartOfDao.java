@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class PartOfDao extends AbstractJpaDao<PartOf> {
-    public PartOfDao() { this.setEntityClass(PartOf.class); }
+    public PartOfDao() {
+        this.setEntityClass(PartOf.class);
+    }
 
     public PartOf findByBookAndWishlist(Book book, Wishlist wishlist) {
         return entityManager.createQuery("SELECT p " +
@@ -24,8 +26,8 @@ public class PartOfDao extends AbstractJpaDao<PartOf> {
     @Transactional
     public int delete(Book book, Wishlist wishlist) {
         Query query = entityManager.createQuery("DELETE FROM PartOf p " +
-                "WHERE p.partOfId.book = :book AND " +
-                "p.partOfId.wishlist = :wishlist")
+                        "WHERE p.partOfId.book = :book AND " +
+                        "p.partOfId.wishlist = :wishlist")
                 .setParameter("book", book)
                 .setParameter("wishlist", wishlist);
 
