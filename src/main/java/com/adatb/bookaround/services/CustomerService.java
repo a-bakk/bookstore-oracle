@@ -89,6 +89,15 @@ public class CustomerService implements UserDetailsService {
         return orders;
     }
 
+    public boolean payInvoice(Long invoiceId) {
+        Invoice invoice = invoiceDao.find(invoiceId);
+        if (invoice.isPaid())
+            return false;
+        invoice.setPaid(true);
+        invoiceDao.update(invoice);
+        return true;
+    }
+
     public boolean createOrder(ShoppingCart shoppingCart, CustomerDetails customerDetails,
                                Boolean orderMode) throws Exception {
         return createOrder(shoppingCart, customerDetails, orderMode, null);
@@ -99,7 +108,7 @@ public class CustomerService implements UserDetailsService {
         Customer customer = customerDao.find(customerDetails.getCustomerId());
         Long orderSum = shoppingCart.calculateSum();
 
-        // TODO: check if book is on stock
+        // TODO: check if book is on stock, implement store on invoices
 
         // creation of the order itself
         Order order = new Order();

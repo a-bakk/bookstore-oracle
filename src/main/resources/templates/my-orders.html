@@ -30,6 +30,12 @@
                     </div>
                 </section>
 
+                <section th:if="${payVerdict}" class="bg-light p-3 px-5">
+                    <div class="container">
+                        <div th:text="${payVerdict}" class="alert alert-info text-center" />
+                    </div>
+                </section>
+
                 <section class="p-5 bg-light" style="min-height: 100vh;">
 
                     <h1>Rendelések</h1>
@@ -61,7 +67,11 @@
                                         <input type="submit" class="btn btn-primary" value="Számla letöltése">
                                     </form>
                                 </td>
-                                <td><button class="btn btn-secondary">Fizetés</button></td>
+                                <td>
+                                    <form th:action="@{/invoices/pay-invoice/{id}(id = ${orderModel.getInvoice().getInvoiceId()})}" method="post">
+                                        <input type="submit" class="btn btn-secondary" value="Fizetés">
+                                    </form>
+                                </td>
                                 <td><button class="btn btn-danger">Törlés</button></td>
                             </tr>
                         </tbody>

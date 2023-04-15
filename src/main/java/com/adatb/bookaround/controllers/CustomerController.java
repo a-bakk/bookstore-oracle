@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -78,6 +75,18 @@ public class CustomerController {
             return "redirect:/my-orders";
         }
         redirectAttributes.addFlashAttribute("orderVerdict", "A rendelés nem sikerült!");
+        return "redirect:/my-orders";
+    }
+
+    @PostMapping("/invoices/pay-invoice/{id}")
+    public String payInvoice(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        if (!AuthService.isAuthenticated())
+            return "redirect:/my-orders";
+        // TODO check if invoice belongs to user
+        redirectAttributes.addFlashAttribute("payVerdict",
+                customerService.payInvoice(id)
+                ? "A rendelés sikeresen ki lett fizetve."
+                : "A fizetés sikertelen!");
         return "redirect:/my-orders";
     }
 
