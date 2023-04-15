@@ -231,7 +231,50 @@
                   </p>
                 </th:block>
                 <div class="d-flex align-items-center">
-                  <button type="button" class="btn btn-outline-primary me-3">Kívánságlistára</button>
+
+                  <button type="button" class="btn btn-outline-primary me-3" data-bs-toggle="modal"
+                    data-bs-target="#wishlistModal">
+                    Kívánságlistára
+                  </button>
+
+                  <th:block th:if="${isLoggedIn} eq true">
+                    <!-- Wishlist Modal -->
+                    <div class="modal fade" id="wishlistModal" tabindex="-1" aria-labelledby="wishlistModalLabel"
+                      aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="wishlistModalLabel">Válasszon kívánságlistát</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <form th:action="@{/add-book-to-wishlist}" method="post">
+                            <div class="modal-body">
+                              <th:block th:if="${numberOfWishlists} eq 0">
+                                Nincs kívánságlistája, előbb hozzon létre kívánságlistát a Kívánságlisták menüpont
+                                alatt.
+                              </th:block>
+                              <th:block th:if="${numberOfWishlists} ne 0">
+                                <label class="input-group-text" for="wishlistDropdownInput">Válasszon
+                                  kívánságlistát!</label>
+                                <select class="form-select" id="wishlistDropdownInput" th:name="chosenWishlistId">
+                                  <option selected>...</option>
+                                  <option th:each="wishlistModel : ${wishlistModels}"
+                                    th:value="${wishlistModel.getWishlist().getWishlistId()}"
+                                    th:text="${wishlistModel.getWishlist().getName()}"></option>
+                                </select>
+                              </th:block>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
+                              <input type="hidden" th:name="bookIdToAddToWishlist" th:value="${bookModel.getBook().getBookId()}">
+                              <input th:if="${numberOfWishlists} ne 0" type="submit" class="btn btn-secondary" value="Hozzáadás kívánságlistához">
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </th:block>
+
                   <form th:action="@{/cart/addItemToCart}" method="post" class="d-flex align-items-center">
                     <input type="hidden" required th:name="bookIdToAdd" th:value="${bookModel.getBook().getBookId()}">
                     <div class="input-group me-3">

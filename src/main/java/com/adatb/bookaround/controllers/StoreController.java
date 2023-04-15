@@ -4,12 +4,15 @@ import com.adatb.bookaround.entities.Author;
 import com.adatb.bookaround.entities.Book;
 import com.adatb.bookaround.entities.Genre;
 import com.adatb.bookaround.models.BookWithAuthorsAndGenres;
+import com.adatb.bookaround.models.CustomerDetails;
+import com.adatb.bookaround.services.AuthService;
 import com.adatb.bookaround.services.BookService;
 import com.adatb.bookaround.services.CustomerService;
 import com.adatb.bookaround.services.StoreService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -82,7 +85,8 @@ public class StoreController {
 
     @GetMapping("/book/{bookId}")
     public String showBookById(Model model,
-                               @PathVariable Long bookId) {
+                               @PathVariable Long bookId,
+                               @AuthenticationPrincipal CustomerDetails customerDetails) {
         BookWithAuthorsAndGenres curr = bookService.getBookWithAuthorsAndGenresById(bookId);
         Set<Author> authors = curr.getAuthors();
         Set<Genre> genres = curr.getGenres();
@@ -94,6 +98,13 @@ public class StoreController {
                 BookService.joinStrings(genres.stream().map(genre -> genre.getGenreId().getGenreName())
                         .collect(Collectors.toSet())));
         model.addAttribute("recommendationModels", bookService.getRecommendationsByBookId(bookId));
+        model.addAttribute("isLoggedIn", AuthService.isAuthenticated());
+        if (AuthService.isAuthenticated()) {
+            model.addAttribute("wishlistModels",
+                    customerService.getWishlistsForCustomer(customerDetails.getCustomerId()));
+            model.addAttribute("numberOfWishlists",
+                    customerService.getNumberOfWishlistsForCustomer(customerDetails.getCustomerId()));
+        }
         return "book";
     }
 

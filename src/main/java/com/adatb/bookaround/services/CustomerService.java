@@ -2,6 +2,7 @@ package com.adatb.bookaround.services;
 
 import com.adatb.bookaround.entities.*;
 import com.adatb.bookaround.entities.compositepk.ContainsId;
+import com.adatb.bookaround.entities.compositepk.PartOfId;
 import com.adatb.bookaround.models.*;
 import com.adatb.bookaround.repositories.*;
 import com.aspose.words.*;
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,6 +46,12 @@ public class CustomerService implements UserDetailsService {
 
     @Autowired
     private WishlistDao wishlistDao;
+
+    @Autowired
+    private BookDao bookDao;
+
+    @Autowired
+    private PartOfDao partOfDao;
 
     private static final Logger logger = LogManager.getLogger(CustomerService.class);
 
@@ -141,6 +149,40 @@ public class CustomerService implements UserDetailsService {
         if (wishlist == null)
             return false;
         wishlistDao.delete(wishlistId);
+        return true;
+    }
+
+    public Integer getNumberOfWishlistsForCustomer(Long customerId) {
+        return wishlistDao.findNumberOfWishlistsForCustomer(customerId);
+    }
+
+    public boolean addBookToWishlist(Long wishlistId, Long bookId) {
+        Wishlist wishlist = wishlistDao.find(wishlistId);
+        Book book = bookDao.find(bookId);
+        if (wishlist == null || book == null)
+            return false;
+        if (wishlistDao.findBooksByWishlistId(wishlistId).stream()
+                .anyMatch(entry -> Objects.equals(entry.getBookId(), bookId)))
+            return false;
+        PartOf partOf = new PartOf();
+        PartOfId partOfId = new PartOfId();
+        partOfId.setBook(book);
+        partOfId.setWishlist(wishlist);
+        partOf.setPartOfId(partOfId);
+        partOf.setAddedAt(LocalDateTime.now());
+        partOfDao.create(partOf);
+        return true;
+    }
+
+    public boolean removeBookFromWishlist(Long wishlistId, Long bookId) {
+        Wishlist wishlist = wishlistDao.find(wishlistId);
+        Book book = bookDao.find(bookId);
+        if (wishlist == null || book == null)
+            return false;
+        PartOf partOf = partOfDao.findByBookAndWishlist(book, wishlist);
+        if (partOf == null)
+            return false;
+        partOfDao.delete(book, wishlist);
         return true;
     }
 

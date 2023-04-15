@@ -44,6 +44,18 @@
                         </div>
                     </section>
 
+                    <section th:if="${addToWishlistVerdict}" class="bg-light p-3 px-5">
+                        <div class="container">
+                            <div th:text="${addToWishlistVerdict}" class="alert alert-info text-center" />
+                        </div>
+                    </section>
+
+                    <section th:if="${removeFromWishlistVerdict}" class="bg-light p-3 px-5">
+                        <div class="container">
+                            <div th:text="${removeFromWishlistVerdict}" class="alert alert-info text-center" />
+                        </div>
+                    </section>
+
                     <div class="card mb-5">
                         <div class="card-header">Új kívánságlista</div>
                         <div class="card-body">
@@ -98,7 +110,13 @@
                                                 <button type="button" class="btn btn-primary">Megtekintés</button>
                                             </a>
                                         </td>
-                                        <td><button type="button" class="btn btn-danger">Törlés</button></td>
+                                        <td>
+                                            <form th:action="@{/remove-book-from-wishlist}" method="post">
+                                                <input type="hidden" th:name="partOfBookId" th:value="${book.getBookId()}">
+                                                <input type="hidden" th:name="partOfWishlistId" th:value="${wishlistModel.getWishlist().getWishlistId()}">
+                                                <input type="submit" class="btn btn-danger" value="Törlés">
+                                            </form>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

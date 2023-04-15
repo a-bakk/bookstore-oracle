@@ -98,6 +98,32 @@ public class CustomerController {
         return "redirect:/wishlists";
     }
 
+    @PostMapping("/add-book-to-wishlist")
+    public String addBookToWishlist(@RequestParam(name = "chosenWishlistId") Long wishlistId,
+                                    @RequestParam(name = "bookIdToAddToWishlist") Long bookId,
+                                    RedirectAttributes redirectAttributes) {
+        if (!AuthService.isAuthenticated())
+            return "redirect:/index";
+        redirectAttributes.addFlashAttribute("addToWishlistVerdict",
+                customerService.addBookToWishlist(wishlistId, bookId)
+                ? "A könyv sikeresen hozzáadva a kívánságlistához!"
+                : "A könyv hozzáadása sikertelen!");
+        return "redirect:/wishlists";
+    }
+
+    @PostMapping("/remove-book-from-wishlist")
+    public String removeBookFromWishlist(@RequestParam(name = "partOfBookId") Long bookId,
+                                         @RequestParam(name = "partOfWishlistId") Long wishlistId,
+                                         RedirectAttributes redirectAttributes) {
+        if (!AuthService.isAuthenticated())
+            return "redirect:/index";
+        redirectAttributes.addFlashAttribute("removeFromWishlistVerdict",
+                customerService.removeBookFromWishlist(wishlistId, bookId)
+                ? "Sikeresen törölve a könyv a kívánságlistáról!"
+                : "A könyv törlése sikertelen!");
+        return "redirect:/wishlists";
+    }
+
     @PostMapping("/place-order-with-shipping")
     public String addOrderWithShipping(@SessionAttribute("shoppingCart") ShoppingCart shoppingCart,
                                        @AuthenticationPrincipal CustomerDetails customerDetails,

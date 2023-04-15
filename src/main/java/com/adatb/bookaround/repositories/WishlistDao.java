@@ -1,5 +1,6 @@
 package com.adatb.bookaround.repositories;
 
+import com.adatb.bookaround.entities.Book;
 import com.adatb.bookaround.entities.PartOf;
 import com.adatb.bookaround.entities.Wishlist;
 import com.adatb.bookaround.entities.compositepk.PartOfId;
@@ -44,5 +45,18 @@ public class WishlistDao extends AbstractJpaDao<Wishlist> {
         }
 
         return new ArrayList<>(wishlistWithContentMap.values());
+    }
+
+    public List<Book> findBooksByWishlistId(Long wishlistId) {
+        return entityManager.createQuery("SELECT p " +
+                        "FROM PartOf p " +
+                        "WHERE p.partOfId.wishlist.wishlistId = :wishlistId", PartOf.class)
+                .setParameter("wishlistId", wishlistId)
+                .getResultList().stream().map(partOf -> partOf.getPartOfId().getBook()).toList();
+    }
+
+    public Integer findNumberOfWishlistsForCustomer(Long customerId) {
+        var wishlists = findWishlistsForCustomer(customerId);
+        return wishlists.isEmpty() ? 0 : wishlists.size();
     }
 }
