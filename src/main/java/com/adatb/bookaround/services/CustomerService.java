@@ -98,6 +98,14 @@ public class CustomerService implements UserDetailsService {
         return true;
     }
 
+    public boolean deleteOrderById(Long orderId) {
+        Order order = orderDao.find(orderId);
+        if (order == null)
+            return false;
+        orderDao.delete(orderId);
+        return true;
+    }
+
     public boolean createOrder(ShoppingCart shoppingCart, CustomerDetails customerDetails,
                                Boolean orderMode) throws Exception {
         return createOrder(shoppingCart, customerDetails, orderMode, null);

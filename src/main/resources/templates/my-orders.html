@@ -36,6 +36,12 @@
                     </div>
                 </section>
 
+                <section th:if="${deleteOrderVerdict}" class="bg-light p-3 px-5">
+                    <div class="container">
+                        <div th:text="${deleteOrderVerdict}" class="alert alert-info text-center" />
+                    </div>
+                </section>
+
                 <section class="p-5 bg-light" style="min-height: 100vh;">
 
                     <h1>Rendelések</h1>
@@ -63,16 +69,49 @@
                                 <td th:if="${orderModel.getInvoice().isPaid()} eq true">Fizetett</td>
                                 <td th:if="${orderModel.getInvoice().isPaid()} ne true">Fizetetlen</td>
                                 <td>
-                                    <form th:action="@{/invoices/download/{id}(id = ${orderModel.getInvoice().getInvoiceId()})}" method="get">
+                                    <form
+                                        th:action="@{/invoices/download/{id}(id = ${orderModel.getInvoice().getInvoiceId()})}"
+                                        method="get">
                                         <input type="submit" class="btn btn-primary" value="Számla letöltése">
                                     </form>
                                 </td>
                                 <td>
-                                    <form th:action="@{/invoices/pay-invoice/{id}(id = ${orderModel.getInvoice().getInvoiceId()})}" method="post">
+                                    <form
+                                        th:action="@{/invoices/pay-invoice/{id}(id = ${orderModel.getInvoice().getInvoiceId()})}"
+                                        method="post">
                                         <input type="submit" class="btn btn-secondary" value="Fizetés">
                                     </form>
                                 </td>
-                                <td><button class="btn btn-danger">Törlés</button></td>
+                                <td> <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                        th:data-bs-target="'#deleteOrderModal' + ${orderModel.getOrder().getOrderId()}">
+                                        Törlés
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" th:id="'deleteOrderModal' + ${orderModel.getOrder().getOrderId()}" tabindex="-1"
+                                        th:aria-labelledby="'deleteOrderModalLabel' + ${orderModel.getOrder().getOrderId()}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" th:id="'deleteOrderModalLabel' + ${orderModel.getOrder().getOrderId()}">Rendelés
+                                                        törlése</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Biztosan törölné szeretni a rendelést?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Bezárás</button>
+                                                    <form th:action="@{/orders/delete-order}" method="post">
+                                                        <input type="hidden" th:name="delete-order-id" th:value="${orderModel.getOrder().getOrderId()}">
+                                                        <input type="submit" class="btn btn-danger" value="Törlés véglegesítése">
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

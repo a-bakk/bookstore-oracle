@@ -90,6 +90,18 @@ public class CustomerController {
         return "redirect:/my-orders";
     }
 
+    @PostMapping("/orders/delete-order")
+    public String deleteOrder(@RequestParam(name = "delete-order-id") Long orderId,
+                              RedirectAttributes redirectAttributes) {
+        if (!AuthService.isAuthenticated())
+            return "redirect:/my-orders";
+        redirectAttributes.addFlashAttribute("deleteOrderVerdict",
+                customerService.deleteOrderById(orderId)
+                ? "A rendelés sikeresen törölve!"
+                : "A rendelés törlése sikertelen!");
+        return "redirect:/my-orders";
+    }
+
     @GetMapping("/profile")
     public String showProfile(Model model, @AuthenticationPrincipal CustomerDetails currentCustomer) {
         if (!AuthService.isAuthenticated())
