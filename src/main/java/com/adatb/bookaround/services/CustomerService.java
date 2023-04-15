@@ -242,6 +242,11 @@ public class CustomerService implements UserDetailsService {
 
     private void createInvoicePdf(Order order, ShoppingCart shoppingCart, CustomerDetails customerDetails,
                                   Invoice invoice) throws Exception {
+        createInvoicePdf(order, shoppingCart, customerDetails, invoice, null);
+    }
+
+    private void createInvoicePdf(Order order, ShoppingCart shoppingCart, CustomerDetails customerDetails,
+                                  Invoice invoice, Store store) throws Exception {
         File file = ResourceUtils.getFile("classpath:static/invoice-template.docx");
         Document document = new Document(file.getAbsolutePath());
 
@@ -255,6 +260,9 @@ public class CustomerService implements UserDetailsService {
                 + ", " + customerDetails.getStateOrRegion() + ", " + customerDetails.getCountry()
                 + ", " + customerDetails.getPostcode();
         document.getRange().replace("{customerAddress}", address, new FindReplaceOptions());
+        document.getRange().replace("{orderType}",
+                store == null ? "A rendelés típusa: kiszállítás"
+                : "A rendelés átvehető innen: " + store.getName(), new FindReplaceOptions());
 
         // books in the third table
         Table table = (Table) document.getChild(NodeType.TABLE, 2, true);
