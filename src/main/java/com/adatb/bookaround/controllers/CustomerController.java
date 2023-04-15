@@ -73,6 +73,31 @@ public class CustomerController {
         return "redirect:/wishlists";
     }
 
+    @PostMapping("/modify-wishlist")
+    public String modifyWishlist(@RequestParam(name = "modifyWishlistName") String wishListName,
+                                 @RequestParam(name = "modifyWishlistId") Long wishlistId,
+                                 RedirectAttributes redirectAttributes) {
+        if (!AuthService.isAuthenticated())
+            return "redirect:/index";
+        redirectAttributes.addFlashAttribute("wishlistModificationVerdict",
+                customerService.modifyWishlist(wishListName, wishlistId)
+                ? "Kívánságlista sikeresen módosítva!"
+                : "Kívánságlista módosítása sikertelen!");
+        return "redirect:/wishlists";
+    }
+
+    @PostMapping("/delete-wishlist")
+    public String deleteWishlist(@RequestParam(name = "deleteWishlistId") Long wishlistId,
+                                 RedirectAttributes redirectAttributes) {
+        if (!AuthService.isAuthenticated())
+            return "redirect:/index";
+        redirectAttributes.addFlashAttribute("wishlistDeletionVerdict",
+                customerService.deleteWishlist(wishlistId)
+                ? "Kívánságlista sikeresen törölve!"
+                : "Kívánságlista törlése sikertelen!");
+        return "redirect:/wishlists";
+    }
+
     @PostMapping("/place-order-with-shipping")
     public String addOrderWithShipping(@SessionAttribute("shoppingCart") ShoppingCart shoppingCart,
                                        @AuthenticationPrincipal CustomerDetails customerDetails,

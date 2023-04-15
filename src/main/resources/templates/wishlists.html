@@ -32,6 +32,18 @@
                         </div>
                     </section>
 
+                    <section th:if="${wishlistModificationVerdict}" class="bg-light p-3 px-5">
+                        <div class="container">
+                            <div th:text="${wishlistModificationVerdict}" class="alert alert-info text-center" />
+                        </div>
+                    </section>
+
+                    <section th:if="${wishlistDeletionVerdict}" class="bg-light p-3 px-5">
+                        <div class="container">
+                            <div th:text="${wishlistDeletionVerdict}" class="alert alert-info text-center" />
+                        </div>
+                    </section>
+
                     <div class="card mb-5">
                         <div class="card-header">Új kívánságlista</div>
                         <div class="card-body">
@@ -55,6 +67,18 @@
                             <div class="col-sm-6"><strong>Létrehozva:</strong> <span th:text="${wishlistModel.getWishlist().getCreatedAt()}"></span></div>
                         </div>
 
+                        <div class="container">
+                            <form th:action="@{/modify-wishlist}" method="post">
+                                <div class="mb-3">
+                                    <label for="modifyWishlistName" class="form-label">Kívánságlista nevének módosítása</label>
+                                    <input type="text" class="form-control" id="modifyWishlistName" th:name="modifyWishlistName"
+                                           placeholder="Kedvencek">
+                                    <input type="hidden" th:name="modifyWishlistId" th:value="${wishlistModel.getWishlist().getWishlistId()}">
+                                </div>
+                                <input type="submit" class="btn btn-primary" value="Módosítás">
+                            </form>
+                        </div>
+
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
@@ -69,16 +93,23 @@
                                     <tr th:each="book : ${wishlistModel.getBooks()}">
                                         <td th:text="${book.getTitle()}"></td>
                                         <td th:text="${book.getIsbn()}"></td>
-                                        <td><button type="button" class="btn btn-primary">Megtekintés</button></td>
+                                        <td>
+                                            <a th:href="@{/book/{id}(id = ${book.getBookId()})}">
+                                                <button type="button" class="btn btn-primary">Megtekintés</button>
+                                            </a>
+                                        </td>
                                         <td><button type="button" class="btn btn-danger">Törlés</button></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
 
-                        <button type="button" class="btn btn-danger mt-3">Kívánságlista törlése</button>
+                        <form th:action="@{/delete-wishlist}" method="post">
+                            <input type="hidden" th:name="deleteWishlistId" th:value="${wishlistModel.getWishlist().getWishlistId()}">
+                            <input type="submit" class="btn btn-danger" value="Kívánságlista törlése">
+                        </form>
 
-                        <hr class="dropdown-divider mb-3">
+                        <hr class="dropdown-divider my-5">
                     </div>
 
                 </section>

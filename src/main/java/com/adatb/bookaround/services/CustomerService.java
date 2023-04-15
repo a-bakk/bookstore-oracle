@@ -127,6 +127,23 @@ public class CustomerService implements UserDetailsService {
         return true;
     }
 
+    public boolean modifyWishlist(String wishListName, Long wishlistId) {
+        Wishlist wishlist = wishlistDao.find(wishlistId);
+        if (wishlist == null)
+            return false;
+        wishlist.setName(wishListName);
+        wishlistDao.update(wishlist);
+        return true;
+    }
+
+    public boolean deleteWishlist(Long wishlistId) {
+        Wishlist wishlist = wishlistDao.find(wishlistId);
+        if (wishlist == null)
+            return false;
+        wishlistDao.delete(wishlistId);
+        return true;
+    }
+
     public boolean createOrder(ShoppingCart shoppingCart, CustomerDetails customerDetails,
                                Boolean orderMode) throws Exception {
         return createOrder(shoppingCart, customerDetails, orderMode, null);
