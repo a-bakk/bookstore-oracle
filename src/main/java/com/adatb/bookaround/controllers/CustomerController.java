@@ -51,6 +51,28 @@ public class CustomerController {
         return "my-orders";
     }
 
+    @GetMapping("/wishlists")
+    public String showWishlists(Model model, @AuthenticationPrincipal CustomerDetails customerDetails) {
+        if (!AuthService.isAuthenticated())
+            return "redirect:/auth";
+        model.addAttribute("wishlistModels",
+                customerService.getWishlistsForCustomer(customerDetails.getCustomerId()));
+        return "wishlists";
+    }
+
+    @PostMapping("/create-wishlist")
+    public String addWishlist(@RequestParam(name = "wishlistName") String wishlistName,
+                              @AuthenticationPrincipal CustomerDetails customerDetails,
+                              RedirectAttributes redirectAttributes) {
+        if (!AuthService.isAuthenticated())
+            return "redirect:/index";
+        redirectAttributes.addFlashAttribute("wishlistCreationVerdict",
+                customerService.createWishlist(wishlistName, customerDetails.getCustomerId())
+                ? "Kívánságlista sikeresen létrehozva!"
+                : "Kívánságlista létrehozása sikertelen!");
+        return "redirect:/wishlists";
+    }
+
     @PostMapping("/place-order-with-shipping")
     public String addOrderWithShipping(@SessionAttribute("shoppingCart") ShoppingCart shoppingCart,
                                        @AuthenticationPrincipal CustomerDetails customerDetails,

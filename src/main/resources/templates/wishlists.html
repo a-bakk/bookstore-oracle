@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookAround</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="icon" type="image/x-icon" th:href="@{/img/Ariil-Alphabet-Letter-B.256.png}">
+</head>
+
+<body>
+
+    <section>
+        <div th:replace="~{fragments/navigation :: navigation}"></div>
+    </section>
+
+    <div class="container-fluid scroll-along-linear">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+
+                <section class="p-5 bg-light" style="min-height: 100vh;">
+
+                    <section th:if="${wishlistCreationVerdict}" class="bg-light p-3 px-5">
+                        <div class="container">
+                            <div th:text="${wishlistCreationVerdict}" class="alert alert-info text-center" />
+                        </div>
+                    </section>
+
+                    <div class="card mb-5">
+                        <div class="card-header">Új kívánságlista</div>
+                        <div class="card-body">
+                            <form th:action="@{/create-wishlist}" method="post">
+                                <div class="mb-3">
+                                    <label for="wishlistName" class="form-label">Megnevezés</label>
+                                    <input type="text" class="form-control" id="wishlistName" th:name="wishlistName"
+                                        placeholder="Kedvencek">
+                                </div>
+                                <input type="submit" class="btn btn-primary" value="Létrehozás">
+                            </form>
+                        </div>
+                    </div>
+
+
+                    <h2 class="mb-3">Kívánságlisták</h2>
+
+                    <div class="container" th:each="wishlistModel : ${wishlistModels}">
+                        <div class="row mb-5">
+                            <div class="col-sm-6"><strong>Megnevezés:</strong> <span th:text="${wishlistModel.getWishlist().getName()}"></span></div>
+                            <div class="col-sm-6"><strong>Létrehozva:</strong> <span th:text="${wishlistModel.getWishlist().getCreatedAt()}"></span></div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Cím</th>
+                                        <th scope="col">ISBN</th>
+                                        <th scope="col"></th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="book : ${wishlistModel.getBooks()}">
+                                        <td th:text="${book.getTitle()}"></td>
+                                        <td th:text="${book.getIsbn()}"></td>
+                                        <td><button type="button" class="btn btn-primary">Megtekintés</button></td>
+                                        <td><button type="button" class="btn btn-danger">Törlés</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <button type="button" class="btn btn-danger mt-3">Kívánságlista törlése</button>
+
+                        <hr class="dropdown-divider mb-3">
+                    </div>
+
+                </section>
+
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+
+    <section>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

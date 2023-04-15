@@ -2,10 +2,7 @@ package com.adatb.bookaround.services;
 
 import com.adatb.bookaround.entities.*;
 import com.adatb.bookaround.entities.compositepk.ContainsId;
-import com.adatb.bookaround.models.CustomerDetails;
-import com.adatb.bookaround.models.OrderWithContentAndInvoice;
-import com.adatb.bookaround.models.ShoppingCart;
-import com.adatb.bookaround.models.ShoppingCartItem;
+import com.adatb.bookaround.models.*;
 import com.adatb.bookaround.repositories.*;
 import com.aspose.words.*;
 import org.apache.logging.log4j.LogManager;
@@ -19,6 +16,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,6 +41,9 @@ public class CustomerService implements UserDetailsService {
 
     @Autowired
     private StockDao stockDao;
+
+    @Autowired
+    private WishlistDao wishlistDao;
 
     private static final Logger logger = LogManager.getLogger(CustomerService.class);
 
@@ -89,6 +90,14 @@ public class CustomerService implements UserDetailsService {
         return orders;
     }
 
+    public List<WishlistWithContent> getWishlistsForCustomer(Long customerId) {
+        List<WishlistWithContent> wishlists = wishlistDao.findWishlistsForCustomer(customerId);
+        if (wishlists == null || wishlists.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return wishlists;
+    }
+
     public boolean payInvoice(Long invoiceId) {
         Invoice invoice = invoiceDao.find(invoiceId);
         if (invoice.isPaid())
@@ -103,6 +112,18 @@ public class CustomerService implements UserDetailsService {
         if (order == null)
             return false;
         orderDao.delete(orderId);
+        return true;
+    }
+
+    public boolean createWishlist(String wishlistName, Long customerId) {
+        Wishlist wishlist = new Wishlist();
+        Customer customer = customerDao.find(customerId);
+        if (customer == null)
+            return false;
+        wishlist.setCustomer(customer);
+        wishlist.setCreatedAt(LocalDateTime.now());
+        wishlist.setName(wishlistName);
+        wishlistDao.create(wishlist);
         return true;
     }
 
