@@ -46,6 +46,9 @@ public class CustomerService implements UserDetailsService {
     @Autowired
     private PartOfDao partOfDao;
 
+    @Autowired
+    private StoreDao storeDao;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Customer customer = customerDao.findByEmail(username);
@@ -221,7 +224,11 @@ public class CustomerService implements UserDetailsService {
 
         invoiceDao.create(invoice);
 
-        createInvoicePdf(order, shoppingCart, customerDetails, invoice);
+        if (storeId == null) {
+            createInvoicePdf(order, shoppingCart, customerDetails, invoice);
+        } else {
+            createInvoicePdf(order, shoppingCart, customerDetails, invoice, storeDao.find(storeId));
+        }
 
         // remove books from stock
         for (ShoppingCartItem item : shoppingCart.getItems()) {

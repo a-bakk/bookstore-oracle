@@ -95,12 +95,12 @@
               <h2>Személyes felvétel</h2>
               <form th:action="@{/place-order-with-pickup}" method="post">
                 <p>Válasszon áruházat:</p>
-                <select class="form-select mb-5">
+                <select class="form-select mb-5" th:name="pickupStoreId">
                   <option selected>...</option>
                   <th:block th:each="store : ${stores}">
                     <option th:value="${store.getStore().getStoreId()}"
                       th:text="${store.getStore().getName()} + ' (' + ${store.getStore().getStreet()} + ', ' + ${store.getStore().getCity()} + ', ' + ${store.getStore().getStateOrRegion()} + ', ' + ${store.getStore().getCountry()} + ' - ' + ${store.getStore().getPostcode()} + ')'"
-                      th:name="pickupStoreId"></option>
+                      ></option>
                   </th:block>
                 </select>
                 <div class="text-end">
