@@ -32,260 +32,51 @@
                         <h1 style="font-family: cursive;">Adminisztrátori panel</h1>
                     </div>
 
-                    <a th:href="@{/admin-panel-create}" class="btn btn-primary mb-3">Új entitás létrehozása</a>
-
-                    <div class="accordion" id="adminAccordion">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Ügyfélkezelés
-                                </button>
-                            </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                                data-bs-parent="#adminAccordion">
-                                <div class="accordion-body">
-
-                                    <div class="table-responsive">
-                                        <table class="table table-hover" style="font-size: 13px;">
-                                            <thead>
-                                                <tr>
-                                                    <th>Email cím</th>
-                                                    <th>Név</th>
-                                                    <th>Cím</th>
-                                                    <th>Létrehozva</th>
-                                                    <th>Utolsó bejelentkezés</th>
-                                                    <th></th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr th:each="customer : ${customerList}">
-                                                    <td th:text="${customer.getEmail()}">example@gmail.com
-                                                    </td>
-                                                    <td
-                                                        th:text="${customer.getFirstName()} + ' ' + ${customer.getLastName()}">
-                                                        John Doe</td>
-                                                    <td
-                                                        th:text="${customer.getStreet()} + ', ' + ${customer.getCity()} + ', ' + ${customer.getStateOrRegion()} + ', ' + ${customer.getCountry()} + ', ' + ${customer.getPostcode()}">
-                                                        123 Main St, Anytown, USA</td>
-                                                    <td th:text="${customer.getCreatedAt()}">2022-01-01</td>
-                                                    <td th:text="${customer.getLastLogin()}">2022-03-15
-                                                        12:34 PM</td>
-                                                    <td>
-                                                        <button type="button"
-                                                            class="btn btn-primary me-2">Módosítás</button>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger">Törlés</button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-                            </div>
+                    <section th:if="${customerDeletionVerdict}" class="bg-light p-3 px-5">
+                        <div class="container">
+                            <div th:text="${customerDeletionVerdict}" class="alert alert-info text-center" />
                         </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    Áruházak kezelése
-                                </button>
-                            </h2>
-                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                                data-bs-parent="#adminAccordion">
-                                <div class="accordion-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover" style="font-size: 13px;">
-                                            <thead>
-                                                <tr>
-                                                    <th>Név</th>
-                                                    <th>Cím</th>
-                                                    <th>Nyitvatartás</th>
-                                                    <th></th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr th:each="store : ${storeList}">
-                                                    <td th:text="${store.getStore().getName()}"></td>
-                                                    <td
-                                                        th:text="${store.getStore().getStreet()} + ', ' + ${store.getStore().getCity()} + ', ' + ${store.getStore().getStateOrRegion()} + ', ' + ${store.getStore().getCountry()} + ', ' + ${store.getStore().getPostcode()}">
-                                                    </td>
-                                                    <td>
-                                                        <table class="table table-hover">
-                                                            <tbody>
-                                                                <tr th:each="hours : ${store.getBusinessHours()}">
-                                                                    <td>
-                                                                        <th:block th:switch="${hours.getDayOfWeek()}">
-                                                                            <span th:case="'1'"
-                                                                                th:text="'Hétfő: '"></span>
-                                                                            <span th:case="'2'"
-                                                                                th:text="'Kedd: '"></span>
-                                                                            <span th:case="'3'"
-                                                                                th:text="'Szerda: '"></span>
-                                                                            <span th:case="'4'"
-                                                                                th:text="'Csütörtök: '"></span>
-                                                                            <span th:case="'5'"
-                                                                                th:text="'Péntek: '"></span>
-                                                                            <span th:case="'6'"
-                                                                                th:text="'Szombat: '"></span>
-                                                                            <span th:case="'7'"
-                                                                                th:text="'Vasárnap: '"></span>
-                                                                        </th:block>
-                                                                        <span
-                                                                            th:text="${hours.getOpeningTime()} + ' - '"></span>
-                                                                        <span
-                                                                            th:text="${hours.getClosingTime()}"></span>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button"
-                                                            class="btn btn-primary me-2">Módosítás</button>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger">Törlés</button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingThree">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    Könyvek kezelése
-                                </button>
-                            </h2>
-                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="collapseThree"
-                                 data-bs-parent="#adminAccordion">
-                                <div class="accordion-body">
+                    </section>
 
-                                    <div class="table-responsive">
-                                        <table class="table table-hover" style="font-size: 13px;">
-                                            <thead>
-                                            <tr>
-                                                <th>Cím</th>
-                                                <th>Borító</th>
-                                                <th>Súly</th>
-                                                <th>Ár</th>
-                                                <th>Oldalak száma</th>
-                                                <th>Kiadás dátuma</th>
-                                                <th>Kiadó</th>
-                                                <th>ISBN</th>
-                                                <th>Nyelv</th>
-                                                <th>Leárazott ár</th>
-                                                <th>Író(k)</th>
-                                                <th>Műfaj(ok)</th>
-                                                <th></th>
-                                                <th></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr th:each="bookModel : ${bookModelList}">
-                                                <td th:text="${bookModel.getBook().getTitle()}">
-                                                </td>
-                                                <td th:text="${bookModel.getBook().getCover()}">
-                                                </td>
-                                                <td th:text="${bookModel.getBook().getPrice()}"></td>
-                                                <td th:text="${bookModel.getBook().getNumberOfPages()}"></td>
-                                                <td th:text="${bookModel.getBook().getPublishedAt()}"></td>
-                                                <td th:text="${bookModel.getBook().getPublisher()}"></td>
-                                                <td th:text="${bookModel.getBook().getIsbn()}"></td>
-                                                <td th:text="${bookModel.getBook().getLanguage()}"></td>
-                                                <td>
-                                                    <th:block th:each="author : ${bookModel.getAuthors()}">
-                                                        <span
-                                                                th:text="' | ' + ${author.getAuthorId().getFirstName()} + ' ' + ${author.getAuthorId().getLastName()}"></span>
-                                                    </th:block>
-                                                </td>
-                                                <td>
-                                                    <th:block th:each="genre : ${bookModel.getGenres()}">
-                                                        <span
-                                                                th:text="' | ' + ${genre.getGenreId().getGenreName()}"></span>
-                                                    </th:block>
-                                                </td>
-                                                <td>
-                                                    <button type="button"
-                                                            class="btn btn-primary me-2">Módosítás</button>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn btn-danger">Törlés</button>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                    <a th:href="@{/admin-panel-create}" class="btn btn-primary mb-3">Új könyv létrehozása</a>
 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingFour">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                    Rendelések
-                                </button>
-                            </h2>
-                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
-                                data-bs-parent="#adminAccordion">
-                                <div class="accordion-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover" style="font-size: 13px;">
-                                            <thead>
-                                                <tr>
-                                                    <th>Rendelő</th>
-                                                    <th>Létrehozva</th>
-                                                    <th>Tartalom</th>
-                                                    <th>Kiszállítva</th>
-                                                    <th>Személyes felvétel</th>
-                                                    <th></th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr th:each="order : ${orderList}">
-                                                    <td
-                                                        th:text="${order.getCustomer().getEmail()} + ' (' + ${order.getCustomer().getFirstName()} + ' ' + ${order.getCustomer().getLastName()} + ')'">
-                                                    </td>
-                                                    <td th:text="${order.getCreatedAt()}"></td>
-                                                    <td>
-                                                        <table class="table table-hover">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>4. mérföldkő</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                    <td th:if="${order.isShipped()}">Igen</td>
-                                                    <td th:unless="${order.isShipped()}">Nem</td>
-                                                    <td th:if="${order.isPickup()}">Igen</td>
-                                                    <td th:unless="${order.isPickup()}">Nem</td>
-                                                    <td>
-                                                        <button type="button"
-                                                            class="btn btn-primary me-2">Módosítás</button>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger">Törlés</button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <h2>Ügyfélkezelés</h2>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover" style="font-size: 13px;">
+                            <thead>
+                            <tr>
+                                <th>Email cím</th>
+                                <th>Név</th>
+                                <th>Cím</th>
+                                <th>Létrehozva</th>
+                                <th>Utolsó bejelentkezés</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="customer : ${customerList}">
+                                <td th:text="${customer.getEmail()}">example@gmail.com
+                                </td>
+                                <td
+                                        th:text="${customer.getFirstName()} + ' ' + ${customer.getLastName()}">
+                                    John Doe</td>
+                                <td
+                                        th:text="${customer.getStreet()} + ', ' + ${customer.getCity()} + ', ' + ${customer.getStateOrRegion()} + ', ' + ${customer.getCountry()} + ', ' + ${customer.getPostcode()}">
+                                    123 Main St, Anytown, USA</td>
+                                <td th:text="${customer.getCreatedAt()}">2022-01-01</td>
+                                <td th:text="${customer.getLastLogin()}">2022-03-15
+                                    12:34 PM</td>
+                                <td>
+                                    <form th:action="@{/delete-customer-by-id}" method="post">
+                                        <input type="hidden" th:name="toDeleteId" th:value="${customer.getCustomerId()}">
+                                        <input type="submit" class="btn btn-danger" value="Törlés">
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
-
 
                 </section>
 

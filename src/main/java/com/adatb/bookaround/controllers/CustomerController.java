@@ -6,8 +6,6 @@ import com.adatb.bookaround.services.AuthService;
 import com.adatb.bookaround.services.CustomerService;
 import com.adatb.bookaround.services.StoreService;
 import com.adatb.bookaround.services.constants.OrderMode;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -16,12 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class CustomerController {
-
-    private static final Logger logger = LogManager.getLogger(CustomerController.class);
 
     @Autowired
     private StoreService storeService;
@@ -122,6 +117,17 @@ public class CustomerController {
                 ? "Sikeresen törölve a könyv a kívánságlistáról!"
                 : "A könyv törlése sikertelen!");
         return "redirect:/wishlists";
+    }
+
+    @PostMapping("/delete-customer-by-id")
+    public String deleteCustomerById(@RequestParam(name = "toDeleteId") Long customerId,
+                                     RedirectAttributes redirectAttributes) {
+        // needs to be changed if used for other than admin functionalities
+        redirectAttributes.addFlashAttribute("customerDeletionVerdict",
+                customerService.deleteCustomerById(customerId)
+                ? "Az ügyfél törlése sikeres!"
+                : "Az ügyfél törlése sikertelen!");
+        return "redirect:/admin-panel";
     }
 
     @PostMapping("/place-order-with-shipping")

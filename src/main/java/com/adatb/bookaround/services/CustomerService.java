@@ -167,6 +167,7 @@ public class CustomerService implements UserDetailsService {
         PartOf partOf = new PartOf();
         PartOfId partOfId = new PartOfId();
         partOfId.setBook(book);
+        partOfId.setBook(book);
         partOfId.setWishlist(wishlist);
         partOf.setPartOfId(partOfId);
         partOf.setAddedAt(LocalDateTime.now());
@@ -183,6 +184,14 @@ public class CustomerService implements UserDetailsService {
         if (partOf == null)
             return false;
         partOfDao.delete(book, wishlist);
+        return true;
+    }
+
+    public boolean deleteCustomerById(Long customerId) {
+        Customer customer = customerDao.find(customerId);
+        if (customer == null)
+            return false;
+        customerDao.delete(customerId);
         return true;
     }
 
