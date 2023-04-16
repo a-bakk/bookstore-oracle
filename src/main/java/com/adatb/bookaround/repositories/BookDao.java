@@ -220,6 +220,9 @@ public class BookDao extends AbstractJpaDao<Book> {
         return entityManager.createQuery(jpql, Book.class).getResultList();
     }
 
+    /**
+     * [Összetett lekérdezés]
+     */
     public List<Book> findBooksRecommendedByBook(Book book) {
         String jpql = "SELECT b2, COUNT(*) AS order_count " +
                 "FROM Contains c1 " +
@@ -237,6 +240,9 @@ public class BookDao extends AbstractJpaDao<Book> {
         return resultList.stream().map(result -> (Book) result[0]).toList();
     }
 
+    /**
+     * [Összetett lekérdezés]
+     */
     public List<Book> findPopularBooksOrderedByOrderCount() {
         String jpql = "SELECT b, COUNT(*) AS order_count " +
                 "FROM Book b " +

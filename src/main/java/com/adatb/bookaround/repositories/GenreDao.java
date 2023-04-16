@@ -58,6 +58,9 @@ public class GenreDao extends AbstractJpaDao<Genre> {
         return resultsConverted;
     }
 
+    /**
+     * [Összetett lekérdezés]
+     */
     public List<Book> findPopularBooksByGenreOrderedByOrderCount(String genreName) {
         String jpql = "SELECT b, COUNT(*) AS order_count " +
                 "FROM Book b " +
