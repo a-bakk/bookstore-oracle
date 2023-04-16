@@ -49,6 +49,12 @@ public class CustomerService implements UserDetailsService {
     @Autowired
     private StoreDao storeDao;
 
+    @Autowired
+    private AuthorDao authorDao;
+
+    @Autowired
+    private GenreDao genreDao;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Customer customer = customerDao.findByEmail(username);
@@ -255,6 +261,24 @@ public class CustomerService implements UserDetailsService {
         }
 
         return true;
+    }
+
+    public Author getMostPopularAuthorByOrders() {
+        Author author = authorDao.findMostPopularAuthor();
+        if (author == null) {
+            logger.warn("Most popular author could not be loaded!");
+            return null;
+        }
+        return author;
+    }
+
+    public Genre getMostPopularGenreByOrders() {
+        Genre genre = genreDao.findMostPopularGenre();
+        if (genre == null) {
+            logger.warn("Most popular genre could not be loaded!");
+            return null;
+        }
+        return genre;
     }
 
     private void createInvoicePdf(Order order, ShoppingCart shoppingCart, CustomerDetails customerDetails,

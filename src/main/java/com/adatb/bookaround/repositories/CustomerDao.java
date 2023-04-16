@@ -3,6 +3,7 @@ package com.adatb.bookaround.repositories;
 import com.adatb.bookaround.entities.Customer;
 import com.adatb.bookaround.models.CustomerWithOrderCount;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
@@ -85,7 +86,9 @@ public class CustomerDao extends AbstractJpaDao<Customer> {
                 ") " +
                 "ORDER BY c.customerId DESC";
 
-        return entityManager.createQuery(jpql, Customer.class).getSingleResult();
+        TypedQuery<Customer> query = entityManager.createQuery(jpql, Customer.class);
+        var results = query.getResultList();
+        return results.isEmpty() ? null : results.get(0);
     }
 }
 

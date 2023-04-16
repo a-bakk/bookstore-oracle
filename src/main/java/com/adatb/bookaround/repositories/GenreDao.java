@@ -3,6 +3,7 @@ package com.adatb.bookaround.repositories;
 import com.adatb.bookaround.entities.Book;
 import com.adatb.bookaround.entities.Genre;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
@@ -76,6 +77,23 @@ public class GenreDao extends AbstractJpaDao<Genre> {
                 .getResultList();
 
         return resultList.stream().map(result -> (Book) result[0]).toList();
+    }
+
+    /**
+     * [Összetett lekérdezés]
+     *
+     * @return a legnépszerűbb műfaj rendelések alapján
+     */
+    public Genre findMostPopularGenre() {
+        TypedQuery<Genre> query = entityManager.createQuery("SELECT g " +
+                "FROM Contains c " +
+                "JOIN Genre g ON c.containsId.book.bookId = g.genreId.bookId " +
+                "GROUP BY g " +
+                "ORDER BY SUM(c.count) DESC", Genre.class);
+        var results = query.getResultList();
+        if (results.isEmpty())
+            return null;
+        return results.get(0);
     }
 
 }

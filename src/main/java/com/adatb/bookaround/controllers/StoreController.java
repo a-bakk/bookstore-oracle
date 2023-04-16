@@ -86,6 +86,8 @@ public class StoreController {
         }
         model.addAttribute("customerList", customerService.getCustomersWithOrderCount());
         model.addAttribute("customerWithMostRecentOrder", customerService.getCustomerWithMostRecentOrder());
+        model.addAttribute("mostPopularAuthor", customerService.getMostPopularAuthorByOrders());
+        model.addAttribute("mostPopularGenre", customerService.getMostPopularGenreByOrders());
         model.addAttribute("activePage", "admin-panel");
         model.addAttribute("currentCustomer", customerDetails);
         return "admin-panel";

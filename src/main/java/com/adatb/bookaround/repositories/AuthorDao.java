@@ -2,7 +2,9 @@ package com.adatb.bookaround.repositories;
 
 import com.adatb.bookaround.entities.Author;
 import com.adatb.bookaround.entities.Book;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +20,23 @@ public class AuthorDao extends AbstractJpaDao<Author> {
         return entityManager.createQuery("SELECT a FROM Author a WHERE a.authorId.bookId = :bookId", Author.class)
                 .setParameter("bookId", book.getBookId())
                 .getResultList();
+    }
+
+    /**
+     * [Összetett lekérdezés]
+     *
+     * @return a legnépszerűbb író (rendelések alapján)
+     */
+    public Author findMostPopularAuthor() {
+        TypedQuery<Author> query = entityManager.createQuery("SELECT a " +
+                "FROM Contains c " +
+                "JOIN Author a ON c.containsId.book.bookId = a.authorId.bookId " +
+                "GROUP BY a " +
+                "ORDER BY SUM(c.count) DESC", Author.class);
+        var results = query.getResultList();
+        if (results.isEmpty())
+            return null;
+        return results.get(0);
     }
 
     @Transactional
