@@ -92,6 +92,7 @@ public class StoreController {
         model.addAttribute("mostPopularGenre", customerService.getMostPopularGenreByOrders());
         model.addAttribute("averagePricePerGenre", customerService.getAveragePricePerGenre());
         model.addAttribute("mostExpensiveAuthors", customerService.getMostExpensiveAuthors());
+        model.addAttribute("inventoryForEachStore", customerService.getNumberOfBooksForEachStore());
         model.addAttribute("activePage", "admin-panel");
         model.addAttribute("currentCustomer", customerDetails);
         return "admin-panel";

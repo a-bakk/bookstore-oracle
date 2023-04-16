@@ -309,6 +309,15 @@ public class CustomerService implements UserDetailsService {
         return authors;
     }
 
+    public Map<String, String> getNumberOfBooksForEachStore() {
+        var stores = storeDao.findNumberOfBooksForEachStore();
+        if (stores == null) {
+            logger.warn("Inventory could not be loaded for stores!");
+            return null;
+        }
+        return stores;
+    }
+
     private void createInvoicePdf(Order order, ShoppingCart shoppingCart, CustomerDetails customerDetails,
                                   Invoice invoice) throws Exception {
         createInvoicePdf(order, shoppingCart, customerDetails, invoice, null);

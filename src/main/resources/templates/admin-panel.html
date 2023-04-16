@@ -64,8 +64,16 @@
                             <strong>A legmagasabb könyv átlagárral rendelkező szerzők (első 3, nem feltétlenül sorrendbe):</strong>
                             <span th:each="author : ${mostExpensiveAuthors}">
                                 <br>
-                                <span th:text="${author.key}"></span>
+                                <span th:text="${author.key} + ': '"></span>
                                 <span th:text="${author.value} + 'HUF'"></span>
+                            </span>
+                        </p>
+                        <p class="mb-2">
+                            <strong>Áruházankénti könyvkészlet: </strong>
+                            <span th:each="store : ${inventoryForEachStore}">
+                                <br>
+                                <span th:text="${store.key} + ': '"></span>
+                                <span th:text="${store.value} + ' darab könyv'"></span>
                             </span>
                         </p>
                     </div>
