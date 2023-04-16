@@ -34,46 +34,76 @@ public class StoreController {
     private StoreService storeService;
 
     @GetMapping("/index")
-    public String showIndex(Model model) {
-
+    public String showIndex(Model model, @AuthenticationPrincipal CustomerDetails customerDetails) {
         model.addAttribute("stockList", storeService.getStockForEachStore());
-
+        model.addAttribute("activePage", "index");
+        model.addAttribute("currentCustomer", customerDetails);
         return "index";
     }
 
     @GetMapping("/latest-additions")
-    public String showLatestAdditions(Model model) {
+    public String showLatestAdditions(Model model, @AuthenticationPrincipal CustomerDetails customerDetails) {
         model.addAttribute("bookList", bookService.getLatestBooks());
         model.addAttribute("activePage", "latest-additions");
+        model.addAttribute("currentCustomer", customerDetails);
         return "latest-additions";
     }
 
     @GetMapping("/bestsellers")
-    public String showPopularBooks(Model model) {
+    public String showPopularBooks(Model model, @AuthenticationPrincipal CustomerDetails customerDetails) {
         model.addAttribute("bookList", bookService.getPopularBooks());
         model.addAttribute("activePage", "bestsellers");
+        model.addAttribute("currentCustomer", customerDetails);
         return "bestsellers";
     }
 
-    @GetMapping("/notifications/{cid}")
+    @GetMapping("/notifications")
     public String showNotificationsForCustomer(Model model,
-                                               @PathVariable Long cid) {
-        model.addAttribute("notificationList", customerService.getNotificationsByCustomerId(cid));
+                                               @AuthenticationPrincipal CustomerDetails customerDetails,
+                                               RedirectAttributes redirectAttributes) {
+        if (!AuthService.isAuthenticated()) {
+            redirectAttributes.addFlashAttribute("requiresAuthentication",
+                    "A funkció eléréséhez előbb jelentkezzen be!");
+            return "redirect:/auth";
+        }
+        model.addAttribute("notificationList",
+                customerService.getNotificationsByCustomerId(customerDetails.getCustomerId()));
         model.addAttribute("activePage", "notifications");
+        model.addAttribute("currentCustomer", customerDetails);
         return "notifications";
     }
 
     @GetMapping("/admin-panel")
-    public String showAdminPanel(Model model) {
+    public String showAdminPanel(Model model, @AuthenticationPrincipal CustomerDetails customerDetails,
+                                 RedirectAttributes redirectAttributes) {
+        if (!AuthService.isAuthenticated()) {
+            redirectAttributes.addFlashAttribute("requiresAuthentication",
+                    "A funkció eléréséhez előbb jelentkezzen be!");
+            return "redirect:/auth";
+        }
+        if (!customerDetails.isAdmin()) {
+            return "redirect:/index";
+        }
         model.addAttribute("customerList", customerService.getCustomers());
         model.addAttribute("activePage", "admin-panel");
+        model.addAttribute("currentCustomer", customerDetails);
         return "admin-panel";
     }
 
     @GetMapping("/admin-panel-create")
-    public String showCreateAdminPanel(Model model) {
+    public String showCreateAdminPanel(Model model, @AuthenticationPrincipal CustomerDetails customerDetails,
+                                       RedirectAttributes redirectAttributes) {
+        if (!AuthService.isAuthenticated()) {
+            redirectAttributes.addFlashAttribute("requiresAuthentication",
+                    "A funkció eléréséhez előbb jelentkezzen be!");
+            return "redirect:/auth";
+        }
+        if (!customerDetails.isAdmin()) {
+            return "redirect:/index";
+        }
         model.addAttribute("newBook", new Book());
         model.addAttribute("activePage", "admin-panel");
+        model.addAttribute("currentCustomer", customerDetails);
         return "admin-panel-create";
     }
 
@@ -99,6 +129,7 @@ public class StoreController {
             model.addAttribute("numberOfWishlists",
                     customerService.getNumberOfWishlistsForCustomer(customerDetails.getCustomerId()));
         }
+        model.addAttribute("currentCustomer", customerDetails);
         return "book";
     }
 

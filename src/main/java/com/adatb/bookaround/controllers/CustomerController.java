@@ -27,31 +27,48 @@ public class CustomerController {
     @GetMapping("/place-order")
     public String showCreateOrder(Model model,
                                   @SessionAttribute("shoppingCart") ShoppingCart shoppingCart,
-                                  @AuthenticationPrincipal CustomerDetails currentCustomer) {
-        if (!AuthService.isAuthenticated())
+                                  @AuthenticationPrincipal CustomerDetails currentCustomer,
+                                  RedirectAttributes redirectAttributes) {
+        if (!AuthService.isAuthenticated()) {
+            redirectAttributes.addFlashAttribute("requiresAuthentication",
+                    "A funkció eléréséhez előbb jelentkezzen be!");
             return "redirect:/auth";
+        }
         model.addAttribute("cartItems", shoppingCart.getItems());
         model.addAttribute("cartSum", shoppingCart.calculateSum());
         model.addAttribute("customerDetails", currentCustomer);
+        model.addAttribute("currentCustomer", currentCustomer);
         model.addAttribute("stores", storeService.getAllStores());
         return "place-order";
     }
 
     @GetMapping("/my-orders")
-    public String showMyOrders(Model model, @AuthenticationPrincipal CustomerDetails customerDetails) {
-        if (!AuthService.isAuthenticated())
+    public String showMyOrders(Model model, @AuthenticationPrincipal CustomerDetails customerDetails,
+                               RedirectAttributes redirectAttributes) {
+        if (!AuthService.isAuthenticated()) {
+            redirectAttributes.addFlashAttribute("requiresAuthentication",
+                    "A funkció eléréséhez előbb jelentkezzen be!");
             return "redirect:/auth";
+        }
         model.addAttribute("orderModels",
                 customerService.getOrdersForCustomer(customerDetails.getCustomerId()));
+        model.addAttribute("currentCustomer", customerDetails);
+        model.addAttribute("activePage", "my-orders");
         return "my-orders";
     }
 
     @GetMapping("/wishlists")
-    public String showWishlists(Model model, @AuthenticationPrincipal CustomerDetails customerDetails) {
-        if (!AuthService.isAuthenticated())
+    public String showWishlists(Model model, @AuthenticationPrincipal CustomerDetails customerDetails,
+                                RedirectAttributes redirectAttributes) {
+        if (!AuthService.isAuthenticated()) {
+            redirectAttributes.addFlashAttribute("requiresAuthentication",
+                    "A funkció eléréséhez előbb jelentkezzen be!");
             return "redirect:/auth";
+        }
         model.addAttribute("wishlistModels",
                 customerService.getWishlistsForCustomer(customerDetails.getCustomerId()));
+        model.addAttribute("currentCustomer", customerDetails);
+        model.addAttribute("activePage", "wishlists");
         return "wishlists";
     }
 
@@ -182,11 +199,16 @@ public class CustomerController {
     }
 
     @GetMapping("/profile")
-    public String showProfile(Model model, @AuthenticationPrincipal CustomerDetails currentCustomer) {
-        if (!AuthService.isAuthenticated())
+    public String showProfile(Model model, @AuthenticationPrincipal CustomerDetails currentCustomer,
+                              RedirectAttributes redirectAttributes) {
+        if (!AuthService.isAuthenticated()) {
+            redirectAttributes.addFlashAttribute("requiresAuthentication",
+                    "A funkció eléréséhez előbb jelentkezzen be!");
             return "redirect:/auth";
+        }
         model.addAttribute("activePage", "profile");
         model.addAttribute("customerDetails", currentCustomer);
+        model.addAttribute("currentCustomer", currentCustomer);
         return "profile";
     }
 }

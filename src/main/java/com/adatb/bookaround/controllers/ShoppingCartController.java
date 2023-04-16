@@ -1,8 +1,11 @@
 package com.adatb.bookaround.controllers;
 
+import com.adatb.bookaround.models.CustomerDetails;
 import com.adatb.bookaround.models.ShoppingCart;
+import com.adatb.bookaround.services.AuthService;
 import com.adatb.bookaround.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +24,17 @@ public class ShoppingCartController {
 
     @GetMapping("/cart")
     public String showShoppingCart(Model model,
-                                   @ModelAttribute("shoppingCart") ShoppingCart shoppingCart) {
+                                   @ModelAttribute("shoppingCart") ShoppingCart shoppingCart,
+                                   @AuthenticationPrincipal CustomerDetails customerDetails,
+                                   RedirectAttributes redirectAttributes) {
+        if (!AuthService.isAuthenticated()) {
+            redirectAttributes.addFlashAttribute("requiresAuthentication",
+                    "A funkció eléréséhez előbb jelentkezzen be!");
+            return "redirect:/auth";
+        }
         model.addAttribute("cartItems", shoppingCart.getItems());
         model.addAttribute("cartSum", shoppingCart.calculateSum());
+        model.addAttribute("currentCustomer", customerDetails);
         return "cart";
     }
 

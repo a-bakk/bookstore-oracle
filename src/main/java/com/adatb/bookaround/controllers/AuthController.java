@@ -1,11 +1,13 @@
 package com.adatb.bookaround.controllers;
 
 import com.adatb.bookaround.models.CustomerCreate;
+import com.adatb.bookaround.models.CustomerDetails;
 import com.adatb.bookaround.repositories.CustomerDao;
 import com.adatb.bookaround.services.AuthService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +28,10 @@ public class AuthController {
 
 
     @GetMapping("/auth")
-    public String showAuth(Model model) {
+    public String showAuth(Model model, @AuthenticationPrincipal CustomerDetails customerDetails) {
         model.addAttribute("newUser", new CustomerCreate());
+        model.addAttribute("activePage", "auth");
+        model.addAttribute("currentCustomer", customerDetails);
         return "auth";
     }
 
