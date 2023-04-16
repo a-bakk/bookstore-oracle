@@ -85,6 +85,7 @@ public class StoreController {
             return "redirect:/index";
         }
         model.addAttribute("customerList", customerService.getCustomersWithOrderCount());
+        model.addAttribute("customerWithMostRecentOrder", customerService.getCustomerWithMostRecentOrder());
         model.addAttribute("activePage", "admin-panel");
         model.addAttribute("currentCustomer", customerDetails);
         return "admin-panel";

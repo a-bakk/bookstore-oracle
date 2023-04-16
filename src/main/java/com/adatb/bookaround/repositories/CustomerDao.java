@@ -69,6 +69,24 @@ public class CustomerDao extends AbstractJpaDao<Customer> {
 
         return Stream.concat(hasOrders.stream(), hasNoOrders.stream()).toList();
     }
+
+    /**
+     * [Összetett lekérdezés]
+     * Meghatározza, hogy melyik ügyfél rendelt legutóbb.
+     *
+     * @return a legfrisebb rendeléssel rendelkező ügyfél
+     */
+    public Customer findCustomerWithMostRecentOrder() {
+        String jpql = "SELECT c " +
+                "FROM Order o " +
+                "JOIN Customer c ON o.customer.customerId = c.customerId " +
+                "WHERE o.createdAt = (" +
+                "SELECT MAX(newest.createdAt) FROM Order newest" +
+                ") " +
+                "ORDER BY c.customerId DESC";
+
+        return entityManager.createQuery(jpql, Customer.class).getSingleResult();
+    }
 }
 
 

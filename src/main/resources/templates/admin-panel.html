@@ -40,6 +40,14 @@
 
                     <a th:href="@{/admin-panel-create}" class="btn btn-primary mb-3">Új könyv létrehozása</a>
 
+                    <h2 class="mb-2">Statisztika</h2>
+                    <div class="container mb-5">
+                        <p class="mb-2" th:if="${customerWithMostRecentOrder} eq null"
+                           th:text="'Még senki sem adott le rendelést!'"></p>
+                        <p class="mb-2" th:if="${customerWithMostRecentOrder} ne null"
+                           th:text="'A legutóbbi rendelés leadója: ' + ${customerWithMostRecentOrder.getFirstName()} + ' ' + ${customerWithMostRecentOrder.getLastName()} + ' (' + ${customerWithMostRecentOrder.getEmail()} + ')'"></p>
+                    </div>
+
                     <h2>Ügyfélkezelés</h2>
 
                     <div class="table-responsive">

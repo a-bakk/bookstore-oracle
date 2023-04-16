@@ -87,6 +87,15 @@ public class CustomerService implements UserDetailsService {
         return customers;
     }
 
+    public Customer getCustomerWithMostRecentOrder() {
+        Customer customer = customerDao.findCustomerWithMostRecentOrder();
+        if (customer == null) {
+            logger.warn("Customer with most recent order could not be loaded because there are no orders!");
+            return null;
+        }
+        return customer;
+    }
+
     public List<OrderWithContentAndInvoice> getOrdersForCustomer(Long customerId) {
         List<OrderWithContentAndInvoice> orders = orderDao.findOrdersForCustomer(customerId);
         if (orders == null || orders.isEmpty()) {
