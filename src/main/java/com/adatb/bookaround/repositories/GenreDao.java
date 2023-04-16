@@ -122,7 +122,8 @@ public class GenreDao extends AbstractJpaDao<Genre> {
         decimalFormat.setRoundingMode(RoundingMode.UP);
 
         return results.stream()
-                .map(row -> new AbstractMap.SimpleEntry<String, String>((String) row[0], decimalFormat.format((Double) row[1])))
+                .map(row -> new AbstractMap.SimpleEntry<String, String>
+                        ((String) row[0], decimalFormat.format((Double) row[1])))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 

@@ -55,9 +55,17 @@
                         <p class="mb-2" th:if="${averagePricePerGenre} ne null">
                             <strong>Műfajonkénti átlagár:</strong>
                             <span th:each="genre : ${averagePricePerGenre.entrySet()}">
+                                <br/>
                                 <span th:text="${genre.key} + ': '"></span>
                                 <span th:text="${genre.value} + ' HUF'"></span>
-                                <br/>
+                            </span>
+                        </p>
+                        <p class="mb-2" th:if="${mostExpensiveAuthors} ne null">
+                            <strong>A legmagasabb könyv átlagárral rendelkező szerzők (első 3, nem feltétlenül sorrendbe):</strong>
+                            <span th:each="author : ${mostExpensiveAuthors}">
+                                <br>
+                                <span th:text="${author.key}"></span>
+                                <span th:text="${author.value} + 'HUF'"></span>
                             </span>
                         </p>
                     </div>

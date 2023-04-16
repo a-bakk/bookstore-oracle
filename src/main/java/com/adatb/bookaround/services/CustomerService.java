@@ -300,6 +300,15 @@ public class CustomerService implements UserDetailsService {
         return genres;
     }
 
+    public Map<String, String> getMostExpensiveAuthors() {
+        var authors = authorDao.findMostExpensiveAuthors();
+        if (authors == null) {
+            logger.warn("The most expensive authors could not be loaded!");
+            return null;
+        }
+        return authors;
+    }
+
     private void createInvoicePdf(Order order, ShoppingCart shoppingCart, CustomerDetails customerDetails,
                                   Invoice invoice) throws Exception {
         createInvoicePdf(order, shoppingCart, customerDetails, invoice, null);

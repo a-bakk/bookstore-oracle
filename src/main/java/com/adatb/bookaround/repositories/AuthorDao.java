@@ -8,7 +8,12 @@ import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.AbstractMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 public class AuthorDao extends AbstractJpaDao<Author> {
@@ -49,6 +54,32 @@ public class AuthorDao extends AbstractJpaDao<Author> {
                 .setParameter("firstName", firstName)
                 .setParameter("lastName", lastName);
         return query.executeUpdate();
+    }
+
+    /**
+     * [Összetett lekérdezés]
+     *
+     * @return az a 3 szerző, melyeknek a legdrágábbak a könyvei
+     */
+    public Map<String, String> findMostExpensiveAuthors() {
+        TypedQuery<Object[]> query = entityManager.createQuery("SELECT a.authorId.firstName, a.authorId.lastName, AVG(b.price) " +
+                "FROM Author a " +
+                "JOIN Book b ON b.bookId = a.authorId.bookId " +
+                "GROUP BY a.authorId.firstName, a.authorId.lastName " +
+                "ORDER BY AVG(b.price) DESC " +
+                "FETCH FIRST 3 ROWS ONLY", Object[].class);
+
+        var results = query.getResultList();
+        if (results.isEmpty())
+            return null;
+
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        decimalFormat.setRoundingMode(RoundingMode.UP);
+
+        return results.stream()
+                .map(row -> new AbstractMap.SimpleEntry<String, String>
+                        ((String) row[0] + " " + (String) row[1], decimalFormat.format((Double) row[2])))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
 }
