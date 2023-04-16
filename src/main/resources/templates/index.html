@@ -19,76 +19,28 @@
         <div th:replace="~{fragments/navigation :: navigation}"></div>
     </section>
 
-    <div class="container-fluid scroll-along-linear main">
+    <div class="container-fluid scroll-along-linear main" style="padding: 0;">
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
 
-                <section th:if="${entityDeletionVerdict}" class="bg-light p-3 px-5">
+                <section class="p-5 bg-light" style="min-height: 80vh;">
+
+                    <section th:if="${entityDeletionVerdict}" class="bg-light p-3 px-5">
+                        <div class="container">
+                            <div th:text="${entityDeletionVerdict}" class="alert alert-info text-center" />
+                        </div>
+                    </section>
+
+
                     <div class="container">
-                        <div th:text="${entityDeletionVerdict}" class="alert alert-info text-center" />
+                        <p style="text-align: justify; text-justify: inter-word;">A könyvkínálatainkat gondosan
+                            állítottuk össze, hogy minden
+                            vásárlónknak tudjuk nyújtani szórakoztató olvasmányt. Itt garantáltan találhat olyan
+                            könyvet, melyik el tudja
+                            nyerni tetszését. A szűrő
+                            alapján bármilyen nálunk kapható terméket megtalálhat. Kellemes vásárlást!</p>
                     </div>
-                </section>
-
-
-                <!--TODO: List books which appearances are new/recent-->
-                <section id="new_books">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <h2 style="font-family: cursive;">Legújabb könyveink</h2>
-
-                            <div>
-                                <p style="text-align: justify; text-justify: inter-word;">A könykínálatainkat gondosan
-                                    állítottuk össze, hogy minden
-                                    vásárlónknak tudjuk nyújtani szórakoztató olvasmányt. Itt garantáltan találhat olyan
-                                    könyvet, melyik el tudja
-                                    nyerni tetszését. Újonnan megjelent termékeinkről itt értesül, lentebb pedig a szűrő
-                                    alapján bármilyen nálunk
-                                    kapható terméket megtalálhat. Kellemes vásárlást!</p>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="col-md-8 container">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="col-md-12 d-flex align-items-center">
-                                        <img th:src="@{/img/book-placeholder.png}" src="" class="img-fluid mx-auto px-2"
-                                            alt="Book cover" style="max-height: 250px;">
-                                    </div>
-                                    <div class="d-flex flex-column align-items-center col-md-12">
-                                        Első
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="col-md-12 d-flex align-items-center">
-                                        <img th:src="@{/img/book-placeholder.png}" src="" class="img-fluid mx-auto px-2"
-                                            alt="Book cover" style="max-height: 250px;">
-                                    </div>
-                                    <div class="d-flex flex-column align-items-center col-md-12">
-                                        Második
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="col-md-12 d-flex align-items-center">
-                                        <img th:src="@{/img/book-placeholder.png}" src="" class="img-fluid mx-auto px-2"
-                                            alt="Book cover" style="max-height: 250px;">
-                                    </div>
-                                    <div class="d-flex flex-column align-items-center col-md-12">
-                                        Harmadik
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <br>
-                <br>
-                <br>
-
-                <section id="search_books">
-                    <h2 style="font-family: cursive;">Találtja meg a megfelelő könyvet</h2>
 
                     <div class="container">
                         <!--TODO: search bar: title, author, genre-->
@@ -125,100 +77,15 @@
                             <input type="submit" class="btn btn-primary" value="Keresés" style="width: 150px;">
                         </form>
                     </div>
-                </section>
-                <!--TODO: Give book searches for backend-->
 
-                <br>
-                <br>
-                <br>
-
-                <!--TODO: List books like searches-->
-                <!--placeholder scheme-->
-                <!--<section id="list_books">
-          <h2  style="font-family: cursive;">Találatok (X darab)</h2>
-          <br>
-          <div class="card mb-3">
-              <div class="card-body">
-                  <h5 class="card-title fw-bold">Book Title</h5>
-                  <p class="card-text"><span class="fw-bold">Author1, Author2</span></p>
-                  <p class="card-text"><span class="fw-bold">Genre1, Genre2</span></p>
-                  <div class="form-group mb-3">
-                                            <textarea class="form-control" id="description" rows="3" maxlength="200"
-                                                      disabled
-                                                      style="resize: none;">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</textarea>
-                  </div>
-                  <div class="row align-items-center">
-                      <div class="col">
-                          <p class="card-text">Price: $99.99<br>Discounted Price: $79.99</p>
-                      </div>
-                      <div class="col-auto">
-                          <a href="#" class="btn btn-primary">Több</a>
-                      </div>
-                  </div>
-              </div>
-          </div>-->
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-10 mx-auto">
-                            <div class="card mb-3" th:each="bookModel : ${bookList}">
-                                <div class="row">
-                                    <div class="col-md-4 d-flex align-items-center">
-                                        <img th:src="@{/img/book-placeholder.png}" src="" class="img-fluid mx-auto px-2"
-                                            alt="Book cover" style="max-height: 250px;">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title fw-bold" th:text="${bookModel.getBook().getTitle()}">
-                                                Book Title</h5>
-                                            <p class="card-text">
-                                                <th:block th:each="author : ${bookModel.getAuthors()}">
-                                                    <span
-                                                        th:text="' | ' + ${author.getAuthorId().getFirstName()} + ' ' + ${author.getAuthorId().getLastName()}"></span>
-                                                </th:block>
-                                            </p>
-                                            <p class="card-text">
-                                                <th:block th:each="genre : ${bookModel.getGenres()}">
-                                                    <span th:text="' | ' + ${genre.getGenreId().getGenreName()}"></span>
-                                                </th:block>
-                                            </p>
-                                            <div class="form-group mb-3">
-                                                <textarea class="form-control" rows="3" maxlength="200" disabled
-                                                    style="resize: none;"
-                                                    th:text="${bookModel.getBook().getDescription()}">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</textarea>
-                                            </div>
-                                            <div class="row align-items-center">
-                                                <div class="col">
-                                                    <p class="card-text">
-                                                        <span
-                                                            th:text="'Ár: ' + ${bookModel.getBook().getPrice()} + ' Ft'"></span>
-                                                        <th:block
-                                                            th:if="${bookModel.getBook().getDiscountedPrice()} ne null">
-                                                            <br>
-                                                            <span
-                                                                th:text="'Leárazás: ' + ${bookModel.getBook().getDiscountedPrice()} + ' Ft'"></span>
-                                                        </th:block>
-                                                    </p>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <a href="#" class="btn btn-primary">Több</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div th:each="stock:${stockList}">
+                        <span th:text="${stock.getKey().getName()}"></span>
+                        <div th:each="book:${stock.getValue()}">
+                            <span th:text="${book.getBook().getTitle()}"></span>
                         </div>
                     </div>
-                </div>
+
                 </section>
-
-                <div th:each="stock:${stockList}">
-                    <span th:text="${stock.getKey().getName()}"></span>
-                    <div th:each="book:${stock.getValue()}">
-                        <span th:text="${book.getBook().getTitle()}"></span>
-                    </div>
-                </div>
-
             </div>
             <div class="col-md-2"></div>
         </div>
