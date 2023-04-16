@@ -46,6 +46,10 @@
                            th:text="'Még senki sem adott le rendelést!'"></p>
                         <p class="mb-2" th:if="${customerWithMostRecentOrder} ne null"
                            th:text="'A legutóbbi rendelés leadója: ' + ${customerWithMostRecentOrder.getFirstName()} + ' ' + ${customerWithMostRecentOrder.getLastName()} + ' (' + ${customerWithMostRecentOrder.getEmail()} + ')'"></p>
+                        <p class="mb-2" th:if="${customersWithLongestWishlists} ne null">
+                            Ügyfelek a leghosszabb kívánságlistával (első 3):
+                            <span th:each="customer : ${customersWithLongestWishlists.entrySet()}" th:text="${customer.key.getFirstName()} + ' ' + ${customer.key.getLastName()} + ' (' + ${customer.value} + ' könyv)    '"></span>
+                        </p>
                         <p class="mb-2" th:if="${mostPopularAuthor} ne null" th:text="'A legnépszerűbb író rendelések alapján: ' + ${mostPopularAuthor.getAuthorId().getFirstName()} + ' ' + ${mostPopularAuthor.getAuthorId().getLastName()}"></p>
                         <p class="mb-2" th:if="${mostPopularGenre} ne null" th:text="'A legnépszerűbb műfaj rendelések alapján: ' + ${mostPopularGenre.getGenreId().getGenreName()}"></p>
                     </div>

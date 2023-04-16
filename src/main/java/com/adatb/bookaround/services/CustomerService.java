@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -279,6 +280,15 @@ public class CustomerService implements UserDetailsService {
             return null;
         }
         return genre;
+    }
+
+    public Map<Customer, Long> getCustomersWithLargestWishlists() {
+        var customers = wishlistDao.findCustomersWithLargestWishlists();
+        if (customers == null) {
+            logger.warn("Customers with longest wish lists could not be loaded!");
+            return null;
+        }
+        return customers;
     }
 
     private void createInvoicePdf(Order order, ShoppingCart shoppingCart, CustomerDetails customerDetails,

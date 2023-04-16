@@ -1,15 +1,15 @@
 package com.adatb.bookaround.repositories;
 
 import com.adatb.bookaround.entities.Book;
+import com.adatb.bookaround.entities.Customer;
 import com.adatb.bookaround.entities.PartOf;
 import com.adatb.bookaround.entities.Wishlist;
 import com.adatb.bookaround.models.WishlistWithContent;
+import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class WishlistDao extends AbstractJpaDao<Wishlist> {
@@ -59,5 +59,29 @@ public class WishlistDao extends AbstractJpaDao<Wishlist> {
     public Integer findNumberOfWishlistsForCustomer(Long customerId) {
         var wishlists = findWishlistsForCustomer(customerId);
         return wishlists.isEmpty() ? 0 : wishlists.size();
+    }
+
+    /**
+     * [Összetett lekérdezés]
+     *
+     * @return mely ügyfeleknek van a legtöbb könyv a kívánságlistájukon, az első 3
+     */
+    public Map<Customer, Long> findCustomersWithLargestWishlists() {
+        TypedQuery<Object[]> query = entityManager.createQuery(
+                "SELECT c, COUNT(p.partOfId.book.bookId) as number_of_items " +
+                        "FROM Customer c " +
+                        "JOIN Wishlist w ON c.customerId = w.customer.customerId " +
+                        "JOIN PartOf p ON w.wishlistId = p.partOfId.wishlist.wishlistId " +
+                        "GROUP BY c " +
+                        "ORDER BY number_of_items DESC " +
+                        "FETCH FIRST 3 ROWS ONLY", Object[].class);
+
+        var results = query.getResultList();
+        if (results.isEmpty())
+            return null;
+
+        return results.stream()
+                .map(row -> new AbstractMap.SimpleEntry<Customer, Long>((Customer) row[0], (Long) row[1]))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }

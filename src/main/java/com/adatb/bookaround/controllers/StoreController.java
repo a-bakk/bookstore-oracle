@@ -85,6 +85,8 @@ public class StoreController {
             return "redirect:/index";
         }
         model.addAttribute("customerList", customerService.getCustomersWithOrderCount());
+        model.addAttribute("customersWithLongestWishlists",
+                customerService.getCustomersWithLargestWishlists());
         model.addAttribute("customerWithMostRecentOrder", customerService.getCustomerWithMostRecentOrder());
         model.addAttribute("mostPopularAuthor", customerService.getMostPopularAuthorByOrders());
         model.addAttribute("mostPopularGenre", customerService.getMostPopularGenreByOrders());
