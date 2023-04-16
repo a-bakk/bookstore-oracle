@@ -291,6 +291,15 @@ public class CustomerService implements UserDetailsService {
         return customers;
     }
 
+    public Map<String, String> getAveragePricePerGenre() {
+        var genres = genreDao.findAveragePricePerGenre();
+        if (genres == null) {
+            logger.warn("Average prices per genres could not be loaded!");
+            return null;
+        }
+        return genres;
+    }
+
     private void createInvoicePdf(Order order, ShoppingCart shoppingCart, CustomerDetails customerDetails,
                                   Invoice invoice) throws Exception {
         createInvoicePdf(order, shoppingCart, customerDetails, invoice, null);

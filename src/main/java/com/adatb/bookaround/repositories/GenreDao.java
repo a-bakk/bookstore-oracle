@@ -5,11 +5,17 @@ import com.adatb.bookaround.entities.Genre;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Repository
 public class GenreDao extends AbstractJpaDao<Genre> {
@@ -94,6 +100,30 @@ public class GenreDao extends AbstractJpaDao<Genre> {
         if (results.isEmpty())
             return null;
         return results.get(0);
+    }
+
+    /**
+     * [Összetett lekérdezés]
+     *
+     * @return a műfajonkénti átlagár
+     */
+    public Map<String, String> findAveragePricePerGenre() {
+        TypedQuery<Object[]> query = entityManager.createQuery("SELECT g.genreId.genreName, AVG(b.price) " +
+                "FROM Book b " +
+                "JOIN Genre g ON g.genreId.bookId = b.bookId " +
+                "GROUP BY g.genreId.genreName " +
+                "ORDER BY AVG(b.price) DESC ", Object[].class);
+
+        var results = query.getResultList();
+        if (results.isEmpty())
+            return null;
+
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        decimalFormat.setRoundingMode(RoundingMode.UP);
+
+        return results.stream()
+                .map(row -> new AbstractMap.SimpleEntry<String, String>((String) row[0], decimalFormat.format((Double) row[1])))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
 }

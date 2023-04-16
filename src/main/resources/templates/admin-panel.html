@@ -52,6 +52,14 @@
                         </p>
                         <p class="mb-2" th:if="${mostPopularAuthor} ne null" th:text="'A legnépszerűbb író rendelések alapján: ' + ${mostPopularAuthor.getAuthorId().getFirstName()} + ' ' + ${mostPopularAuthor.getAuthorId().getLastName()}"></p>
                         <p class="mb-2" th:if="${mostPopularGenre} ne null" th:text="'A legnépszerűbb műfaj rendelések alapján: ' + ${mostPopularGenre.getGenreId().getGenreName()}"></p>
+                        <p class="mb-2" th:if="${averagePricePerGenre} ne null">
+                            <strong>Műfajonkénti átlagár:</strong>
+                            <span th:each="genre : ${averagePricePerGenre.entrySet()}">
+                                <span th:text="${genre.key} + ': '"></span>
+                                <span th:text="${genre.value} + ' HUF'"></span>
+                                <br/>
+                            </span>
+                        </p>
                     </div>
 
                     <h2>Ügyfélkezelés</h2>
