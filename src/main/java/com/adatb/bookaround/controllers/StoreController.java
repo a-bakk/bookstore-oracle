@@ -84,7 +84,7 @@ public class StoreController {
         if (!customerDetails.isAdmin()) {
             return "redirect:/index";
         }
-        model.addAttribute("customerList", customerService.getCustomers());
+        model.addAttribute("customerList", customerService.getCustomersWithOrderCount());
         model.addAttribute("activePage", "admin-panel");
         model.addAttribute("currentCustomer", customerDetails);
         return "admin-panel";

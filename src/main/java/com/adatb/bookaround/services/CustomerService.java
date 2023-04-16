@@ -68,10 +68,20 @@ public class CustomerService implements UserDetailsService {
         return notifs;
     }
 
+    @SuppressWarnings("unused")
     public List<Customer> getCustomers() {
         List<Customer> customers = customerDao.findAll();
         if (customers == null || customers.isEmpty()) {
             logger.warn("Customers could not be loaded!");
+            return new ArrayList<>();
+        }
+        return customers;
+    }
+
+    public List<CustomerWithOrderCount> getCustomersWithOrderCount() {
+        List<CustomerWithOrderCount> customers = customerDao.findNumberOfOrdersForAllCustomers();
+        if (customers == null || customers.isEmpty()) {
+            logger.warn("Customers with number of orders could not be loaded!");
             return new ArrayList<>();
         }
         return customers;

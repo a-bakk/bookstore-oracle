@@ -51,25 +51,27 @@
                                 <th>Cím</th>
                                 <th>Létrehozva</th>
                                 <th>Utolsó bejelentkezés</th>
+                                <th>Rendelések száma</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="customer : ${customerList}">
-                                <td th:text="${customer.getEmail()}">example@gmail.com
+                            <tr th:each="customerModel : ${customerList}">
+                                <td th:text="${customerModel.getCustomer().getEmail()}">example@gmail.com
                                 </td>
                                 <td
-                                        th:text="${customer.getFirstName()} + ' ' + ${customer.getLastName()}">
+                                        th:text="${customerModel.getCustomer().getFirstName()} + ' ' + ${customerModel.getCustomer().getLastName()}">
                                     John Doe</td>
                                 <td
-                                        th:text="${customer.getStreet()} + ', ' + ${customer.getCity()} + ', ' + ${customer.getStateOrRegion()} + ', ' + ${customer.getCountry()} + ', ' + ${customer.getPostcode()}">
+                                        th:text="${customerModel.getCustomer().getStreet()} + ', ' + ${customerModel.getCustomer().getCity()} + ', ' + ${customerModel.getCustomer().getStateOrRegion()} + ', ' + ${customerModel.getCustomer().getCountry()} + ', ' + ${customerModel.getCustomer().getPostcode()}">
                                     123 Main St, Anytown, USA</td>
-                                <td th:text="${customer.getCreatedAt()}">2022-01-01</td>
-                                <td th:text="${customer.getLastLogin()}">2022-03-15
+                                <td th:text="${customerModel.getCustomer().getCreatedAt()}">2022-01-01</td>
+                                <td th:text="${customerModel.getCustomer().getLastLogin()}">2022-03-15
                                     12:34 PM</td>
+                                <td th:text="${customerModel.getNumberOfOrders()}"></td>
                                 <td>
                                     <form th:action="@{/delete-customer-by-id}" method="post">
-                                        <input type="hidden" th:name="toDeleteId" th:value="${customer.getCustomerId()}">
+                                        <input type="hidden" th:name="toDeleteId" th:value="${customerModel.getCustomer().getCustomerId()}">
                                         <input type="submit" class="btn btn-danger" value="Törlés">
                                     </form>
                                 </td>

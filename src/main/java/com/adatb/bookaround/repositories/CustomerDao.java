@@ -1,10 +1,15 @@
 package com.adatb.bookaround.repositories;
 
 import com.adatb.bookaround.entities.Customer;
+import com.adatb.bookaround.models.CustomerWithOrderCount;
 import jakarta.persistence.NoResultException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 
 @Repository
@@ -32,6 +37,37 @@ public class CustomerDao extends AbstractJpaDao<Customer> {
             return null;
         }
         return result;
+    }
+
+    /**
+     * [Összetett lekérdezés]
+     * Az ügyfelek és a rendeléseiknek számának lekérdezése.
+     *
+     * @return modellek listája, melyben az ügyfél és a rendeléseinek száma van tárolva
+     */
+    public List<CustomerWithOrderCount> findNumberOfOrdersForAllCustomers() {
+        String jpql = "SELECT c, COUNT(*) as number_of_orders " +
+                "FROM Order o " +
+                "JOIN Customer c ON o.customer.customerId = c.customerId " +
+                "GROUP BY c " +
+                "ORDER BY number_of_orders DESC";
+
+        List<Object[]> resultList = entityManager.createQuery(jpql, Object[].class).getResultList();
+
+        List<CustomerWithOrderCount> hasOrders = resultList.stream().map(row -> {
+            Customer customer = find(((Customer) row[0]).getCustomerId());
+            return new CustomerWithOrderCount(customer, (Long) row[1]);
+        }).toList();
+
+        List<CustomerWithOrderCount> hasNoOrders = findAll().stream().filter(customer -> {
+            for (CustomerWithOrderCount c : hasOrders) {
+                if (Objects.equals(c.getCustomer().getCustomerId(), customer.getCustomerId()))
+                    return false;
+            }
+            return true;
+        }).map(customer -> new CustomerWithOrderCount(customer, 0L)).toList();
+
+        return Stream.concat(hasOrders.stream(), hasNoOrders.stream()).toList();
     }
 }
 
