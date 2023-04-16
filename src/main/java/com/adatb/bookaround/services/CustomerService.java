@@ -318,6 +318,10 @@ public class CustomerService implements UserDetailsService {
         return stores;
     }
 
+    public boolean doesInvoiceBelongToCustomer(Long invoiceId, Long customerId) {
+        return invoiceDao.checkIfInvoiceBelongsToCustomer(invoiceId, customerId);
+    }
+
     private void createInvoicePdf(Order order, ShoppingCart shoppingCart, CustomerDetails customerDetails,
                                   Invoice invoice) throws Exception {
         createInvoicePdf(order, shoppingCart, customerDetails, invoice, null);

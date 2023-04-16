@@ -279,6 +279,32 @@ BEGIN
         ELSE DBMS_OUTPUT.PUT_LINE('már létezik a "NOTIFICATION" tábla!');
         END IF;
 
+        DBMS_OUTPUT.PUT_LINE('Eljárások létrehozása...');
+        EXECUTE IMMEDIATE '
+            CREATE OR REPLACE PROCEDURE invoice_belongs_to_customer
+            (in_invoice_id IN NUMBER, in_customer_id IN NUMBER, out_result OUT NUMBER)
+                IS
+                curr_order orders%ROWTYPE;
+            BEGIN
+
+                SELECT o.order_id, o.created_at, o.shipped, o.pickup, o.customer_id
+                INTO curr_order
+                FROM orders o
+                JOIN invoice i ON o.order_id = i.order_id
+                WHERE i.invoice_id = in_invoice_id;
+
+                IF curr_order.customer_id = in_customer_id THEN
+                    out_result := 1;
+                ELSE
+                    out_result := 0;
+                END IF;
+
+            EXCEPTION
+                WHEN NO_DATA_FOUND THEN
+                    out_result := 0;
+            END invoice_belongs_to_customer;
+        ';
+
     ELSIF option_text = 'records' THEN
         DBMS_OUTPUT.PUT_LINE('Rekordok beszúrása...');
         EXECUTE IMMEDIATE 'INSERT INTO BOOK (TITLE, DESCRIPTION, COVER, WEIGHT, PRICE, NUMBER_OF_PAGES, PUBLISHED_AT, PUBLISHER, ISBN, LANGUAGE, DISCOUNTED_PRICE) VALUES (''Metró 2033'', ''Az egész világ romokban hever. Az emberiség majdnem teljesen elpusztult. Moszkva szellemvárossá változott, megmérgezte a radioaktív sugárzás, és szörnyek népesítik be. A kevés életben maradt ember a moszkvai metróban bújik meg - a Föld legnagyobb atombombabiztos óvóhelyén. A metró állomásai most városállamok, az alagutakban sötétség honol, és borzalom fészkel. Artyomnak az egész metróhálózaton át kell jutnia, hogy megmentse a szörnyű veszedelemtől az állomását, sőt talán az egész emberiséget.'', ''füles kartonált'', 540, 3990, 440, ''27-JUN-16'', ''Európa Könyvkiadó'', 9630791397, ''magyar'', null)';
@@ -731,7 +757,7 @@ BEGIN
         EXECUTE IMMEDIATE 'INSERT INTO PARTOF VALUES (1, 1, ''11-MAR-23'')';
 
     ELSIF option_text = 'clean' THEN
-        DBMS_OUTPUT.PUT_LINE('Táblák és sequencek elvetése...');
+        DBMS_OUTPUT.PUT_LINE('Táblák, sequencek és eljárások elvetése...');
         EXECUTE IMMEDIATE 'DROP TABLE CONTAINS';
         EXECUTE IMMEDIATE 'DROP TABLE INVOICE';
         EXECUTE IMMEDIATE 'DROP TABLE ORDERS';
@@ -753,6 +779,7 @@ BEGIN
         EXECUTE IMMEDIATE 'DROP SEQUENCE STORE_SEQ';
         EXECUTE IMMEDIATE 'DROP SEQUENCE BUSINESS_HOURS_SEQ';
         EXECUTE IMMEDIATE 'DROP SEQUENCE NOTIFICATION_SEQ';
+        EXECUTE IMMEDIATE 'DROP PROCEDURE invoice_belongs_to_customer';
 
     ELSE
         DBMS_OUTPUT.PUT_LINE('Érvénytelen opció!');

@@ -1,10 +1,15 @@
 package com.adatb.bookaround.controllers;
 
+import com.adatb.bookaround.models.CustomerDetails;
+import com.adatb.bookaround.services.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,10 +19,22 @@ import java.io.IOException;
 
 @RestController
 public class InvoiceRestController {
-    @GetMapping("/invoices/download/{id}")
-    public ResponseEntity<ByteArrayResource> downloadInvoiceById(@PathVariable Long id) throws IOException {
 
-        // TODO Check if user is authenticated & invoice belongs to them (db side function)
+    @Autowired
+    private CustomerService customerService;
+
+    @GetMapping("/invoices/download/{id}")
+    public ResponseEntity<ByteArrayResource> downloadInvoiceById(@PathVariable Long id,
+                                                                 @AuthenticationPrincipal CustomerDetails customerDetails) throws IOException {
+
+        if (customerDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        if (!customerService.doesInvoiceBelongToCustomer(id, customerDetails.getCustomerId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
 
         ClassPathResource file = new ClassPathResource("static/invoices/invoice_" + id + ".pdf");
 

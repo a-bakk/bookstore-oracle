@@ -154,6 +154,29 @@ CREATE TABLE notification (
                               customer_id         NUMBER(19)          REFERENCES customer(customer_id) ON DELETE CASCADE
 );
 
+CREATE OR REPLACE PROCEDURE invoice_belongs_to_customer
+(in_invoice_id IN NUMBER, in_customer_id IN NUMBER, out_result OUT NUMBER)
+    IS
+    curr_order orders%ROWTYPE;
+BEGIN
+
+    SELECT o.order_id, o.created_at, o.shipped, o.pickup, o.customer_id
+    INTO curr_order
+    FROM orders o
+    JOIN invoice i ON o.order_id = i.order_id
+    WHERE i.invoice_id = in_invoice_id;
+
+    IF curr_order.customer_id = in_customer_id THEN
+        out_result := 1;
+    ELSE
+        out_result := 0;
+    END IF;
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        out_result := 0;
+END invoice_belongs_to_customer;
+
 --INSERT INTO VALUES ();
 
 --BOOK--

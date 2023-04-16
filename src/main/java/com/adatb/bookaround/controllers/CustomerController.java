@@ -175,10 +175,15 @@ public class CustomerController {
     }
 
     @PostMapping("/invoices/pay-invoice/{id}")
-    public String payInvoice(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String payInvoice(@PathVariable Long id, RedirectAttributes redirectAttributes,
+                             @AuthenticationPrincipal CustomerDetails customerDetails) {
         if (!AuthService.isAuthenticated())
             return "redirect:/my-orders";
-        // TODO check if invoice belongs to user
+
+        if (!customerService.doesInvoiceBelongToCustomer(id, customerDetails.getCustomerId())) {
+            return "redirect:/my-orders";
+        }
+
         redirectAttributes.addFlashAttribute("payVerdict",
                 customerService.payInvoice(id)
                         ? "A rendelés sikeresen ki lett fizetve."
