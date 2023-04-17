@@ -6,6 +6,7 @@ import com.adatb.bookaround.entities.Genre;
 import com.adatb.bookaround.entities.compositepk.AuthorId;
 import com.adatb.bookaround.entities.compositepk.GenreId;
 import com.adatb.bookaround.models.BookWithAuthorsAndGenres;
+import com.adatb.bookaround.models.constants.OnStockStatus;
 import com.adatb.bookaround.repositories.AuthorDao;
 import com.adatb.bookaround.repositories.BookDao;
 import com.adatb.bookaround.repositories.GenreDao;
@@ -86,6 +87,8 @@ public class BookService {
             logger.warn("No book could be loaded with the following id: " + bookId);
             return new BookWithAuthorsAndGenres();
         }
+        OnStockStatus stockStatus = bookDao.findStockStatusForBook(book.getBook().getBookId());
+        book.setOnStockStatus(stockStatus);
         return book;
     }
 

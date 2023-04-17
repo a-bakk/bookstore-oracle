@@ -177,6 +177,31 @@ EXCEPTION
         out_result := 0;
 END invoice_belongs_to_customer;
 
+CREATE OR REPLACE PROCEDURE stock_status_per_book
+(in_book_id IN NUMBER, out_status OUT VARCHAR2)
+    IS
+    number_of_books NUMBER;
+BEGIN
+
+    SELECT SUM(COALESCE(st.count, 0))
+    INTO number_of_books
+    FROM stock st
+    WHERE st.book_id = in_book_id
+    GROUP BY st.book_id;
+
+    IF number_of_books > 5 THEN
+        out_status := 'ON_STOCK';
+    ELSIF number_of_books > 0 THEN
+        out_status := 'FEW_REMAINING';
+    ELSE
+        out_status := 'NONE';
+    END IF;
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        out_status := 'NONE';
+END stock_status_per_book;
+
 --INSERT INTO VALUES ();
 
 --BOOK--

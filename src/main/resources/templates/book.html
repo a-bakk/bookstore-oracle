@@ -232,6 +232,12 @@
                     <span th:text="${bookModel.getBook().getDiscountedPrice()} + ' Ft'"></span>
                   </p>
                 </th:block>
+                <th:block th:if="${bookModel.getOnStockStatus()} ne null">
+                  <p>
+                    <strong>Státusz: </strong>
+                    <span th:text="${bookModel.getOnStockStatus().getValue()}"></span>
+                  </p>
+                </th:block>
                 <div class="d-flex align-items-center">
 
                   <button type="button" class="btn btn-outline-primary me-3" data-bs-toggle="modal"
@@ -279,7 +285,7 @@
 
                   <form th:action="@{/cart/addItemToCart}" method="post" class="d-flex align-items-center">
                     <input type="hidden" required th:name="bookIdToAdd" th:value="${bookModel.getBook().getBookId()}">
-                    <div class="input-group me-3">
+                    <div class="input-group me-3" th:if="${bookModel.getOnStockStatus()} ne null AND not ${bookModel.getOnStockStatus().getValue().equals('elfogyott')}">
                       <input type="number" class="form-control" value="1" required step="1" min="1" th:name="countToAdd"
                         style="max-width: 75px;">
                       <div class="input-group-append">

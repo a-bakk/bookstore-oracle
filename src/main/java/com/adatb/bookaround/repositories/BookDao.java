@@ -4,6 +4,9 @@ import com.adatb.bookaround.entities.Author;
 import com.adatb.bookaround.entities.Book;
 import com.adatb.bookaround.entities.Genre;
 import com.adatb.bookaround.models.BookWithAuthorsAndGenres;
+import com.adatb.bookaround.models.constants.OnStockStatus;
+import jakarta.persistence.ParameterMode;
+import jakarta.persistence.StoredProcedureQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -254,6 +257,22 @@ public class BookDao extends AbstractJpaDao<Book> {
                 .getResultList();
 
         return resultList.stream().map(result -> (Book) result[0]).toList();
+    }
+
+    /**
+     * [Tárolt eljárás]
+     *
+     * @return egy OnStockStatus példány az alapján, hogy mennyi könyv van raktáron
+     */
+    public OnStockStatus findStockStatusForBook(Long bookId) {
+        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("stock_status_per_book")
+                .registerStoredProcedureParameter(1, Long.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(2, String.class, ParameterMode.OUT)
+                .setParameter(1, bookId);
+
+        query.execute();
+
+        return OnStockStatus.valueOf((String) query.getOutputParameterValue(2));
     }
 
     /**

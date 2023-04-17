@@ -29,7 +29,7 @@ public class InvoiceDao extends AbstractJpaDao<Invoice> {
     }
 
     /**
-     * [TÁROLT ELJÁRÁS]
+     * [Tárolt eljárás]
      *
      * @return az id alapján kapott számla az ügyfélhez tartozik-e
      */
