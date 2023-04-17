@@ -72,8 +72,8 @@
                             <strong>Áruházankénti könyvkészlet: </strong>
                             <span th:each="store : ${inventoryForEachStore}">
                                 <br>
-                                <span th:text="${store.key} + ': '"></span>
-                                <span th:text="${store.value} + ' darab könyv'"></span>
+                                <span th:text="${store.getStore().getName()} + ' (' + ${store.getStoreSize().getValue()} + '): '"></span>
+                                <span th:text="${store.getNumberOfBooks()} + ' darab könyv'"></span>
                             </span>
                         </p>
                     </div>

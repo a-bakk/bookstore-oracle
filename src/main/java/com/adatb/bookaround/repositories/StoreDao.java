@@ -5,6 +5,9 @@ import com.adatb.bookaround.entities.Stock;
 import com.adatb.bookaround.entities.Store;
 import com.adatb.bookaround.models.BookWithAuthorsAndGenres;
 import com.adatb.bookaround.models.StoreWithBusinessHours;
+import com.adatb.bookaround.models.constants.StoreSize;
+import jakarta.persistence.ParameterMode;
+import jakarta.persistence.StoredProcedureQuery;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -92,20 +95,36 @@ public class StoreDao extends AbstractJpaDao<Store> {
      *
      * @return minden bolthoz a raktáron levő könyvek
      */
-    public Map<String, String> findNumberOfBooksForEachStore() {
-        TypedQuery<Object[]> query = entityManager.createQuery("SELECT s.name, SUM(st.count) " +
+    public Map<Long, Long> findNumberOfBooksForEachStore() {
+        TypedQuery<Object[]> query = entityManager.createQuery("SELECT s.storeId, SUM(st.count) " +
                 "FROM Store s " +
                 "JOIN Stock st ON st.stockId.store.storeId = s.storeId " +
-                "GROUP BY s.name", Object[].class);
+                "GROUP BY s.storeId", Object[].class);
 
         var results = query.getResultList();
         if (results.isEmpty())
             return null;
 
         return results.stream()
-                .map(row -> new AbstractMap.SimpleEntry<String, String>
-                        ((String) row[0], String.valueOf((Long) row[1])))
+                .map(row -> new AbstractMap.SimpleEntry<Long, Long>
+                        ((Long) row[0], (Long) row[1]))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    /**
+     * [Tárolt eljárás]
+     *
+     * @return az áruház mérete az előre definiált értékek alapján
+     */
+    public StoreSize findStoreSize(Long storeId) {
+        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("store_size")
+                .registerStoredProcedureParameter(1, Long.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(2, String.class, ParameterMode.OUT)
+                .setParameter(1, storeId);
+
+        query.execute();
+
+        return StoreSize.valueOf((String) query.getOutputParameterValue(2));
     }
 
 }

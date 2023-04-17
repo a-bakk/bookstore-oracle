@@ -309,13 +309,18 @@ public class CustomerService implements UserDetailsService {
         return authors;
     }
 
-    public Map<String, String> getNumberOfBooksForEachStore() {
+    public List<StoreWithStats> getNumberOfBooksForEachStore() {
         var stores = storeDao.findNumberOfBooksForEachStore();
         if (stores == null) {
             logger.warn("Inventory could not be loaded for stores!");
             return null;
         }
-        return stores;
+        return stores.entrySet().stream()
+                .map(entry -> new StoreWithStats(
+                        storeDao.find(entry.getKey()),
+                        entry.getValue(),
+                        storeDao.findStoreSize(entry.getKey())
+                )).toList();
     }
 
     public boolean doesInvoiceBelongToCustomer(Long invoiceId, Long customerId) {
