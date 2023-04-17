@@ -328,6 +328,64 @@ BEGIN
                 out_status := ''NONE'';
             END stock_status_per_book;
         ';
+        EXECUTE IMMEDIATE '
+        CREATE OR REPLACE PROCEDURE store_size (in_store_id IN NUMBER, out_status OUT VARCHAR2)
+            IS
+            number_of_books NUMBER;
+            BEGIN
+
+            SELECT SUM(COALESCE(st.count, 0))
+            INTO number_of_books
+            FROM stock st
+            WHERE st.store_id = in_store_id
+            GROUP BY st.store_id;
+
+            IF number_of_books > 100 THEN
+                out_status := ''LARGE_STORE'';
+                ELSIF number_of_books > 30 THEN
+                    out_status := ''MEDIUM_STORE'';
+                ELSE
+                    out_status := ''SMALL_STORE'';
+                END IF;
+            EXCEPTION
+            WHEN NO_DATA_FOUND THEN
+                out_status := ''SMALL_STORE'';
+            END store_size;
+        ';
+        EXECUTE IMMEDIATE '
+        CREATE OR REPLACE PROCEDURE unsold_books
+        (number_of_books OUT NUMBER)
+            IS
+        BEGIN
+
+            SELECT COUNT(b.book_id)
+            INTO number_of_books
+            FROM book b
+            WHERE b.book_id NOT IN (
+                SELECT c.book_id
+                FROM contains c
+            );
+
+        END unsold_books;
+        ';
+        EXECUTE IMMEDIATE '
+        CREATE OR REPLACE PROCEDURE revenue_per_month
+        (in_start_date IN DATE, in_end_date IN DATE, out_result OUT NUMBER)
+            IS
+        BEGIN
+
+            SELECT SUM(i.value)
+            INTO out_result
+            FROM invoice i
+                     JOIN orders o ON i.order_id = o.order_id
+            WHERE o.created_at >= in_start_date
+              AND o.created_at < in_end_date;
+
+        EXCEPTION
+            WHEN NO_DATA_FOUND THEN
+                out_result := 0;
+        END revenue_per_month;
+        ';
         DBMS_OUTPUT.PUT_LINE('Az eljárások sikeresen létrejöttek!');
 
     ELSIF option_text = 'records' THEN
@@ -806,6 +864,9 @@ BEGIN
         EXECUTE IMMEDIATE 'DROP SEQUENCE NOTIFICATION_SEQ';
         EXECUTE IMMEDIATE 'DROP PROCEDURE invoice_belongs_to_customer';
         EXECUTE IMMEDIATE 'DROP PROCEDURE stock_status_per_book';
+        EXECUTE IMMEDIATE 'DROP PROCEDURE store_size';
+        EXECUTE IMMEDIATE 'DROP PROCEDURE unsold_books';
+        EXECUTE IMMEDIATE 'DROP PROCEDURE revenue_per_month';
 
     ELSE
         DBMS_OUTPUT.PUT_LINE('Érvénytelen opció!');
