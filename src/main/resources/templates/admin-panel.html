@@ -76,6 +76,10 @@
                                 <span th:text="${store.getNumberOfBooks()} + ' darab könyv'"></span>
                             </span>
                         </p>
+                        <p class="mb-2">
+                            <strong>Nem eladott könyvek száma: </strong>
+                            <span th:text="${numberOfUnsoldBooks}"></span>
+                        </p>
                     </div>
 
                     <h2>Ügyfélkezelés</h2>

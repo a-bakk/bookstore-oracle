@@ -1,9 +1,11 @@
 package com.adatb.bookaround.services;
 
+import com.adatb.bookaround.entities.Book;
 import com.adatb.bookaround.entities.Order;
 import com.adatb.bookaround.entities.Store;
 import com.adatb.bookaround.models.BookWithAuthorsAndGenres;
 import com.adatb.bookaround.models.StoreWithBusinessHours;
+import com.adatb.bookaround.repositories.BookDao;
 import com.adatb.bookaround.repositories.OrderDao;
 import com.adatb.bookaround.repositories.StoreDao;
 import org.apache.logging.log4j.LogManager;
@@ -11,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +27,9 @@ public class StoreService {
     private StoreDao storeDao;
     @Autowired
     private OrderDao orderDao;
+
+    @Autowired
+    private BookDao bookDao;
 
     public static boolean checkForEmptyString(String[] args) {
         for (String str : args) {
@@ -50,6 +56,10 @@ public class StoreService {
             return new ArrayList<>();
         }
         return orders;
+    }
+
+    public Long getNumberOfUnsoldBooks() {
+        return bookDao.findNumberOfUnsoldBooks();
     }
 
     public Map<Store, List<BookWithAuthorsAndGenres>> getStockForEachStore() {

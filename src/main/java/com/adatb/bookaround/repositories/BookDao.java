@@ -10,7 +10,9 @@ import jakarta.persistence.StoredProcedureQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Stream;
 
 @Repository
 public class BookDao extends AbstractJpaDao<Book> {
@@ -273,6 +275,20 @@ public class BookDao extends AbstractJpaDao<Book> {
         query.execute();
 
         return OnStockStatus.valueOf((String) query.getOutputParameterValue(2));
+    }
+
+    /**
+     * [Tárolt eljárás]
+     *
+     * @return azok a könyvek, melyek egyetlen rendelésben sem szerepelnek
+     */
+    public Long findNumberOfUnsoldBooks() {
+        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("unsold_books")
+                .registerStoredProcedureParameter(1, Long.class, ParameterMode.OUT);
+
+        query.execute();
+
+        return (Long) query.getOutputParameterValue(1);
     }
 
     /**
