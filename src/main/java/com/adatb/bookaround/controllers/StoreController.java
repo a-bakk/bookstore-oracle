@@ -94,6 +94,7 @@ public class StoreController {
         model.addAttribute("mostExpensiveAuthors", customerService.getMostExpensiveAuthors());
         model.addAttribute("inventoryForEachStore", customerService.getNumberOfBooksForEachStore());
         model.addAttribute("numberOfUnsoldBooks", storeService.getNumberOfUnsoldBooks());
+        model.addAttribute("revenueList", customerService.getRevenueForEachMonth());
         model.addAttribute("activePage", "admin-panel");
         model.addAttribute("currentCustomer", customerDetails);
         return "admin-panel";

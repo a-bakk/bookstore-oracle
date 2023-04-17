@@ -4,6 +4,7 @@ import com.adatb.bookaround.entities.*;
 import com.adatb.bookaround.entities.compositepk.ContainsId;
 import com.adatb.bookaround.entities.compositepk.PartOfId;
 import com.adatb.bookaround.models.*;
+import com.adatb.bookaround.models.constants.BookstoreDate;
 import com.adatb.bookaround.repositories.*;
 import com.aspose.words.*;
 import org.apache.logging.log4j.LogManager;
@@ -28,6 +29,10 @@ import java.util.stream.Collectors;
 public class CustomerService implements UserDetailsService {
 
     private static final Logger logger = LogManager.getLogger(CustomerService.class);
+    private final List<BookstoreDate> months = List.of(BookstoreDate.JANUARY_2023, BookstoreDate.FEBRUARY_2023,
+            BookstoreDate.MARCH_2023, BookstoreDate.APRIL_2023, BookstoreDate.MAY_2023, BookstoreDate.JUNE_2023,
+            BookstoreDate.JULY_2023, BookstoreDate.AUGUST_2023, BookstoreDate.SEPTEMBER_2023,
+            BookstoreDate.OCTOBER_2023, BookstoreDate.NOVEMBER_2023, BookstoreDate.DECEMBER_2023);
     @Autowired
     private CustomerDao customerDao;
     @Autowired
@@ -46,13 +51,10 @@ public class CustomerService implements UserDetailsService {
     private BookDao bookDao;
     @Autowired
     private PartOfDao partOfDao;
-
     @Autowired
     private StoreDao storeDao;
-
     @Autowired
     private AuthorDao authorDao;
-
     @Autowired
     private GenreDao genreDao;
 
@@ -321,6 +323,10 @@ public class CustomerService implements UserDetailsService {
                         entry.getValue(),
                         storeDao.findStoreSize(entry.getKey())
                 )).toList();
+    }
+
+    public Map<BookstoreDate, Long> getRevenueForEachMonth() {
+        return months.stream().collect(Collectors.toMap(key -> key, value -> invoiceDao.findRevenueForMonth(value)));
     }
 
     public boolean doesInvoiceBelongToCustomer(Long invoiceId, Long customerId) {

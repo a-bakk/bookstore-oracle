@@ -80,6 +80,14 @@
                             <strong>Nem eladott könyvek száma: </strong>
                             <span th:text="${numberOfUnsoldBooks}"></span>
                         </p>
+                        <p class="mb-2">
+                            <strong>Havi bevétel</strong>
+                            <th:block th:each="revenueModel : ${revenueList}">
+                                <br>
+                                <span th:text="${revenueModel.getKey().getValue()} + ': '"></span>
+                                <span th:text="${revenueModel.getValue()} + ' HUF'"></span>
+                            </th:block>
+                        </p>
                     </div>
 
                     <h2>Ügyfélkezelés</h2>

@@ -1,6 +1,7 @@
 package com.adatb.bookaround.repositories;
 
 import com.adatb.bookaround.entities.Invoice;
+import com.adatb.bookaround.models.constants.BookstoreDate;
 import jakarta.persistence.ParameterMode;
 import jakarta.persistence.StoredProcedureQuery;
 import jakarta.persistence.TypedQuery;
@@ -10,6 +11,8 @@ import org.hibernate.Session;
 import org.hibernate.procedure.ProcedureCall;
 import org.hibernate.result.Output;
 import org.springframework.stereotype.Repository;
+
+import java.sql.Date;
 
 @Repository
 public class InvoiceDao extends AbstractJpaDao<Invoice> {
@@ -44,5 +47,23 @@ public class InvoiceDao extends AbstractJpaDao<Invoice> {
         query.execute();
 
         return (Long) query.getOutputParameterValue(3) == 1;
+    }
+
+    /**
+     * [Tárolt eljárás]
+     *
+     * @return adott hónapra a bevétel
+     */
+    public Long findRevenueForMonth(BookstoreDate bookstoreDate) {
+        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("revenue_per_month")
+                .registerStoredProcedureParameter(1, Date.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(2, Date.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(3, Long.class, ParameterMode.OUT)
+                .setParameter(1, Date.valueOf(bookstoreDate.getStartDate()))
+                .setParameter(2, Date.valueOf(bookstoreDate.getEndDate()));
+
+        query.execute();
+
+        return query.getOutputParameterValue(3) == null ? 0 : (Long) query.getOutputParameterValue(3);
     }
 }
