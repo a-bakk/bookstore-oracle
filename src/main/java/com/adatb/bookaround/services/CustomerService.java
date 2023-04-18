@@ -329,8 +329,8 @@ public class CustomerService implements UserDetailsService {
         return months.stream().collect(Collectors.toMap(key -> key, value -> invoiceDao.findRevenueForMonth(value)));
     }
 
-    public boolean doesInvoiceBelongToCustomer(Long invoiceId, Long customerId) {
-        return invoiceDao.checkIfInvoiceBelongsToCustomer(invoiceId, customerId);
+    public boolean seeIfInvoiceBelongsToCustomer(Long invoiceId, Long customerId) {
+        return !invoiceDao.checkIfInvoiceBelongsToCustomer(invoiceId, customerId);
     }
 
     private void createInvoicePdf(Order order, ShoppingCart shoppingCart, CustomerDetails customerDetails,

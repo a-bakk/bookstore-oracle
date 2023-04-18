@@ -22,6 +22,7 @@ public class BookWithAuthorsAndGenres implements Serializable {
     private Set<Author> authors = new HashSet<>();
     private Set<Genre> genres = new HashSet<>();
     private OnStockStatus onStockStatus = OnStockStatus.NONE; // none by default
+
     public BookWithAuthorsAndGenres(Book book, Set<Author> authors, Set<Genre> genres) {
         this.book = book;
         this.authors = authors;

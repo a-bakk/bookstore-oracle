@@ -180,7 +180,7 @@ public class CustomerController {
         if (!AuthService.isAuthenticated())
             return "redirect:/my-orders";
 
-        if (!customerService.doesInvoiceBelongToCustomer(id, customerDetails.getCustomerId())) {
+        if (customerService.seeIfInvoiceBelongsToCustomer(id, customerDetails.getCustomerId())) {
             return "redirect:/my-orders";
         }
 

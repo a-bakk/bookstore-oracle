@@ -10,9 +10,7 @@ import jakarta.persistence.StoredProcedureQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Stream;
 
 @Repository
 public class BookDao extends AbstractJpaDao<Book> {
@@ -59,11 +57,14 @@ public class BookDao extends AbstractJpaDao<Book> {
     }
 
     /**
-     * Filterezés szerző alapján.
+     * Filterezés szerző alapján. [!] Ezek a filterező metódusok végül nem lettek használva tekintettel arra,
+     * hogy nem számítanak összetett lekérdezésnek és a filterezés egyszerűbben és hatékonyabban meg lett
+     * valósítva a Stream API segítségével a BookServiceben.
      *
      * @param author A könyv szerzője.
      * @return Egy lista, melyben a filterezésnek megfelelő BookWithAuthorsAndGenres példányok vannak.
      */
+    @SuppressWarnings("unused")
     public List<BookWithAuthorsAndGenres> filterBooksWithAuthorsAndGenres(Author author) {
         String jpql = "SELECT b, a, g " +
                 "FROM Book b " +
@@ -86,6 +87,7 @@ public class BookDao extends AbstractJpaDao<Book> {
      * @param title A könyv címe, melyre keresni szeretnénk.
      * @return Egy lista, melyben a filterezésnek megfelelő BookWithAuthorsAndGenres példányok vannak.
      */
+    @SuppressWarnings("unused")
     public List<BookWithAuthorsAndGenres> filterBooksWithAuthorsAndGenres(String title) {
         String jpql = "SELECT b, a, g " +
                 "FROM Book b " +
@@ -100,6 +102,7 @@ public class BookDao extends AbstractJpaDao<Book> {
         return getEntitiesFromResultList(resultList);
     }
 
+    @SuppressWarnings("unused")
     public List<BookWithAuthorsAndGenres> filterBooksWithAuthorsAndGenres(Genre genre) {
         String jpql = "SELECT b, a, g " +
                 "FROM Book b " +
@@ -114,6 +117,7 @@ public class BookDao extends AbstractJpaDao<Book> {
         return getEntitiesFromResultList(resultList);
     }
 
+    @SuppressWarnings("unused")
     public List<BookWithAuthorsAndGenres> filterBooksWithAuthorsAndGenres(Author author, String title) {
         String jpql = "SELECT b, a, g " +
                 "FROM Book b " +
@@ -132,6 +136,7 @@ public class BookDao extends AbstractJpaDao<Book> {
         return getEntitiesFromResultList(resultList);
     }
 
+    @SuppressWarnings("unused")
     public List<BookWithAuthorsAndGenres> filterBooksWithAuthorsAndGenres(Author author, Genre genre) {
         String jpql = "SELECT b, a, g " +
                 "FROM Book b " +
@@ -150,6 +155,7 @@ public class BookDao extends AbstractJpaDao<Book> {
         return getEntitiesFromResultList(resultList);
     }
 
+    @SuppressWarnings("unused")
     public List<BookWithAuthorsAndGenres> filterBooksWithAuthorsAndGenres(String title, Genre genre) {
         String jpql = "SELECT b, a, g " +
                 "FROM Book b " +
@@ -167,6 +173,7 @@ public class BookDao extends AbstractJpaDao<Book> {
         return getEntitiesFromResultList(resultList);
     }
 
+    @SuppressWarnings("unused")
     public List<BookWithAuthorsAndGenres> filterBooksWithAuthorsAndGenres(Author author, String title, Genre genre) {
         String jpql = "SELECT b, a, g " +
                 "FROM Book b " +
@@ -192,6 +199,7 @@ public class BookDao extends AbstractJpaDao<Book> {
      *
      * @return A megfelelő BookWithAuthorsAndGenres entitásokat tartalmazó lista.
      */
+    @SuppressWarnings("unused")
     public List<BookWithAuthorsAndGenres> findAllBooksWithAuthorsAndGenresOrderedByReleaseDate() {
         String jpql = "SELECT b, a, g " +
                 "FROM Book b " +

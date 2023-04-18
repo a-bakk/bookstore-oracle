@@ -5,19 +5,12 @@ import com.adatb.bookaround.models.constants.BookstoreDate;
 import jakarta.persistence.ParameterMode;
 import jakarta.persistence.StoredProcedureQuery;
 import jakarta.persistence.TypedQuery;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.procedure.ProcedureCall;
-import org.hibernate.result.Output;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 
 @Repository
 public class InvoiceDao extends AbstractJpaDao<Invoice> {
-
-    private static final Logger logger = LogManager.getLogger(Invoice.class);
     public InvoiceDao() {
         this.setEntityClass(Invoice.class);
     }

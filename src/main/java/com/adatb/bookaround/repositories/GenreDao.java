@@ -5,8 +5,6 @@ import com.adatb.bookaround.entities.Genre;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import java.math.RoundingMode;
@@ -31,13 +29,13 @@ public class GenreDao extends AbstractJpaDao<Genre> {
     }
 
     @Transactional
-    public int delete(Long bookId, String genreName) {
+    public void delete(Long bookId, String genreName) {
         Query query = entityManager.createQuery("DELETE FROM Genre g " +
                         "WHERE g.genreId.bookId = :bookId AND " +
                         "g.genreId.genreName = :genreName")
                 .setParameter("bookId", bookId)
                 .setParameter("genreName", genreName);
-        return query.executeUpdate();
+        query.executeUpdate();
     }
 
     /**
@@ -123,7 +121,7 @@ public class GenreDao extends AbstractJpaDao<Genre> {
 
         return results.stream()
                 .map(row -> new AbstractMap.SimpleEntry<String, String>
-                        ((String) row[0], decimalFormat.format((Double) row[1])))
+                        ((String) row[0], decimalFormat.format(row[1])))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 

@@ -26,7 +26,7 @@
             <div class="col-md-2"></div>
             <div class="col-md-8">
 
-                <section class="p-5 bg-light" style="min-height: 80vh;">
+                <section class="p-5 bg-light" style="min-height: 100vh;">
 
                     <div class="container mb-5">
                         <h1 class="text-center mb-2">BookAround</h1>
@@ -41,44 +41,104 @@
 
                     <div class="container">
                         <!--TODO: search bar: title, author, genre-->
-                        <form method="post">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label for="title" class="labels fw-bold">Keresés cím alapján</label><br>
-                                    <select id="title" name="title" class="form-control" style="width:80%;">
-                                        <option value="none">none</option>
-                                        <option value="title2">title2</option>
-                                        <option value="title3">title3</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label for="author" class="labels fw-bold">Keresés szerző alapján</label><br>
-                                    <select id="author" name="author" class="form-control" style="width:80%;">
-                                        <option value="none">none</option>
-                                        <option value="author2">author2</option>
-                                        <option value="author3">author3</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label for="genre" class="label fw-bold">Keresés műfaj alapján</label><br>
-                                    <select id="genre" name="genre" class="form-control" style="width:80%;">
-                                        <option value="none">none</option>
-                                        <option value="genre2">genre2</option>
-                                        <option value="genre3">genre3</option>
-                                    </select>
-                                </div>
+                        <h5 class="text-center fw-bold mb-5">Keresés</h5>
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+                                <form th:action="@{/filter-books}" method="post">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="title" class="fw-bold">Cím alapján</label>
+                                            <input type="text" id="title" th:name="filterTitle" class="form-control" placeholder="Cím">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="author" class="fw-bold">Szerző alapján</label>
+                                            <input type="text" id="author" th:name="filterAuthor" class="form-control" placeholder="Szerző">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="genre" class="fw-bold">Műfaj alapján</label>
+                                            <input type="text" id="genre" th:name="filterGenre" class="form-control" placeholder="Műfaj">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="label fw-bold">Ár szerint</label><br>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" th:name="filterPrice" id="nolimit" th:value="'nolimit'" checked>
+                                                <label class="form-check-label" for="nolimit">Nincs limit</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" th:name="filterPrice" id="lessthan3500" th:value="'lessthan3500'">
+                                                <label class="form-check-label" for="lessthan3500">&lt; 3500 HUF</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" th:name="filterPrice" id="lessthan7000" value="'lessthan7000'">
+                                                <label class="form-check-label" for="lessthan7000">&lt; 7000 HUF</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="d-grid gap-2">
+                                        <input type="submit" class="btn btn-primary" value="Keresés">
+                                    </div>
+                                </form>
                             </div>
-                            <br>
-                            <input type="submit" class="btn btn-primary" value="Keresés" style="width: 150px;">
-                        </form>
+                        </div>
                     </div>
 
                     <div class="container mt-5">
                         <div class="row">
                             <div class="col-md-10 mx-auto">
-                                <div class="card mb-3 article-loop" th:each="bookModel : ${bookList}">
+                                <div th:if="${filteredBooks} eq null" class="card mb-3 article-loop" th:each="bookModel : ${bookList}">
+                                    <div class="row">
+                                        <div class="col-md-4 d-flex align-items-center">
+                                            <img th:src="@{/img/book-placeholder.png}" src=""
+                                                 class="img-fluid mx-auto px-2" alt="Book cover"
+                                                 style="max-height: 250px;">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title fw-bold"
+                                                    th:text="${bookModel.getBook().getTitle()}">Book Title</h5>
+                                                <p class="card-text">
+                                                    <th:block th:each="author : ${bookModel.getAuthors()}">
+                                                        <span
+                                                                th:text="' | ' + ${author.getAuthorId().getFirstName()} + ' ' + ${author.getAuthorId().getLastName()}"></span>
+                                                    </th:block>
+                                                </p>
+                                                <p class="card-text">
+                                                    <th:block th:each="genre : ${bookModel.getGenres()}">
+                                                        <span
+                                                                th:text="' | ' + ${genre.getGenreId().getGenreName()}"></span>
+                                                    </th:block>
+                                                </p>
+                                                <div class="form-group mb-3">
+                                                    <textarea class="form-control" rows="3" maxlength="200" disabled
+                                                              style="resize: none;"
+                                                              th:text="${bookModel.getBook().getDescription()}">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</textarea>
+                                                </div>
+                                                <div class="row align-items-center">
+                                                    <div class="col">
+                                                        <p class="card-text">
+                                                            <span
+                                                                    th:text="'Ár: ' + ${bookModel.getBook().getPrice()} + ' Ft'"></span>
+                                                            <th:block
+                                                                    th:if="${bookModel.getBook().getDiscountedPrice()} ne null">
+                                                                <br>
+                                                                <span
+                                                                        th:text="'Leárazás: ' + ${bookModel.getBook().getDiscountedPrice()} + ' Ft'"></span>
+                                                            </th:block>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <a th:href="@{/book/{bookId}(bookId=${bookModel.getBook().getBookId()})}" class="btn btn-primary">Több</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="mb-5 text-center fw-bold" th:if="${filteredBooks} ne null" th:text="${filteredBooksSize} + ' darab találat'"></p>
+                                <div th:if="${filteredBooks} ne null" class="card mb-3 article-loop" th:each="bookModel : ${filteredBooks}">
                                     <div class="row">
                                         <div class="col-md-4 d-flex align-items-center">
                                             <img th:src="@{/img/book-placeholder.png}" src=""
@@ -129,6 +189,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
 <!--                    <div th:each="stock:${stockList}">-->
 <!--                        <span th:text="${stock.getKey().getName()}"></span>-->

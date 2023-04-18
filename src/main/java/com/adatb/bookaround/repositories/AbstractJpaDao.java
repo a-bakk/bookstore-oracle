@@ -21,6 +21,7 @@ public abstract class AbstractJpaDao<T extends Serializable> {
         return entityManager.find(entityClass, id);
     }
 
+    @SuppressWarnings("unchecked")
     public List<T> findAll() {
         return entityManager.createQuery("FROM " + entityClass.getName()).getResultList();
     }
@@ -32,9 +33,8 @@ public abstract class AbstractJpaDao<T extends Serializable> {
     }
 
     @Transactional
-    public T update(T entity) {
+    public void update(T entity) {
         entityManager.merge(entity);
-        return entity;
     }
 
     @Transactional

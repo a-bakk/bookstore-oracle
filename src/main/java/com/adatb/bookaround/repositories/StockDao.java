@@ -14,18 +14,6 @@ public class StockDao extends AbstractJpaDao<Stock> {
         this.setEntityClass(Stock.class);
     }
 
-    public Integer findStockCountByBookId(Long bookId) {
-        String jpql = "SELECT s " +
-                "FROM Stock s " +
-                "WHERE s.stockId.book.bookId = :bookId";
-
-        List<Stock> resultList = entityManager.createQuery(jpql, Stock.class)
-                .setParameter("bookId", bookId)
-                .getResultList();
-
-        return resultList.stream().mapToInt(Stock::getCount).sum();
-    }
-
     public List<Stock> findStocksByBookId(Long bookId) {
         return entityManager.createQuery("SELECT s " +
                         "FROM Stock s " +

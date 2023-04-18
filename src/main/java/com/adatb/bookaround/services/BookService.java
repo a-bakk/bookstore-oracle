@@ -67,6 +67,45 @@ public class BookService {
         return result.stream().map(b -> bookDao.encapsulateBook(b)).toList();
     }
 
+    public List<BookWithAuthorsAndGenres> filterBooks(String title, String author, String genre, String limit) {
+        var books = getAllBookModels();
+        if (books == null || books.isEmpty()) {
+            logger.warn("Books could not be filtered because book list is empty!");
+            return null;
+        }
+        final Long maxPrice = switch (limit) {
+            case "lessthan3500" -> 3500L;
+            case "lessthan7000" -> 7000L;
+            default -> Long.MAX_VALUE;
+        };
+        return books.stream()
+                .filter(b -> { // filtering title
+                    return isNullOrEmpty(title) || b.getBook().getTitle().toLowerCase().contains(title.toLowerCase());
+                })
+                .filter(b -> { // filtering author
+                    return isNullOrEmpty(author) ||
+                            BookService.joinStrings(b.getAuthors().stream()
+                                    .map(a -> a.getAuthorId().getFirstName() + " " + a.getAuthorId().getLastName())
+                                    .collect(Collectors.toCollection(ConcurrentSkipListSet::new))).toLowerCase().contains(author.toLowerCase());
+                })
+                .filter(b -> { // filtering genre
+                    return isNullOrEmpty(genre) ||
+                            BookService.joinStrings(b.getGenres().stream()
+                                    .map(g -> g.getGenreId().getGenreName())
+                                    .collect(Collectors.toCollection(ConcurrentSkipListSet::new))).toLowerCase().contains(genre.toLowerCase());
+                })
+                .filter(b -> { // filtering price
+                    return b.getBook().getDiscountedPrice() == null
+                            ? (b.getBook().getPrice() <= maxPrice)
+                            : (b.getBook().getDiscountedPrice() <= maxPrice);
+                })
+                .toList();
+    }
+
+    private boolean isNullOrEmpty(String str) {
+        return str == null || str.isEmpty();
+    }
+
     public List<BookWithAuthorsAndGenres> getPopularBooks() {
         List<Book> books = bookDao.findPopularBooksOrderedByOrderCount();
         if (books == null) {

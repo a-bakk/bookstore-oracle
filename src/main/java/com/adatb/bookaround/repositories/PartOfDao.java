@@ -26,13 +26,13 @@ public class PartOfDao extends AbstractJpaDao<PartOf> {
     }
 
     @Transactional
-    public int delete(Book book, Wishlist wishlist) {
+    public void delete(Book book, Wishlist wishlist) {
         Query query = entityManager.createQuery("DELETE FROM PartOf p " +
                         "WHERE p.partOfId.book = :book AND " +
                         "p.partOfId.wishlist = :wishlist")
                 .setParameter("book", book)
                 .setParameter("wishlist", wishlist);
 
-        return query.executeUpdate();
+        query.executeUpdate();
     }
 }

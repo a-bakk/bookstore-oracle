@@ -16,10 +16,6 @@ import java.util.Objects;
 public class ShoppingCart {
     private List<ShoppingCartItem> items = new ArrayList<>();
 
-    public boolean isEmpty() {
-        return items.isEmpty();
-    }
-
     public void addItem(BookWithAuthorsAndGenres book, int count) {
         for (ShoppingCartItem item : items) {
             if (Objects.equals(item.getBookModel().getBook().getBookId(),

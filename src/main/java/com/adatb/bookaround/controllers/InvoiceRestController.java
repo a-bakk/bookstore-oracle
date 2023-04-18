@@ -31,7 +31,7 @@ public class InvoiceRestController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        if (!customerService.doesInvoiceBelongToCustomer(id, customerDetails.getCustomerId())) {
+        if (customerService.seeIfInvoiceBelongsToCustomer(id, customerDetails.getCustomerId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 

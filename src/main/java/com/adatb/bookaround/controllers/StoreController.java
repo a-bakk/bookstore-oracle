@@ -145,6 +145,18 @@ public class StoreController {
         return "book";
     }
 
+    @PostMapping("/filter-books")
+    public String filterBooks(@RequestParam(name = "filterTitle") String title,
+                              @RequestParam(name = "filterAuthor") String author,
+                              @RequestParam(name = "filterGenre") String genre,
+                              @RequestParam(name = "filterPrice") String limit,
+                              RedirectAttributes redirectAttributes) {
+        var books = bookService.filterBooks(title, author, genre, limit);
+        redirectAttributes.addFlashAttribute("filteredBooks", books);
+        redirectAttributes.addFlashAttribute("filteredBooksSize", books.size());
+        return "redirect:/index";
+    }
+
     @PostMapping("/filter-bestsellers-by-genre")
     public String filterBestsellersByGenre(@RequestParam(name = "chosenGenreName") String genreName,
                                            RedirectAttributes redirectAttributes) {

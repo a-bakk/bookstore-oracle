@@ -2,7 +2,6 @@ package com.adatb.bookaround.repositories;
 
 import com.adatb.bookaround.entities.Author;
 import com.adatb.bookaround.entities.Book;
-import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
@@ -45,7 +44,7 @@ public class AuthorDao extends AbstractJpaDao<Author> {
     }
 
     @Transactional
-    public int delete(Long bookId, String firstName, String lastName) {
+    public void delete(Long bookId, String firstName, String lastName) {
         Query query = entityManager.createQuery("DELETE FROM Author a " +
                         "WHERE a.authorId.bookId = :bookId AND " +
                         "a.authorId.firstName = :firstName AND " +
@@ -53,7 +52,7 @@ public class AuthorDao extends AbstractJpaDao<Author> {
                 .setParameter("bookId", bookId)
                 .setParameter("firstName", firstName)
                 .setParameter("lastName", lastName);
-        return query.executeUpdate();
+        query.executeUpdate();
     }
 
     /**
@@ -78,7 +77,7 @@ public class AuthorDao extends AbstractJpaDao<Author> {
 
         return results.stream()
                 .map(row -> new AbstractMap.SimpleEntry<String, String>
-                        ((String) row[0] + " " + (String) row[1], decimalFormat.format((Double) row[2])))
+                        (row[0] + " " + row[1], decimalFormat.format(row[2])))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 

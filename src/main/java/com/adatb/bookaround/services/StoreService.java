@@ -1,6 +1,5 @@
 package com.adatb.bookaround.services;
 
-import com.adatb.bookaround.entities.Book;
 import com.adatb.bookaround.entities.Order;
 import com.adatb.bookaround.entities.Store;
 import com.adatb.bookaround.models.BookWithAuthorsAndGenres;
@@ -13,7 +12,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
