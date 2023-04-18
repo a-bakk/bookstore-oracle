@@ -8,14 +8,12 @@
 -- clean: a táblák és sequencek megfelelő sorrendben való droppolása
 
 SET SERVEROUTPUT ON;
-
 DECLARE
     option_text VARCHAR2(50);
     number_of_users NUMBER;
     table_count NUMBER;
 BEGIN
     option_text := LOWER(TRIM('&option_text'));
-
     IF option_text = 'user' THEN
         DBMS_OUTPUT.PUT_LINE('Felhasználó létrehozása...');
         SELECT COUNT(*) INTO number_of_users FROM ALL_USERS WHERE username = 'BOOKAROUND';
@@ -25,7 +23,6 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE('"bookaround" felhasználó létrehozva!');
         ELSE DBMS_OUTPUT.PUT_LINE('már létezik a felhasználó!');
         END IF;
-
     ELSIF option_text = 'tables' THEN
         DBMS_OUTPUT.PUT_LINE('Táblák létrehozása...');
         SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'CUSTOMER';
@@ -57,7 +54,6 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE('"CUSTOMER" tábla létrehozva!');
         ELSE DBMS_OUTPUT.PUT_LINE('már létezik a "CUSTOMER" tábla!');
         END IF;
-
         SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'WISHLIST';
         IF table_count = 0 THEN
             EXECUTE IMMEDIATE '
@@ -98,7 +94,6 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE('"ORDERS" tábla létrehozva!');
         ELSE DBMS_OUTPUT.PUT_LINE('már létezik az "ORDERS" tábla!');
         END IF;
-
         SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'INVOICE';
         IF table_count = 0 THEN
             EXECUTE IMMEDIATE '
@@ -118,7 +113,6 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE('"INVOICE" tábla létrehozva!');
         ELSE DBMS_OUTPUT.PUT_LINE('már létezik az "INVOICE" tábla!');
         END IF;
-
         SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'BOOK';
         IF table_count = 0 THEN
             EXECUTE IMMEDIATE '
@@ -146,7 +140,6 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE('"BOOK" tábla létrehozva!');
         ELSE DBMS_OUTPUT.PUT_LINE('már létezik a "BOOK" tábla!');
         END IF;
-
         SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'AUTHOR';
         IF table_count = 0 THEN
             EXECUTE IMMEDIATE '
@@ -173,7 +166,6 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE('"GENRE" tábla létrehozva!');
         ELSE DBMS_OUTPUT.PUT_LINE('már létezik a "GENRE" tábla!');
         END IF;
-
         SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'STORE';
         IF table_count = 0 THEN
             EXECUTE IMMEDIATE '
@@ -196,7 +188,6 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE('"STORE" tábla létrehozva!');
         ELSE DBMS_OUTPUT.PUT_LINE('már létezik a "STORE" tábla!');
         END IF;
-
         SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'STOCK';
         IF table_count = 0 THEN
             EXECUTE IMMEDIATE '
@@ -210,7 +201,6 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE('"STOCK" tábla létrehozva!');
         ELSE DBMS_OUTPUT.PUT_LINE('már létezik a "STOCK" tábla!');
         END IF;
-
         SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'PARTOF';
         IF table_count = 0 THEN
             EXECUTE IMMEDIATE '
@@ -224,7 +214,6 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE('"PARTOF" tábla létrehozva!');
         ELSE DBMS_OUTPUT.PUT_LINE('már létezik a "PARTOF" tábla!');
         END IF;
-
         SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'CONTAINS';
         IF table_count = 0 THEN
             EXECUTE IMMEDIATE '
@@ -238,7 +227,6 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE('"CONTAINS" tábla létrehozva!');
         ELSE DBMS_OUTPUT.PUT_LINE('már létezik a "CONTAINS" tábla!');
         END IF;
-
         SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'BUSINESS_HOURS';
         IF table_count = 0 THEN
             EXECUTE IMMEDIATE '
@@ -259,7 +247,6 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE('"BUSINESS_HOURS" tábla létrehozva!');
         ELSE DBMS_OUTPUT.PUT_LINE('már létezik a "BUSINESS_HOURS" tábla!');
         END IF;
-
         SELECT COUNT(*) INTO table_count FROM ALL_TABLES WHERE table_name = 'NOTIFICATION';
         IF table_count = 0 THEN
             EXECUTE IMMEDIATE '
@@ -278,7 +265,6 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE('"NOTIFICATION" tábla létrehozva!');
         ELSE DBMS_OUTPUT.PUT_LINE('már létezik a "NOTIFICATION" tábla!');
         END IF;
-
         DBMS_OUTPUT.PUT_LINE('Eljárások létrehozása...');
         EXECUTE IMMEDIATE '
             CREATE OR REPLACE PROCEDURE invoice_belongs_to_customer
@@ -386,7 +372,119 @@ BEGIN
                 out_result := 0;
         END revenue_per_month;
         ';
+        EXECUTE IMMEDIATE '
+        CREATE OR REPLACE FUNCTION count_orders_for_customer
+        (in_customer_id IN NUMBER) RETURN NUMBER
+            IS
+            order_count NUMBER;
+        BEGIN
+            SELECT COUNT(*)
+            INTO order_count
+            FROM orders o
+            WHERE o.customer_id = in_customer_id;
+            RETURN order_count;
+        EXCEPTION
+            WHEN NO_DATA_FOUND THEN
+                RETURN 0;
+        END count_orders_for_customer;
+        ';
         DBMS_OUTPUT.PUT_LINE('Az eljárások sikeresen létrejöttek!');
+        DBMS_OUTPUT.PUT_LINE('Triggerek létrehozása...');
+        EXECUTE IMMEDIATE '
+        CREATE OR REPLACE TRIGGER become_regular_customer
+            AFTER INSERT ON contains
+            FOR EACH ROW
+        DECLARE
+            curr_customer_id NUMBER;
+        BEGIN
+
+            SELECT o.customer_id
+            INTO curr_customer_id
+            FROM orders o
+            WHERE o.order_id = :NEW.order_id;
+
+            UPDATE customer c
+            SET c.regular_since = SYSDATE
+            WHERE c.customer_id = curr_customer_id
+              AND count_orders_for_customer(curr_customer_id) > 5
+              AND c.regular_since IS NULL;
+        END;
+        ';
+        EXECUTE IMMEDIATE '
+        CREATE OR REPLACE TRIGGER lose_regular_status
+            BEFORE UPDATE OF last_login ON customer
+            FOR EACH ROW
+        BEGIN
+            IF :OLD.last_login < (SYSDATE - 90) THEN
+                :new.regular_since := NULL;
+            END IF;
+        END;
+        ';
+        EXECUTE IMMEDIATE '
+        CREATE OR REPLACE TRIGGER recalculate_value_if_regular
+            BEFORE INSERT ON invoice
+            FOR EACH ROW
+        DECLARE
+            curr_customer customer%ROWTYPE;
+            curr_customer_id NUMBER;
+        BEGIN
+            SELECT o.customer_id
+            INTO curr_customer_id
+            FROM orders o
+            WHERE o.order_id = :NEW.order_id;
+
+            SELECT *
+            INTO curr_customer
+            FROM customer c
+            WHERE c.customer_id = curr_customer_id;
+
+            IF curr_customer.regular_since IS NOT NULL THEN
+                :NEW.value := 0.9 * :NEW.value;
+            END IF;
+        END;
+        ';
+        EXECUTE IMMEDIATE '
+        CREATE OR REPLACE TRIGGER notif_when_invoice_is_unpaid
+            AFTER UPDATE OF last_login ON customer
+            FOR EACH ROW
+            DECLARE
+                CURSOR orders_for_curr_customer IS
+                    SELECT order_id, customer_id, created_at FROM orders WHERE orders.customer_id = :NEW.customer_id;
+                is_paid NUMBER(1);
+            BEGIN
+            FOR ord IN orders_for_curr_customer
+                LOOP
+                SELECT i.paid
+                INTO is_paid
+                FROM invoice i
+                WHERE i.order_id = ord.order_id;
+                IF is_paid = 0 AND ord.created_at < SYSDATE - 2 THEN
+                    INSERT INTO notification(message, customer_id) VALUES
+                        (''2 napnál régebbi kifizetetlen számlája van!'', ord.customer_id);
+                    END IF;
+                END LOOP;
+            END;
+        ';
+        EXECUTE IMMEDIATE '
+        CREATE OR REPLACE TRIGGER notif_when_payment_successful
+            AFTER UPDATE OF paid ON invoice
+            FOR EACH ROW
+            DECLARE
+                curr_customer_id NUMBER;
+            BEGIN
+
+            SELECT o.customer_id
+            INTO curr_customer_id
+            FROM orders o
+            WHERE o.order_id = :NEW.order_id;
+
+            IF :OLD.paid = 0 AND :NEW.paid = 1 THEN
+                INSERT INTO notification(message, customer_id) VALUES
+                    (''Sikeresen kifizettet egy számlát!'', curr_customer_id);
+                END IF;
+            END;
+        ';
+        DBMS_OUTPUT.PUT_LINE('Az triggerek sikeresen létrejöttek!');
 
     ELSIF option_text = 'records' THEN
         DBMS_OUTPUT.PUT_LINE('Rekordok beszúrása...');
@@ -838,9 +936,8 @@ BEGIN
         EXECUTE IMMEDIATE 'INSERT INTO WISHLIST (NAME, CREATED_AT, CUSTOMER_ID) VALUES (''Szülinaposak'', ''11-MAR-23'', 1)';
 
         EXECUTE IMMEDIATE 'INSERT INTO PARTOF VALUES (1, 1, ''11-MAR-23'')';
-
     ELSIF option_text = 'clean' THEN
-        DBMS_OUTPUT.PUT_LINE('Táblák, sequencek és eljárások elvetése...');
+        DBMS_OUTPUT.PUT_LINE('Táblák és sequencek elvetése...');
         EXECUTE IMMEDIATE 'DROP TABLE CONTAINS';
         EXECUTE IMMEDIATE 'DROP TABLE INVOICE';
         EXECUTE IMMEDIATE 'DROP TABLE ORDERS';
@@ -862,11 +959,6 @@ BEGIN
         EXECUTE IMMEDIATE 'DROP SEQUENCE STORE_SEQ';
         EXECUTE IMMEDIATE 'DROP SEQUENCE BUSINESS_HOURS_SEQ';
         EXECUTE IMMEDIATE 'DROP SEQUENCE NOTIFICATION_SEQ';
-        EXECUTE IMMEDIATE 'DROP PROCEDURE invoice_belongs_to_customer';
-        EXECUTE IMMEDIATE 'DROP PROCEDURE stock_status_per_book';
-        EXECUTE IMMEDIATE 'DROP PROCEDURE store_size';
-        EXECUTE IMMEDIATE 'DROP PROCEDURE unsold_books';
-        EXECUTE IMMEDIATE 'DROP PROCEDURE revenue_per_month';
 
     ELSE
         DBMS_OUTPUT.PUT_LINE('Érvénytelen opció!');

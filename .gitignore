@@ -34,3 +34,4 @@ build/
 
 ### oracle ###
 /oracle/
+/src/main/resources/static/invoices

@@ -176,7 +176,7 @@ EXCEPTION
     WHEN NO_DATA_FOUND THEN
         out_result := 0;
 END invoice_belongs_to_customer;
-
+/
 CREATE OR REPLACE PROCEDURE stock_status_per_book
 (in_book_id IN NUMBER, out_status OUT VARCHAR2)
     IS
@@ -201,7 +201,7 @@ EXCEPTION
     WHEN NO_DATA_FOUND THEN
         out_status := 'NONE';
 END stock_status_per_book;
-
+/
 CREATE OR REPLACE PROCEDURE store_size
 (in_store_id IN NUMBER, out_status OUT VARCHAR2)
     IS
@@ -226,7 +226,7 @@ EXCEPTION
     WHEN NO_DATA_FOUND THEN
         out_status := 'SMALL_STORE';
 END store_size;
-
+/
 CREATE OR REPLACE PROCEDURE unsold_books
 (number_of_books OUT NUMBER)
     IS
@@ -241,7 +241,7 @@ BEGIN
     );
 
 END unsold_books;
-
+/
 CREATE OR REPLACE PROCEDURE revenue_per_month
 (in_start_date IN DATE, in_end_date IN DATE, out_result OUT NUMBER)
     IS
@@ -258,7 +258,111 @@ EXCEPTION
     WHEN NO_DATA_FOUND THEN
         out_result := 0;
 END revenue_per_month;
+/
+CREATE OR REPLACE FUNCTION count_orders_for_customer
+(in_customer_id IN NUMBER) RETURN NUMBER
+    IS
+    order_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO order_count
+    FROM orders o
+    WHERE o.customer_id = in_customer_id;
+    RETURN order_count;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN 0;
+END count_orders_for_customer;
+/
+CREATE OR REPLACE TRIGGER become_regular_customer
+    AFTER INSERT ON contains
+    FOR EACH ROW
+DECLARE
+    curr_customer_id NUMBER;
+BEGIN
 
+    SELECT o.customer_id
+    INTO curr_customer_id
+    FROM orders o
+    WHERE o.order_id = :NEW.order_id;
+
+    UPDATE customer c
+    SET c.regular_since = SYSDATE
+    WHERE c.customer_id = curr_customer_id
+      AND count_orders_for_customer(curr_customer_id) > 5
+      AND c.regular_since IS NULL;
+END;
+/
+CREATE OR REPLACE TRIGGER lose_regular_status
+    BEFORE UPDATE OF last_login ON customer
+    FOR EACH ROW
+BEGIN
+    IF :OLD.last_login < (SYSDATE - 90) THEN
+        :new.regular_since := NULL;
+    END IF;
+END;
+/
+CREATE OR REPLACE TRIGGER recalculate_value_if_regular
+    BEFORE INSERT ON invoice
+    FOR EACH ROW
+DECLARE
+    curr_customer customer%ROWTYPE;
+    curr_customer_id NUMBER;
+BEGIN
+    SELECT o.customer_id
+    INTO curr_customer_id
+    FROM orders o
+    WHERE o.order_id = :NEW.order_id;
+
+    SELECT *
+    INTO curr_customer
+    FROM customer c
+    WHERE c.customer_id = curr_customer_id;
+
+    IF curr_customer.regular_since IS NOT NULL THEN
+        :NEW.value := 0.9 * :NEW.value;
+    END IF;
+END;
+/
+CREATE OR REPLACE TRIGGER notif_when_invoice_is_unpaid
+    AFTER UPDATE OF last_login ON customer
+    FOR EACH ROW
+DECLARE
+    CURSOR orders_for_curr_customer IS
+        SELECT order_id, customer_id, created_at FROM orders WHERE orders.customer_id = :NEW.customer_id;
+    is_paid NUMBER(1);
+BEGIN
+    FOR ord IN orders_for_curr_customer
+        LOOP
+            SELECT i.paid
+            INTO is_paid
+            FROM invoice i
+            WHERE i.order_id = ord.order_id;
+            IF is_paid = 0 AND ord.created_at < SYSDATE - 2 THEN
+                INSERT INTO notification(message, customer_id) VALUES
+                    ('2 napnál régebbi kifizetetlen számlája van!', ord.customer_id);
+            END IF;
+        END LOOP;
+END;
+/
+CREATE OR REPLACE TRIGGER notif_when_payment_successful
+    AFTER UPDATE OF paid ON invoice
+    FOR EACH ROW
+DECLARE
+    curr_customer_id NUMBER;
+BEGIN
+
+    SELECT o.customer_id
+    INTO curr_customer_id
+    FROM orders o
+    WHERE o.order_id = :NEW.order_id;
+
+    IF :OLD.paid = 0 AND :NEW.paid = 1 THEN
+        INSERT INTO notification(message, customer_id) VALUES
+            ('Sikeresen kifizettet egy számlát!', curr_customer_id);
+    END IF;
+END;
+/
 --INSERT INTO VALUES ();
 
 --BOOK--
