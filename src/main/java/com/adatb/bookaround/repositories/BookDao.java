@@ -253,7 +253,8 @@ public class BookDao extends AbstractJpaDao<Book> {
                 "FROM Book b " +
                 "JOIN Contains c ON b.bookId = c.containsId.book.bookId " +
                 "GROUP BY b " +
-                "ORDER BY order_count DESC";
+                "ORDER BY order_count DESC " +
+                "FETCH FIRST 3 ROWS ONLY";
 
         List<Object[]> resultList = entityManager.createQuery(jpql, Object[].class)
                 .getResultList();

@@ -54,6 +54,7 @@ public class StoreController {
     public String showPopularBooks(Model model, @AuthenticationPrincipal CustomerDetails customerDetails) {
         model.addAttribute("bookList", bookService.getPopularBooks());
         model.addAttribute("activePage", "bestsellers");
+        model.addAttribute("genresWithNumberOfBooks", bookService.getGenreListAndNumberOfBooksPerGenre());
         model.addAttribute("currentCustomer", customerDetails);
         return "bestsellers";
     }
@@ -142,6 +143,17 @@ public class StoreController {
         }
         model.addAttribute("currentCustomer", customerDetails);
         return "book";
+    }
+
+    @PostMapping("/filter-bestsellers-by-genre")
+    public String filterBestsellersByGenre(@RequestParam(name = "chosenGenreName") String genreName,
+                                           RedirectAttributes redirectAttributes) {
+        var books = bookService.getBestsellersByGenre(genreName);
+        redirectAttributes.addFlashAttribute("filteredBookList",
+                books == null || genreName == null
+                        ? null
+                        : books);
+        return "redirect:/bestsellers";
     }
 
     @PostMapping("/add-book")

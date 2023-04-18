@@ -240,12 +240,11 @@
                 </th:block>
                 <div class="d-flex align-items-center">
 
-                  <button type="button" class="btn btn-outline-primary me-3" data-bs-toggle="modal"
-                    data-bs-target="#wishlistModal">
-                    Kívánságlistára
-                  </button>
-
                   <th:block th:if="${isLoggedIn} eq true">
+                    <button type="button" class="btn btn-outline-primary me-3" data-bs-toggle="modal"
+                      data-bs-target="#wishlistModal">
+                      Kívánságlistára
+                    </button>
                     <!-- Wishlist Modal -->
                     <div class="modal fade" id="wishlistModal" tabindex="-1" aria-labelledby="wishlistModalLabel"
                       aria-hidden="true">
@@ -281,18 +280,18 @@
                         </div>
                       </div>
                     </div>
-                  </th:block>
 
-                  <form th:action="@{/cart/addItemToCart}" method="post" class="d-flex align-items-center">
-                    <input type="hidden" required th:name="bookIdToAdd" th:value="${bookModel.getBook().getBookId()}">
-                    <div class="input-group me-3" th:if="${bookModel.getOnStockStatus()} ne null AND not ${bookModel.getOnStockStatus().getValue().equals('elfogyott')}">
-                      <input type="number" class="form-control" value="1" required step="1" min="1" th:name="countToAdd"
-                        style="max-width: 75px;">
-                      <div class="input-group-append">
-                        <input type="submit" class="btn btn-outline-success d-block" value="Kosárba">
+                    <form th:action="@{/cart/addItemToCart}" method="post" class="d-flex align-items-center">
+                      <input type="hidden" required th:name="bookIdToAdd" th:value="${bookModel.getBook().getBookId()}">
+                      <div class="input-group me-3" th:if="${bookModel.getOnStockStatus()} ne null AND not ${bookModel.getOnStockStatus().getValue().equals('elfogyott')}">
+                        <input type="number" class="form-control" value="1" required step="1" min="1" th:name="countToAdd"
+                          style="max-width: 75px;">
+                        <div class="input-group-append">
+                          <input type="submit" class="btn btn-outline-success d-block" value="Kosárba">
+                        </div>
                       </div>
-                    </div>
-                  </form>
+                    </form>
+                  </th:block>
                   <a th:href="@{/index}" class="btn btn-outline-secondary">Vissza a főoldalra</a>
                 </div>
               </div>

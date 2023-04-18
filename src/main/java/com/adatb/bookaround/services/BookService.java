@@ -58,6 +58,15 @@ public class BookService {
         return books.stream().map(book -> bookDao.encapsulateBook(book)).toList();
     }
 
+    public List<BookWithAuthorsAndGenres> getBestsellersByGenre(String genreName) {
+        var result = genreDao.findPopularBooksByGenreOrderedByOrderCount(genreName);
+        if (result == null || result.isEmpty()) {
+            logger.warn("No books could be loaded for genre: " + genreName);
+            return null;
+        }
+        return result.stream().map(b -> bookDao.encapsulateBook(b)).toList();
+    }
+
     public List<BookWithAuthorsAndGenres> getPopularBooks() {
         List<Book> books = bookDao.findPopularBooksOrderedByOrderCount();
         if (books == null) {
@@ -75,6 +84,15 @@ public class BookService {
             return new ArrayList<>();
         }
         return books;
+    }
+
+    public Map<String, Long> getGenreListAndNumberOfBooksPerGenre() {
+        var result = genreDao.findNumberOfBooksByGenre();
+        if (result == null || result.isEmpty()) {
+            logger.warn("Genre names and number of books per genre could not be loaded!");
+            return new HashMap<>();
+        }
+        return result;
     }
 
     public BookWithAuthorsAndGenres getEncapsulatedBook(Long bookId) {

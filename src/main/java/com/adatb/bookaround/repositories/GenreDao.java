@@ -72,7 +72,7 @@ public class GenreDao extends AbstractJpaDao<Genre> {
         String jpql = "SELECT b, COUNT(*) AS order_count " +
                 "FROM Book b " +
                 "JOIN Genre g ON b.bookId = g.genreId.bookId " +
-                "JOIN Contains c ON b.bookId = c.containsId.book.bookId " +
+                "LEFT JOIN Contains c ON b.bookId = c.containsId.book.bookId " +
                 "WHERE g.genreId.genreName = :genreName " +
                 "GROUP BY b " +
                 "ORDER BY order_count DESC " +
