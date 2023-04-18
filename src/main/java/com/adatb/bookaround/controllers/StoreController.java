@@ -36,6 +36,7 @@ public class StoreController {
     @GetMapping("/index")
     public String showIndex(Model model, @AuthenticationPrincipal CustomerDetails customerDetails) {
         model.addAttribute("stockList", storeService.getStockForEachStore());
+        model.addAttribute("bookList", bookService.getAllBookModels());
         model.addAttribute("activePage", "index");
         model.addAttribute("currentCustomer", customerDetails);
         return "index";
