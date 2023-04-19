@@ -56,7 +56,6 @@ CREATE SEQUENCE invoice_seq
 CREATE TABLE invoice (
                          invoice_id          NUMBER(19)          DEFAULT invoice_seq.NEXTVAL PRIMARY KEY,
                          value               NUMBER(12),
-                         payment_mode        VARCHAR2(30),
                          paid                NUMBER(1),
                          order_id            NUMBER(19)          REFERENCES orders(order_id) ON DELETE SET NULL
 );
