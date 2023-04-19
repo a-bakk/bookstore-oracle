@@ -1,6 +1,5 @@
 package com.adatb.bookaround.services;
 
-import com.adatb.bookaround.entities.BusinessHours;
 import com.adatb.bookaround.entities.Order;
 import com.adatb.bookaround.entities.Store;
 import com.adatb.bookaround.models.BookWithAuthorsAndGenres;
@@ -8,7 +7,6 @@ import com.adatb.bookaround.models.StoreWithBusinessHours;
 import com.adatb.bookaround.repositories.BookDao;
 import com.adatb.bookaround.repositories.OrderDao;
 import com.adatb.bookaround.repositories.StoreDao;
-import com.adatb.bookaround.repositories.BusinessHoursDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +24,6 @@ public class StoreService {
     private OrderDao orderDao;
     @Autowired
     private BookDao bookDao;
-    @Autowired
-    private BusinessHoursDao businessHoursDao;
 
     public static boolean checkForEmptyString(String[] args) {
         for (String str : args) {
@@ -45,17 +41,6 @@ public class StoreService {
         }
         return stores;
     }
-
-    /*public List<BusinessHours> getBusinessHoursForEachStore() {
-        List<BusinessHours> resultBusinessHours = businessHoursDao.findBusinessHoursForEachStore();
-
-        if (resultBusinessHours == null || resultBusinessHours.isEmpty()) {
-            logger.warn("Business hours could not be loaded");
-            return new ArrayList<>();
-        }
-
-        return resultBusinessHours;
-    }*/
 
     @SuppressWarnings("unused")
     public List<Order> getAllOrders() {
