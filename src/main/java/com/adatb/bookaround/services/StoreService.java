@@ -37,8 +37,8 @@ public class StoreService {
         return false;
     }
 
-    public List<StoreWithBusinessHours> getAllStores() {
-        List<StoreWithBusinessHours> stores = storeDao.findAllStoresWithBusinessHours();
+    public ArrayList<StoreWithBusinessHours> getAllStores() {
+        ArrayList<StoreWithBusinessHours> stores = storeDao.findAllStoresWithBusinessHours();
         if (stores == null || stores.isEmpty()) {
             logger.warn("Stores could not be loaded!");
             return new ArrayList<>();

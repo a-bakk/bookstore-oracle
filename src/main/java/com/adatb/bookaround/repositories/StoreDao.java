@@ -24,10 +24,11 @@ public class StoreDao extends AbstractJpaDao<Store> {
         this.setEntityClass(Store.class);
     }
 
-    public List<StoreWithBusinessHours> findAllStoresWithBusinessHours() {
+    public ArrayList<StoreWithBusinessHours> findAllStoresWithBusinessHours() {
         String jpql = "SELECT s, bh " +
                 "FROM Store s " +
-                "LEFT JOIN BusinessHours bh ON bh.store.storeId = s.storeId";
+                "LEFT JOIN BusinessHours bh ON bh.store.storeId = s.storeId " +
+                "ORDER BY bh.dayOfWeek ASC";
 
         List<Object[]> resultList = entityManager.createQuery(jpql, Object[].class)
                 .getResultList();
@@ -41,7 +42,7 @@ public class StoreDao extends AbstractJpaDao<Store> {
             StoreWithBusinessHours storeWithBusinessHours = storesMap.get(store.getStoreId());
 
             if (storeWithBusinessHours == null) {
-                storeWithBusinessHours = new StoreWithBusinessHours(store, new HashSet<>());
+                storeWithBusinessHours = new StoreWithBusinessHours(store, new ArrayList<>());
                 storesMap.put(store.getStoreId(), storeWithBusinessHours);
             }
 

@@ -48,6 +48,22 @@
     flex: 1 1 auto;
     padding: 1.25rem;
 }
+
+.card-table-date {
+    border: 1px solid transparent;
+}
+
+.card-table-date tr {
+    padding: 3px;
+    border-bottom: 1px solid black;
+}
+
+.card-table-date td, .card-table-date th {
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+
 .flex-truncate {
     min-width: 0 !important;
 }

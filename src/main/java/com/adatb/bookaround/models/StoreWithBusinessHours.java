@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,5 +17,5 @@ import java.util.Set;
 @Setter
 public class StoreWithBusinessHours {
     private Store store;
-    private Set<BusinessHours> businessHours = new HashSet<>();
+    private ArrayList<BusinessHours> businessHours = new ArrayList<>();
 }

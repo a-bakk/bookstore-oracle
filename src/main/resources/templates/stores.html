@@ -29,7 +29,7 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
               <h1>Áruházak</h1>
-              <div th:each="store:${storeList}">
+              <div th:each="store : ${storeList}">
                 <div class="card">
                   <div class="card-body">
                     <h2 class="card-title" th:text="${store.getStore().getName()}"></h2>
@@ -47,20 +47,28 @@
                       <div class="col-md-6">
                         <h3>Nyitvatartás:</h3>
                         <div th:if="${!store.getBusinessHours().isEmpty()}">
-                          <span>Nap | Nyitás | Zárás</span>
-                          <div th:each="businessHours:${store.getBusinessHours()}">
-                            <div th:switch="${businessHours.getDayOfWeek()}">
-                              <span th:case="'1'">Hétfő | </span>
-                              <span th:case="'2'">Kedd | </span>
-                              <span th:case="'3'">Szerda | </span>
-                              <span th:case="'4'">Csütörtök | </span>
-                              <span th:case="'5'">Péntek | </span>
-                              <span th:case="'6'">Szombat | </span>
-                              <span th:case="'7'">Vasárnap | </span>
-                              <span th:text="${businessHours.getOpeningTime()}"></span> |
-                              <span th:text="${businessHours.getClosingTime()}"></span> |
-                            </div>
-                          </div>
+                          <table class="card-table-date">
+                            <thead>
+                              <tr>
+                                <th>Nap</th>
+                                <th>Nyitás</th>
+                                <th>Zárás</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr th:each="businessHours : ${store.getBusinessHours()}" th:switch="${businessHours.getDayOfWeek()}">
+                                <td th:case="'1'">Hétfő</td>
+                                <td th:case="'2'">Kedd</td>
+                                <td th:case="'3'">Szerda</td>
+                                <td th:case="'4'">Csütörtök</td>
+                                <td th:case="'5'">Péntek</td>
+                                <td th:case="'6'">Szombat</td>
+                                <td th:case="'7'">Vasárnap</td>
+                                <td th:text="${businessHours.getOpeningTime()}"></td>
+                                <td th:text="${businessHours.getClosingTime()}"></td>
+                              </tr>
+                            </tbody>
+                          </table>
                         </div>
                         <div th:if="${store.getBusinessHours().isEmpty()}">
                           <p>Az üzlet nem rendelkezik nyilvántartással!</p>
