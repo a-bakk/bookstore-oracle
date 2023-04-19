@@ -237,20 +237,18 @@ public class BookDao extends AbstractJpaDao<Book> {
      * [Összetett lekérdezés]
      */
     public List<Book> findBooksRecommendedByBook(Book book) {
-        String jpql = "SELECT b2, COUNT(*) AS order_count " +
+        String jpql = "SELECT b " +
                 "FROM Contains c1 " +
-                "JOIN Contains c2 ON c1.containsId.order.orderId = c2.containsId.order.orderId AND " +
-                "c1.containsId.book.bookId <> c2.containsId.book.bookId " +
-                "JOIN Book b1 ON c1.containsId.book.bookId = b1.bookId " +
-                "JOIN Book b2 ON c2.containsId.book.bookId = b2.bookId " +
-                "GROUP BY b2 " +
-                "ORDER BY order_count DESC " +
-                "FETCH FIRST 3 ROWS ONLY";
+                "JOIN Contains c2 ON c1.containsId.order.orderId = c2.containsId.order.orderId " +
+                "JOIN Book b ON b.bookId = c2.containsId.book.bookId " +
+                "WHERE c1.containsId.book.bookId = :bookId AND c2.containsId.book.bookId != :bookId " +
+                "GROUP BY b ";
 
         List<Object[]> resultList = entityManager.createQuery(jpql, Object[].class)
+                .setParameter("bookId", book.getBookId())
                 .getResultList();
 
-        return resultList.stream().map(result -> (Book) result[0]).toList();
+        return resultList.stream().limit(3).map(result -> (Book) result[0]).toList();
     }
 
     /**
