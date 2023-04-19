@@ -363,6 +363,16 @@ public class CustomerService implements UserDetailsService {
 
         table.getRows().remove(template);
 
+        fillTableRows(shoppingCart, table, template);
+
+        document.getRange().replace("{total}", String.valueOf(shoppingCart.calculateSum()),
+                new FindReplaceOptions());
+
+        document.save("src/main/resources/static/invoices/invoice_"
+                + invoice.getInvoiceId() + ".pdf", SaveFormat.PDF);
+    }
+
+    private static void fillTableRows(ShoppingCart shoppingCart, Table table, Row template) throws Exception {
         for (ShoppingCartItem item : shoppingCart.getItems()) {
             Row newRow = (Row) template.deepClone(true);
 
@@ -386,12 +396,6 @@ public class CustomerService implements UserDetailsService {
 
             table.getRows().add(newRow);
         }
-
-        document.getRange().replace("{total}", String.valueOf(shoppingCart.calculateSum()),
-                new FindReplaceOptions());
-
-        document.save("src/main/resources/static/invoices/invoice_"
-                + invoice.getInvoiceId() + ".pdf", SaveFormat.PDF);
     }
 
     private void removeBooksFromStock(Book book, Integer count) {
