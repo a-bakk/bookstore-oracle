@@ -63,6 +63,10 @@
     padding-right: 6px;
 }
 
+.card-buttons {
+    margin: 10px;
+}
+
 
 .flex-truncate {
     min-width: 0 !important;
