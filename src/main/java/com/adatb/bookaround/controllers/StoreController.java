@@ -223,4 +223,15 @@ public class StoreController {
         return "redirect:/book/" + modifyBookId;
     }
 
+    @GetMapping("/stores")
+    public String showStores(Model model, @AuthenticationPrincipal CustomerDetails customerDetails) {
+        model.addAttribute("activePage", "stores");
+        model.addAttribute("currentCustomer", customerDetails);
+        model.addAttribute("storeList", storeService.getAllStores());
+        //model.addAttribute("businessHoursList", storeService.getBusinessHoursForEachStore());
+        return "stores";
+    }
+
+
+
 }

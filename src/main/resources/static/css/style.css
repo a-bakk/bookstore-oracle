@@ -96,3 +96,9 @@
     width: 90%;
     margin: 0 auto;
 }
+
+.align-items-center {
+    width: 90%;
+    margin: auto;
+    align-items: center;
+}
