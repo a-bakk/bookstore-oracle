@@ -67,6 +67,15 @@
     margin: 10px;
 }
 
+.table-date-big {
+    font-size: 20px;
+}
+
+.table-date-big td {
+    padding-left: 18px;
+    padding-right: 18px;
+}
+
 
 .flex-truncate {
     min-width: 0 !important;

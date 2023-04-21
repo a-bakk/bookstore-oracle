@@ -17,8 +17,6 @@ import java.util.stream.Collectors;
 
 @Repository
 public class StoreDao extends AbstractJpaDao<Store> {
-    @Autowired
-    private BookDao bookDao;
 
     public StoreDao() {
         this.setEntityClass(Store.class);
@@ -53,43 +51,32 @@ public class StoreDao extends AbstractJpaDao<Store> {
         return new ArrayList<>(storesMap.values());
     }
 
-
-    public Map<Store, List<BookWithAuthorsAndGenres>> findStockForEachStore() {
-        //SELECT s.name, st.book_id, st.count
-        //FROM STORE s, STOCK st
-        //WHERE s.store_id = st.store_id
-        String jpql = "SELECT s, st " +
-                "FROM Store s, Stock st " +
-                "WHERE s.storeId = st.stockId.store.storeId";
+    public StoreWithBusinessHours findStoreWithBusinessHoursById(Long storeId) {
+        String jpql = "SELECT s, bh " +
+                "FROM Store s " +
+                "LEFT JOIN BusinessHours bh ON bh.store.storeId = s.storeId " +
+                "WHERE s.storeId = :storeId " +
+                "ORDER BY bh.dayOfWeek ASC";
 
         List<Object[]> resultList = entityManager.createQuery(jpql, Object[].class)
+                .setParameter("storeId", storeId)
                 .getResultList();
 
-        Map<Store, List<BookWithAuthorsAndGenres>> result = new HashMap<>();
+        ArrayList<BusinessHours> listBusinessHours = new ArrayList<>();
+        Store store = new Store();
 
-        for (Object[] obj : resultList) {
-            Store store = (Store) obj[0];
-            Stock stock = (Stock) obj[1];
+        for (Object[] result : resultList) {
+            BusinessHours businessHours = (BusinessHours) result[1];
+            store = (Store) result[0];
 
-            BookWithAuthorsAndGenres bookWithAuthorsAndGenres = null;
-            if (stock != null) {
-                bookWithAuthorsAndGenres = bookDao.encapsulateBook(stock.getStockId().getBook());
-            }
-
-            if (result.containsKey(store)) {
-                result.get(store).add(bookWithAuthorsAndGenres);
-            } else {
-                result.put(store, new ArrayList<>());
-
-                if (bookWithAuthorsAndGenres != null) {
-                    result.get(store).add(bookWithAuthorsAndGenres);
-                }
-
+            if (businessHours != null) {
+                listBusinessHours.add(businessHours);
             }
         }
-
-        return result;
+        return new StoreWithBusinessHours(store, listBusinessHours);
     }
+
+
 
     /**
      * [Összetett lekérdezés]

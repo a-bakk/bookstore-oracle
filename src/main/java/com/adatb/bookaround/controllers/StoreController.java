@@ -1,14 +1,17 @@
 package com.adatb.bookaround.controllers;
 
-import com.adatb.bookaround.entities.Author;
-import com.adatb.bookaround.entities.Book;
-import com.adatb.bookaround.entities.Genre;
+import com.adatb.bookaround.entities.*;
+import com.adatb.bookaround.entities.compositepk.StockId;
 import com.adatb.bookaround.models.BookWithAuthorsAndGenres;
 import com.adatb.bookaround.models.CustomerDetails;
+import com.adatb.bookaround.models.StoreWithBusinessHours;
+import com.adatb.bookaround.models.constants.OnStockStatus;
 import com.adatb.bookaround.services.AuthService;
 import com.adatb.bookaround.services.BookService;
 import com.adatb.bookaround.services.CustomerService;
 import com.adatb.bookaround.services.StoreService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -20,11 +23,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
 public class StoreController {
+
+    private static final Logger logger = LogManager.getLogger(StoreService.class);
 
     @Autowired
     private BookService bookService;
@@ -228,10 +233,26 @@ public class StoreController {
         model.addAttribute("activePage", "stores");
         model.addAttribute("currentCustomer", customerDetails);
         model.addAttribute("storeList", storeService.getAllStores());
-        //model.addAttribute("businessHoursList", storeService.getBusinessHoursForEachStore());
         return "stores";
     }
 
+    @GetMapping("/store/{storeId}")
+    public String showStoreById(Model model, @PathVariable Long storeId, @AuthenticationPrincipal CustomerDetails customerDetails) {
+        StoreWithBusinessHours storeWithBusinessHours = storeService.getStoreById(storeId);
+        Store store = storeWithBusinessHours.getStore();
+        if (storeWithBusinessHours.getBusinessHours() == null) {
+            logger.warn("BusinessHours not found");
+            return "redirect:/stores";
+        }
+        ArrayList<BusinessHours> businessHours = storeWithBusinessHours.getBusinessHours();
+        HashMap<BookWithAuthorsAndGenres, Integer> stock = storeService.getStockForStoreById(storeId);
 
+        model.addAttribute("activePage", "stores");
+        model.addAttribute("currentCustomer", customerDetails);
+        model.addAttribute("store", store);
+        model.addAttribute("businessHoursList", businessHours);
+        model.addAttribute("stockMap", stock);
+        return "store";
+    }
 
 }
