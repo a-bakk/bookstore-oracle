@@ -245,12 +245,41 @@ public class StoreController {
             return "redirect:/stores";
         }
         ArrayList<BusinessHours> businessHours = storeWithBusinessHours.getBusinessHours();
+        ArrayList<BusinessHours> businessHoursFilled = new ArrayList<>();
+        short in = 0;
+        for (short i = 0; i < 7; i++) {
+            if (storeWithBusinessHours.listContainsDayOfWeek((short)(i+1))) {
+                businessHoursFilled.add(i, businessHours.get(in));
+                if (Objects.equals(businessHours.get(in).getOpeningTime().split(" ")[1], "PM")) {
+                    String hoursAndMinutes = businessHoursFilled.get(i).getOpeningTime().split(" ")[0];
+                    Integer hours = Integer.parseInt(hoursAndMinutes.split(":")[0]) + 12;
+                    String minutes = hoursAndMinutes.split(":")[1];
+                    businessHoursFilled.get(i).setOpeningTime(hours + ":" + minutes);
+                } else if (Objects.equals(businessHours.get(in).getOpeningTime().split(" ")[1], "AM")) {
+                    String hoursAndMinutes = businessHoursFilled.get(i).getOpeningTime().split(" ")[0];
+                    businessHoursFilled.get(i).setOpeningTime(hoursAndMinutes);
+                }
+                if (Objects.equals(businessHours.get(in).getClosingTime().split(" ")[1], "PM")) {
+                    String hoursAndMinutes = businessHoursFilled.get(i).getClosingTime().split(" ")[0];
+                    Integer hours = Integer.parseInt(hoursAndMinutes.split(":")[0]) + 12;
+                    String minutes = hoursAndMinutes.split(":")[1];
+                    businessHoursFilled.get(i).setClosingTime(hours + ":" + minutes);
+                } else if (Objects.equals(businessHours.get(in).getClosingTime().split(" ")[1], "AM")) {
+                    String hoursAndMinutes = businessHoursFilled.get(i).getClosingTime().split(" ")[0];
+                    businessHoursFilled.get(i).setClosingTime(hoursAndMinutes);
+                }
+                in++;
+            } else {
+                businessHoursFilled.add(new BusinessHours(null, (short)(i+1), null, null, null));
+            }
+        }
         HashMap<BookWithAuthorsAndGenres, Integer> stock = storeService.getStockForStoreById(storeId);
 
         model.addAttribute("activePage", "stores");
         model.addAttribute("currentCustomer", customerDetails);
         model.addAttribute("store", store);
         model.addAttribute("businessHoursList", businessHours);
+        model.addAttribute("businessHoursFilledList", businessHoursFilled);
         model.addAttribute("stockMap", stock);
         return "store";
     }

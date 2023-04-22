@@ -78,6 +78,37 @@
                                                     <label for="street" class="form-label">Cím *</label>
                                                     <input type="text" class="form-control" id="street" th:name="modifyStreet" th:value="${store.getStreet()}" required>
                                                 </div>
+                                                <div class="modal-body">
+                                                    <label for="street" class="form-label">Nyitvatartás</label>
+                                                    <table class="card-table-date">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Nap</th>
+                                                            <th>Nyitás</th>
+                                                            <th>Zárás</th>
+                                                            <th>Törlés</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr th:each="i : ${#numbers.sequence(0, 6/1)}">
+                                                            <td>
+                                                                <th:block th:if="${i} eq 0"><input type="text" class="form-control" value="Hétfő" readonly></th:block>
+                                                                <th:block th:if="${i} eq 1"><input type="text" class="form-control" value="Kedd" readonly></th:block>
+                                                                <th:block th:if="${i} eq 2"><input type="text" class="form-control" value="Szerda" readonly></th:block>
+                                                                <th:block th:if="${i} eq 3"><input type="text" class="form-control" value="Csütörtök" readonly></th:block>
+                                                                <th:block th:if="${i} eq 4"><input type="text" class="form-control" value="Péntek" readonly></th:block>
+                                                                <th:block th:if="${i} eq 5"><input type="text" class="form-control" value="Szombat" readonly></th:block>
+                                                                <th:block th:if="${i} eq 6"><input type="text" class="form-control" value="Vasárnap" readonly></th:block>
+                                                            </td>
+                                                            <td th:if="${businessHoursFilledList.get(i).getOpeningTime() ne null}"><input type="time" class="form-control" th:value="${businessHoursFilledList.get(i).getOpeningTime().split(' ')[0]}"></td>
+                                                            <td th:unless="${businessHoursFilledList.get(i).getOpeningTime() ne null}"><input type="time" class="form-control"></td>
+                                                            <td th:if="${businessHoursFilledList.get(i).getClosingTime() ne null}"><input type="time" class="form-control" th:value="${businessHoursFilledList.get(i).getClosingTime().split(' ')[0]}"></td>
+                                                            <td th:unless="${businessHoursFilledList.get(i).getClosingTime() ne null}"><input type="time" class="form-control"></td>
+                                                            <td class="text-center"><input type="checkbox" class="form-check-input"></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
                                                     <input type="submit" class="btn btn-primary" value="Módosítások mentése">
@@ -90,7 +121,7 @@
                                 <!-- Delete modal button -->
                                 <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal"
                                         data-bs-target="#deleteBookModal">
-                                    Könyv törlése
+                                    Áruház törlése
                                 </button>
 
                                 <!-- Delete modal -->
@@ -105,8 +136,7 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Biztosan törölni szeretné az áruházat? Az áruházban fellelhető könyvek
-                                                    is törlődni fognak.
+                                                    Biztosan törölni szeretné az áruházat? Az áruházban fellelhető könyvek is törlődni fognak.
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
@@ -129,6 +159,8 @@
                             <div>
                                 <h2>Cím</h2>
                                 <span th:text="${store.getCountry()}"></span>
+                                <br>
+                                <span th:text="${store.getStateOrRegion()}"></span>
                                 <br>
                                 <span th:text="${store.getPostcode()}"></span>,
                                 <span th:text="${store.getCity()}"></span>
