@@ -136,7 +136,7 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <form th:action="@{/delete-store}" method="post">
-                                                <input type="hidden" th:name="delete-store-id" th:value="${store.getStoreId()}">
+                                                <input type="hidden" th:name="deleteStoreId" th:value="${store.getStoreId()}">
                                                 <div class="modal-header">
                                                     <h1 class="modal-title fs-5" id="deleteBookModalLabel">Áruház törlése</h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

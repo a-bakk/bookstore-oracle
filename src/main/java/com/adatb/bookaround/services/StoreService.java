@@ -182,4 +182,14 @@ public class StoreService {
         return true;
     }
 
+    public boolean deleteStoreById(Long storeId) {
+        Store store = storeDao.find(storeId);
+        if (store != null) {
+            storeDao.delete(storeId);
+            return true;
+        } else {
+            logger.warn("Something went wrong in deleting store: " + storeId);
+            return false;
+        }
+    }
 }

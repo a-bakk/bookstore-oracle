@@ -285,7 +285,7 @@ public class StoreController {
     }
 
     @PostMapping("/modify-store")
-    public String modifyBookById(@RequestParam Long modifyStoreId,
+    public String modifyStoreById(@RequestParam Long modifyStoreId,
                                  @RequestParam String modifyName,
                                  @RequestParam String modifyCountry,
                                  @RequestParam String modifyStateOrRegion,
@@ -300,18 +300,15 @@ public class StoreController {
         storeService.modifyStoreById(modifyStoreId, modifyName, modifyCountry,
                 modifyStateOrRegion, modifyPostcode, modifyCity, modifyStreet,
                 modifyOpeningTimes, modifyClosingTimes);
-        /*redirectAttributes.addFlashAttribute("bookModificationVerdict",
-                storeService.modifyStoreById(
-                        modifyBookId, modifyTitle, modifyDescription,
-                        modifyCover, modifyWeight, modifyPrice,
-                        modifyNumberOfPages, modifyPublishedAt,
-                        modifyPublisher, modifyIsbn, modifyLanguage,
-                        modifyDiscountedPrice.isEmpty() ? null : Long.parseLong(modifyDiscountedPrice),
-                        modifyAuthors, modifyGenres
-                )
-                        ? "Áruház sikeresen módosítva!"
-                        : "Áruház módosítása sikertelen! (id = " + modifyStoreId + ")");*/
         return "redirect:/store/" + modifyStoreId;
+    }
+
+    @PostMapping("/delete-store")
+    public String deleteStoreById(@RequestParam Long deleteStoreId,
+                                  RedirectAttributes redirectAttributes) {
+
+        storeService.deleteStoreById(deleteStoreId);
+        return "redirect:/stores";
     }
 
 }
