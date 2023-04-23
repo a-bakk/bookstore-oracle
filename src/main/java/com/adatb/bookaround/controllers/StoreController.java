@@ -252,8 +252,11 @@ public class StoreController {
         short in = 0;
         for (short i = 0; i < 7; i++) {
             if (storeWithBusinessHours.listContainsDayOfWeek((short)(i+1))) {
+                businessHoursFilled.add(i, businessHours.get(in));
+
                 businessHoursFilled.get(i).setOpeningTime(StoreService.convertStringTimeFrom12HTo24HFormat(businessHours.get(in).getOpeningTime()));
                 businessHoursFilled.get(i).setClosingTime(StoreService.convertStringTimeFrom12HTo24HFormat(businessHours.get(in).getClosingTime()));
+
                 in++;
             } else {
                 businessHoursFilled.add(new BusinessHours(null, (short)(i+1), null, null, null));

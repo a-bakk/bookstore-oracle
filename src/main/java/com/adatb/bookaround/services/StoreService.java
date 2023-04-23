@@ -140,34 +140,8 @@ public class StoreService {
             boolean operation = false;
 
             if (!modifiedOpeningTimes[i].isBlank() && !modifiedClosingTimes[i].isBlank()) {
-                int modifiedOpeningTimeHours = Integer.parseInt(modifiedOpeningTimes[i].split(":")[0]);
-                int modifiedOpeningTimeMinutes = Integer.parseInt(modifiedOpeningTimes[i].split(":")[1]);
-                int modifiedClosingTimeHours = Integer.parseInt(modifiedClosingTimes[i].split(":")[0]);
-                int modifiedClosingTimeMinutes = Integer.parseInt(modifiedClosingTimes[i].split(":")[1]);
-
-                if (modifiedOpeningTimeHours >= 12) {
-                    if (modifiedOpeningTimeHours == 12) {
-                        modifiedOpeningTimeHours += 12;
-                    }
-                    modifiedOpeningTime = modifiedOpeningTimeHours - 12 + ":" + modifiedOpeningTimeMinutes + " PM";
-                } else {
-                    modifiedOpeningTime = modifiedOpeningTimes[i] + " AM";
-                    if (modifiedOpeningTimeHours == 0) {
-                        modifiedOpeningTime = "12:" + modifiedOpeningTimeMinutes + " AM";
-                    }
-                }
-
-                if (modifiedClosingTimeHours >= 12) {
-                    if (modifiedClosingTimeHours == 12) {
-                        modifiedClosingTimeHours += 12;
-                    }
-                    modifiedClosingTime = modifiedClosingTimeHours - 12 + ":" + modifiedClosingTimeMinutes + " PM";
-                } else {
-                    modifiedClosingTime = modifiedClosingTimes[i] + " AM";
-                    if (modifiedClosingTimeHours == 0) {
-                        modifiedClosingTime = "12:" + modifiedClosingTimeMinutes + " AM";
-                    }
-                }
+                modifiedOpeningTime = convertStringTimeFrom24HTo12HFormat(modifiedOpeningTimes[i]);
+                modifiedClosingTime = convertStringTimeFrom24HTo12HFormat(modifiedClosingTimes[i]);
             }
 
             for (BusinessHours businessHours : businessHoursList) {
@@ -271,6 +245,7 @@ public class StoreService {
             if (hours == 12) {
                 hours -= 12;
             }
+            hoursAndMinutes = "";
             if (hours < 10) {
                 hoursAndMinutes = "0";
             }
@@ -288,6 +263,34 @@ public class StoreService {
     // utility/auxiliary function
     public static String convertStringTimeFrom24HTo12HFormat(String time) {
         String returnTime = "00:00 AM";
+
+        int hours = Integer.parseInt(time.split(":")[0]);
+        int minutes = Integer.parseInt(time.split(":")[1]);
+
+        if (hours >= 0 && hours < 24 && minutes >= 0 && minutes < 60) {
+            if (hours >= 12) {
+                if (hours != 12) {
+                    hours -= 12;
+                }
+                returnTime = " PM";
+            } else {
+                if (hours == 0) {
+                    hours = 12;
+                }
+                returnTime = " AM";
+            }
+
+            if (minutes < 10) {
+                returnTime = ":0" + minutes + returnTime;
+            } else {
+                returnTime = ":" + minutes + returnTime;
+            }
+            if (hours < 10) {
+                returnTime = "0" + hours + returnTime;
+            } else {
+                returnTime = hours + returnTime;
+            }
+        }
 
         return returnTime;
     }
