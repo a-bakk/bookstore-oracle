@@ -76,6 +76,17 @@ public class StoreDao extends AbstractJpaDao<Store> {
         return new StoreWithBusinessHours(store, listBusinessHours);
     }
 
+    public Long getGreatestStoreId() {
+        List<Store> stores = this.findAll();
+        Long greatestIndex = 0L;
+        for (Store store : stores) {
+            if (store.getStoreId() > greatestIndex) {
+                greatestIndex = store.getStoreId();
+            }
+        }
+        return greatestIndex;
+    }
+
 
 
     /**

@@ -23,78 +23,145 @@
   <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-8">
-      <div class="modal-body">
-        <section class="p-5 bg-light" style="min-height: 100vh;">
-          <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-10">
-              <h1>Áruházak</h1>
-              <div th:each="store : ${storeList}">
-                <div class="card">
-                  <div class="card-body">
-                    <h2 class="card-title" th:text="${store.getStore().getName()}"></h2>
-                    <br>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <h3>Cím:</h3>
-                        <span th:text="${store.getStore().getCountry()}"></span>
-                        <br>
-                        <span th:text="${store.getStore().getStateOrRegion()}"></span>
-                        <br>
-                        <span th:text="${store.getStore().getPostcode()}"></span>,
-                        <span th:text="${store.getStore().getCity()}"></span>
-                        <br>
-                        <span th:text="${store.getStore().getStreet()}"></span>
+      <section class="p-5 bg-light" style="min-height: 100vh;">
+        <section th:if="${storeModificationVerdict}" class="bg-light p-3 px-5">
+          <div class="container">
+            <div th:text="${storeModificationVerdict}" class="alert alert-info text-center"></div>
+          </div>
+        </section>
+
+        <th:block th:if="${currentCustomer} ne null and ${currentCustomer.isAdmin()}">
+          <div class="container mb-5">
+            <h5>Adminisztrátori funkciók</h5>
+            <div class="row mx-5">
+              <!-- Modification modal button -->
+              <button type="button" class="btn btn-outline-info mb-3" data-bs-toggle="modal"
+                      data-bs-target="#modifyBookModal">
+                Új áruház létrehozása
+              </button>
+
+              <!-- Modification modal -->
+              <div class="modal fade" id="modifyBookModal" tabindex="-1" aria-labelledby="modifyBookModalLabel"
+                   aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <form th:action="@{/add-store}" method="post">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modifyBookModalLabel">Áruház módosítása
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
-                      <div class="col-md-6">
-                        <h3>Nyitvatartás:</h3>
-                        <div th:if="${!store.getBusinessHours().isEmpty()}">
-                          <table class="card-table-date">
-                            <thead>
-                              <tr>
-                                <th>Nap</th>
-                                <th>Nyitás</th>
-                                <th>Zárás</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr th:each="businessHours : ${store.getBusinessHours()}" th:switch="${businessHours.getDayOfWeek()}">
-                                <td th:case="'1'">Hétfő</td>
-                                <td th:case="'2'">Kedd</td>
-                                <td th:case="'3'">Szerda</td>
-                                <td th:case="'4'">Csütörtök</td>
-                                <td th:case="'5'">Péntek</td>
-                                <td th:case="'6'">Szombat</td>
-                                <td th:case="'7'">Vasárnap</td>
-                                <td th:text="${businessHours.getOpeningTime()}"></td>
-                                <td th:text="${businessHours.getClosingTime()}"></td>
-                              </tr>
-                            </tbody>
-                          </table>
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <label for="name" class="form-label">Áruház neve *</label>
+                          <input type="text" class="form-control" id="name" th:name="createName" required>
                         </div>
-                        <div th:if="${store.getBusinessHours().isEmpty()}">
-                          <p>Az üzlet nem rendelkezik nyilvántartással!</p>
+
+                        <div class="mb-3">
+                          <label for="country" class="form-label">Ország *</label>
+                          <input type="text" class="form-control" id="country" th:name="createCountry" required>
+                        </div>
+
+                        <div class="mb-3">
+                          <label for="state_or_region" class="form-label">Régió *</label>
+                          <input type="text" class="form-control" id="state_or_region" th:name="createStateOrRegion" required>
+                        </div>
+
+                        <div class="mb-3">
+                          <label for="postcode" class="form-label">Irányítószám *</label>
+                          <input type="text" class="form-control" id="postcode" th:name="createPostcode" required>
+                        </div>
+
+                        <div class="mb-3">
+                          <label for="city" class="form-label">Város *</label>
+                          <input type="text" class="form-control" id="city" th:name="createCity" required>
+                        </div>
+
+                        <div class="mb-3">
+                          <label for="street" class="form-label">Cím *</label>
+                          <input type="text" class="form-control" id="street" th:name="createStreet" required>
                         </div>
                       </div>
-                    </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
+                        <input type="submit" class="btn btn-primary" value="Áruház létrehozása">
+                      </div>
+                    </form>
                   </div>
-                  <div class="card-buttons row">
-                    <div class="col-md-10"></div>
-                    <div class="col-md-2">
-                      <a th:href="@{/store/{storeId}(storeId=${store.getStore().getStoreId()})}" class="btn btn-primary">Több</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </th:block>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-10">
+            <h1>Áruházak</h1>
+            <div th:each="store : ${storeList}">
+              <div class="card">
+                <div class="card-body">
+                  <h2 class="card-title" th:text="${store.getStore().getName()}"></h2>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h3>Cím:</h3>
+                      <span th:text="${store.getStore().getCountry()}"></span>
+                      <br>
+                      <span th:text="${store.getStore().getStateOrRegion()}"></span>
+                      <br>
+                      <span th:text="${store.getStore().getPostcode()}"></span>,
+                      <span th:text="${store.getStore().getCity()}"></span>
+                      <br>
+                      <span th:text="${store.getStore().getStreet()}"></span>
+                    </div>
+                    <div class="col-md-6">
+                      <h3>Nyitvatartás:</h3>
+                      <div th:if="${!store.getBusinessHours().isEmpty()}">
+                        <table class="card-table-date">
+                          <thead>
+                            <tr>
+                              <th>Nap</th>
+                              <th>Nyitás</th>
+                              <th>Zárás</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr th:each="businessHours : ${store.getBusinessHours()}" th:switch="${businessHours.getDayOfWeek()}">
+                              <td th:case="'1'">Hétfő</td>
+                              <td th:case="'2'">Kedd</td>
+                              <td th:case="'3'">Szerda</td>
+                              <td th:case="'4'">Csütörtök</td>
+                              <td th:case="'5'">Péntek</td>
+                              <td th:case="'6'">Szombat</td>
+                              <td th:case="'7'">Vasárnap</td>
+                              <td th:text="${businessHours.getOpeningTime()}"></td>
+                              <td th:text="${businessHours.getClosingTime()}"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div th:if="${store.getBusinessHours().isEmpty()}">
+                        <p>Az üzlet nem rendelkezik nyilvántartással!</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <br>
-                <br>
-                <br>
+                <div class="card-buttons row">
+                  <div class="col-md-10"></div>
+                  <div class="col-md-2">
+                    <a th:href="@{/store/{storeId}(storeId=${store.getStore().getStoreId()})}" class="btn btn-primary">Több</a>
+                  </div>
+                </div>
               </div>
+              <br>
+              <br>
+              <br>
             </div>
-            <div class="col-md-1"></div>
           </div>
+          <div class="col-md-1"></div>
+        </div>
 
-        </section>
-      </div>
+      </section>
     </div>
     <div class="col-md-2"></div>
   </div>

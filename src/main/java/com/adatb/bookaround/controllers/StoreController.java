@@ -233,6 +233,9 @@ public class StoreController {
         model.addAttribute("activePage", "stores");
         model.addAttribute("currentCustomer", customerDetails);
         model.addAttribute("storeList", storeService.getAllStores());
+        if (customerDetails.isAdmin()) {
+            model.addAttribute("newStore", new Store());
+        }
         return "stores";
     }
 
@@ -308,6 +311,19 @@ public class StoreController {
                                   RedirectAttributes redirectAttributes) {
 
         storeService.deleteStoreById(deleteStoreId);
+        return "redirect:/stores";
+    }
+
+    @PostMapping("/add-store")
+    public String addStore(@RequestParam String createName,
+                              @RequestParam String createCountry,
+                              @RequestParam String createStateOrRegion,
+                              @RequestParam String createPostcode,
+                              @RequestParam String createCity,
+                              @RequestParam String createStreet,
+                              RedirectAttributes redirectAttributes) {
+
+        storeService.createStore(createName, createCountry, createStateOrRegion, createPostcode, createCity, createStreet);
         return "redirect:/stores";
     }
 

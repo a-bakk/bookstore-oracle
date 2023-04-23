@@ -174,9 +174,8 @@ public class StoreService {
             }
 
             if (!operation && !modifiedOpeningTime.isBlank() && !modifiedClosingTime.isBlank()) {
-                BusinessHours newBusinessHours = new BusinessHours(businessHoursDao.getGreatestBusinessHoursId()+1, (short) (i+1), modifiedOpeningTime, modifiedClosingTime, store);
-                logger.warn("Create!");
-                businessHoursDao.create(newBusinessHours); //Valami miatt elszall a progi. Oka lehet: Nem jol szurja be alapertelmezetten az adatbazisba a BusinessHours-t
+                BusinessHours newBusinessHours = new BusinessHours(null, (short) (i+1), modifiedOpeningTime, modifiedClosingTime, store);
+                businessHoursDao.create(newBusinessHours);
             }
         }
         return true;
@@ -192,4 +191,43 @@ public class StoreService {
             return false;
         }
     }
+
+    public boolean createStore(String createName, String createCountry, String createStateOrRegion,
+                               String createPostcode, String createCity, String createStreet) {
+
+        if (createName.isBlank()) {
+            logger.warn("Store creation error: Name empty");
+            return false;
+        }
+        if (createCountry.isBlank()) {
+            logger.warn("Store creation error: Country empty");
+            return false;
+        }
+        if (createStateOrRegion.isBlank()) {
+            logger.warn("Store creation error: StateOrRegion empty");
+            return false;
+        }
+        if (createPostcode.isBlank()) {
+            logger.warn("Store creation error: Postcode empty");
+            return false;
+        }
+        if (createCity.isBlank()) {
+            logger.warn("Store creation error: City empty");
+            return false;
+        }
+        if (createStreet.isBlank()) {
+            logger.warn("Store creation error: Street empty");
+            return false;
+        }
+        Store store = new Store(null, createName, createStreet, createCity, createStateOrRegion, createPostcode,
+               createCountry);
+
+        if (storeDao.create(store) == null) {
+            logger.warn("Store creation error!");
+            return false;
+        }
+
+        return true;
+    }
+
 }
