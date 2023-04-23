@@ -140,18 +140,33 @@ public class StoreService {
             boolean operation = false;
 
             if (!modifiedOpeningTimes[i].isBlank() && !modifiedClosingTimes[i].isBlank()) {
-                if (Integer.parseInt(modifiedOpeningTimes[i].split(":")[0]) > 12) {
-                    modifiedOpeningTime = Integer.parseInt(modifiedOpeningTimes[i].split(":")[0]) - 12 + ":" +
-                            modifiedOpeningTimes[i].split(":")[1] + " PM";
+                int modifiedOpeningTimeHours = Integer.parseInt(modifiedOpeningTimes[i].split(":")[0]);
+                int modifiedOpeningTimeMinutes = Integer.parseInt(modifiedOpeningTimes[i].split(":")[1]);
+                int modifiedClosingTimeHours = Integer.parseInt(modifiedClosingTimes[i].split(":")[0]);
+                int modifiedClosingTimeMinutes = Integer.parseInt(modifiedClosingTimes[i].split(":")[1]);
+
+                if (modifiedOpeningTimeHours >= 12) {
+                    if (modifiedOpeningTimeHours == 12) {
+                        modifiedOpeningTimeHours += 12;
+                    }
+                    modifiedOpeningTime = modifiedOpeningTimeHours - 12 + ":" + modifiedOpeningTimeMinutes + " PM";
                 } else {
                     modifiedOpeningTime = modifiedOpeningTimes[i] + " AM";
+                    if (modifiedOpeningTimeHours == 0) {
+                        modifiedOpeningTime = "12:" + modifiedOpeningTimeMinutes + " AM";
+                    }
                 }
 
-                if (Integer.parseInt(modifiedClosingTimes[i].split(":")[0]) > 12) {
-                    modifiedClosingTime = Integer.parseInt(modifiedClosingTimes[i].split(":")[0]) - 12 + ":" +
-                            modifiedClosingTimes[i].split(":")[1] + " PM";
+                if (modifiedClosingTimeHours >= 12) {
+                    if (modifiedClosingTimeHours == 12) {
+                        modifiedClosingTimeHours += 12;
+                    }
+                    modifiedClosingTime = modifiedClosingTimeHours - 12 + ":" + modifiedClosingTimeMinutes + " PM";
                 } else {
                     modifiedClosingTime = modifiedClosingTimes[i] + " AM";
+                    if (modifiedClosingTimeHours == 0) {
+                        modifiedClosingTime = "12:" + modifiedClosingTimeMinutes + " AM";
+                    }
                 }
             }
 
@@ -228,6 +243,53 @@ public class StoreService {
         }
 
         return true;
+    }
+
+    // utility/auxiliary function
+    public static String convertStringTimeFrom12HTo24HFormat(String time) {
+        String returnTime = "00:00";
+
+        if (Objects.equals(time.split(" ")[1], "PM")) {
+            String hoursAndMinutes = time.split(" ")[0];
+            int hours = Integer.parseInt(hoursAndMinutes.split(":")[0]);
+            int minutes = Integer.parseInt(hoursAndMinutes.split(":")[1]);
+
+            if (hours < 12) {
+                hours += 12;
+            }
+            hoursAndMinutes = hours + ":";
+            if (minutes < 10) {
+                hoursAndMinutes += "0";
+            }
+            hoursAndMinutes += minutes;
+            returnTime = hoursAndMinutes;
+        } else if (Objects.equals(time.split(" ")[1], "AM")) {
+            String hoursAndMinutes = time.split(" ")[0];
+            int hours = Integer.parseInt(hoursAndMinutes.split(":")[0]);
+            int minutes = Integer.parseInt(hoursAndMinutes.split(":")[1]);
+
+            if (hours == 12) {
+                hours -= 12;
+            }
+            if (hours < 10) {
+                hoursAndMinutes = "0";
+            }
+            hoursAndMinutes += hours + ":";
+            if (minutes < 10) {
+                hoursAndMinutes += "0";
+            }
+            hoursAndMinutes += minutes;
+            returnTime = hoursAndMinutes;
+        }
+
+        return returnTime;
+    }
+
+    // utility/auxiliary function
+    public static String convertStringTimeFrom24HTo12HFormat(String time) {
+        String returnTime = "00:00 AM";
+
+        return returnTime;
     }
 
 }

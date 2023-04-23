@@ -20,31 +20,4 @@ public class BusinessHoursDao extends AbstractJpaDao<BusinessHours> {
         this.setEntityClass(BusinessHours.class);
     }
 
-    /*public void createBusinessHours(Short dayOfWeek, String openingTime, String closingTime, Store store) {
-        String jpql = "INSERT INTO BusinessHours (dayOfWeek, openingTime, closingTime, store) " +
-                "SELECT :dayOfWeek, :openingTime, :closingTime, :store";
-
-        //logger.warn(dayOfWeek);
-        //logger.warn(openingTime);
-        //logger.warn(closingTime);
-        //logger.warn(store.getStoreId());
-        //logger.warn(store.getName());
-        entityManager.createQuery(jpql)
-                .setParameter("dayOfWeek", dayOfWeek)
-                .setParameter("openingTime", openingTime)
-                .setParameter("closingTime", closingTime)
-                .setParameter("store", store)
-                .executeUpdate();
-    }*/
-
-    public Long getGreatestBusinessHoursId() {
-        List<BusinessHours> businessHours = this.findAll();
-        Long greatestIndex = 0L;
-        for (BusinessHours businessHour : businessHours) {
-            if (businessHour.getHoursId() > greatestIndex) {
-                greatestIndex = businessHour.getHoursId();
-            }
-        }
-        return greatestIndex;
-    }
 }

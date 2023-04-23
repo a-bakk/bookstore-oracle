@@ -233,7 +233,7 @@ public class StoreController {
         model.addAttribute("activePage", "stores");
         model.addAttribute("currentCustomer", customerDetails);
         model.addAttribute("storeList", storeService.getAllStores());
-        if (customerDetails.isAdmin()) {
+        if (customerDetails != null && customerDetails.isAdmin()) {
             model.addAttribute("newStore", new Store());
         }
         return "stores";
@@ -252,25 +252,8 @@ public class StoreController {
         short in = 0;
         for (short i = 0; i < 7; i++) {
             if (storeWithBusinessHours.listContainsDayOfWeek((short)(i+1))) {
-                businessHoursFilled.add(i, businessHours.get(in));
-                if (Objects.equals(businessHours.get(in).getOpeningTime().split(" ")[1], "PM")) {
-                    String hoursAndMinutes = businessHoursFilled.get(i).getOpeningTime().split(" ")[0];
-                    Integer hours = Integer.parseInt(hoursAndMinutes.split(":")[0]) + 12;
-                    String minutes = hoursAndMinutes.split(":")[1];
-                    businessHoursFilled.get(i).setOpeningTime(hours + ":" + minutes);
-                } else if (Objects.equals(businessHours.get(in).getOpeningTime().split(" ")[1], "AM")) {
-                    String hoursAndMinutes = businessHoursFilled.get(i).getOpeningTime().split(" ")[0];
-                    businessHoursFilled.get(i).setOpeningTime(hoursAndMinutes);
-                }
-                if (Objects.equals(businessHours.get(in).getClosingTime().split(" ")[1], "PM")) {
-                    String hoursAndMinutes = businessHoursFilled.get(i).getClosingTime().split(" ")[0];
-                    Integer hours = Integer.parseInt(hoursAndMinutes.split(":")[0]) + 12;
-                    String minutes = hoursAndMinutes.split(":")[1];
-                    businessHoursFilled.get(i).setClosingTime(hours + ":" + minutes);
-                } else if (Objects.equals(businessHours.get(in).getClosingTime().split(" ")[1], "AM")) {
-                    String hoursAndMinutes = businessHoursFilled.get(i).getClosingTime().split(" ")[0];
-                    businessHoursFilled.get(i).setClosingTime(hoursAndMinutes);
-                }
+                businessHoursFilled.get(i).setOpeningTime(StoreService.convertStringTimeFrom12HTo24HFormat(businessHours.get(in).getOpeningTime()));
+                businessHoursFilled.get(i).setClosingTime(StoreService.convertStringTimeFrom12HTo24HFormat(businessHours.get(in).getClosingTime()));
                 in++;
             } else {
                 businessHoursFilled.add(new BusinessHours(null, (short)(i+1), null, null, null));
