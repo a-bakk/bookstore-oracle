@@ -39,6 +39,45 @@ public class StockDao extends AbstractJpaDao<Stock> {
         query.executeUpdate();
     }
 
+    @Transactional
+    public boolean deleteStockFromStore(Long storeId, Long bookId) {
+        Query query = entityManager.createQuery("DELETE FROM Stock s " +
+                        "WHERE s.stockId.store.storeId = :storeId " +
+                        "AND s.stockId.book.bookId = :bookId")
+                .setParameter("storeId", storeId)
+                .setParameter("bookId", bookId);
+        query.executeUpdate();
+
+        return true;
+    }
+
+    @Transactional
+    public void updateByStockId(StockId stockId, Integer updateCount) {
+        Integer recentCount = entityManager.createQuery("SELECT s.count " +
+                                        "FROM Stock s " +
+                                        "WHERE s.stockId = :stockId", Integer.class)
+                .setParameter("stockId", stockId)
+                .getResultList().get(0);
+
+        Query query = entityManager.createQuery("UPDATE Stock s " +
+                        "SET s.count = :updateCount " +
+                        "WHERE s.stockId = :stockId")
+                .setParameter("updateCount", updateCount + recentCount)
+                .setParameter("stockId", stockId);
+        query.executeUpdate();
+    }
+
+    public StockId findStockId(Long bookId, Long storeId) {
+        List<Stock> stockList = entityManager.createQuery("SELECT s " +
+                        "FROM Stock s " +
+                        "WHERE s.stockId.book.bookId = :bookId AND s.stockId.store.storeId = :storeId", Stock.class)
+                .setParameter("bookId", bookId)
+                .setParameter("storeId", storeId)
+                .getResultList();
+
+        return stockList.get(0).getStockId();
+    }
+
     public Map<Store, List<BookWithAuthorsAndGenres>> findStockForEachStore() {
         //SELECT s.name, st.book_id, st.count
         //FROM STORE s, STOCK st
@@ -76,7 +115,7 @@ public class StockDao extends AbstractJpaDao<Stock> {
         return result;
     }
 
-    public HashMap<BookWithAuthorsAndGenres, Integer> findStockForStoreById(Long storeId) {
+    public List<Stock> findStockForStoreById(Long storeId) {
         String jpql = "SELECT st " +
                 "FROM Store s, Stock st " +
                 "WHERE s.storeId = st.stockId.store.storeId AND s.storeId = :storeId";
@@ -85,16 +124,27 @@ public class StockDao extends AbstractJpaDao<Stock> {
                 .setParameter("storeId", storeId)
                 .getResultList();
 
-        HashMap<BookWithAuthorsAndGenres, Integer> stockForStore = new HashMap<>();
+        List<Stock> stockForStore = new ArrayList<>();
 
         for (Object[] obj : resultList) {
             Stock stock = (Stock) obj[0];
 
-            if (stock != null && !stockForStore.containsKey(bookDao.encapsulateBook(stock.getStockId().getBook()))) {
-                stockForStore.put(bookDao.encapsulateBook(stock.getStockId().getBook()), stock.getCount());
+            if (stock != null && !stockForStore.contains(stock)) {
+                stockForStore.add(stock);
             }
         }
 
         return stockForStore;
     }
+
+    /*public boolean updateStock(StockId stockId, Integer count) {
+        String jpql = "UPDATE Stock SET count = :count WHERE stockId = :stockId";
+
+        List resultList = entityManager.createQuery(jpql)
+                .setParameter("count", count)
+                .setParameter("stockId", stockId)
+                .getResultList();
+
+        return true;
+    }*/
 }

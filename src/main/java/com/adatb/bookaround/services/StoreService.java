@@ -1,9 +1,7 @@
 package com.adatb.bookaround.services;
 
-import com.adatb.bookaround.entities.Book;
-import com.adatb.bookaround.entities.BusinessHours;
-import com.adatb.bookaround.entities.Order;
-import com.adatb.bookaround.entities.Store;
+import com.adatb.bookaround.entities.*;
+import com.adatb.bookaround.entities.compositepk.StockId;
 import com.adatb.bookaround.models.BookWithAuthorsAndGenres;
 import com.adatb.bookaround.models.StoreWithBusinessHours;
 import com.adatb.bookaround.repositories.*;
@@ -12,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.metamodel.model.domain.MappedSuperclassDomainType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,11 +61,11 @@ public class StoreService {
         return storeWithBusinessHours;
     }
 
-    public HashMap<BookWithAuthorsAndGenres, Integer> getStockForStoreById(Long storeId) {
-        HashMap<BookWithAuthorsAndGenres, Integer> stockForStore = stockDao.findStockForStoreById(storeId);
+    public List<Stock> getStockForStoreById(Long storeId) {
+        List<Stock> stockForStore = stockDao.findStockForStoreById(storeId);
         if (stockForStore.isEmpty()) {
             logger.warn("Stock for store could not be loaded!");
-            return new HashMap<>();
+            return new ArrayList<>();
         }
         return stockForStore;
     }
@@ -293,6 +292,47 @@ public class StoreService {
         }
 
         return returnTime;
+    }
+
+    public boolean isStoreContainsBook(Long storeId, Long bookId) {
+        List<Stock> stockList = stockDao.findStocksByBookId(bookId);
+        for (Stock stock : stockList) {
+            if (Objects.equals(stock.getStockId().getStore().getStoreId(), storeId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int addStock(Long storeId, String bookTitleFragment, Integer bookCount) {
+        List<Long> completeBookListIds = new ArrayList<>();
+        for (BookWithAuthorsAndGenres book : bookDao.filterBooksWithAuthorsAndGenres(bookTitleFragment)) {
+            completeBookListIds.add(book.getBook().getBookId());
+        }
+
+        if (completeBookListIds.isEmpty()) {
+            logger.warn("Book(s) not find with title fragment: " + bookTitleFragment);
+            return 0;
+        }
+
+        for (Long bookId : completeBookListIds) {
+            if (isStoreContainsBook(storeId, bookId)) {
+                stockDao.updateByStockId(stockDao.findStockId(bookId, storeId),  bookCount);
+            } else {
+                stockDao.create(new Stock(new StockId(bookDao.find(bookId), storeDao.find(storeId)), bookCount));
+            }
+        }
+
+        return completeBookListIds.size();
+    }
+
+    public boolean deleteStock(Long storeId, Long bookId) {
+        if (!isStoreContainsBook(storeId, bookId)) {
+            logger.warn("Store "+ storeDao.find(storeId).getName() +" not found with book " + bookDao.find(bookId) + ".");
+            return false;
+        }
+
+        return stockDao.deleteStockFromStore(storeId, bookId);
     }
 
 }

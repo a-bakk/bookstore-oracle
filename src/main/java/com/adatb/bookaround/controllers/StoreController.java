@@ -262,14 +262,18 @@ public class StoreController {
                 businessHoursFilled.add(new BusinessHours(null, (short)(i+1), null, null, null));
             }
         }
-        HashMap<BookWithAuthorsAndGenres, Integer> stock = storeService.getStockForStoreById(storeId);
+        List<Stock> stock = storeService.getStockForStoreById(storeId);
+        Map<BookWithAuthorsAndGenres, Integer> books = new HashMap<>();
+        for (Stock stock1 : stock) {
+            books.put(bookService.getEncapsulatedBook(stock1.getStockId().getBook().getBookId()), stock1.getCount());
+        }
 
         model.addAttribute("activePage", "stores");
         model.addAttribute("currentCustomer", customerDetails);
         model.addAttribute("store", store);
         model.addAttribute("businessHoursList", businessHours);
         model.addAttribute("businessHoursFilledList", businessHoursFilled);
-        model.addAttribute("stockMap", stock);
+        model.addAttribute("stockMap", books);
         return "store";
     }
 
@@ -311,6 +315,25 @@ public class StoreController {
 
         storeService.createStore(createName, createCountry, createStateOrRegion, createPostcode, createCity, createStreet);
         return "redirect:/stores";
+    }
+
+    @PostMapping("/add-stock")
+    public String addStock(@RequestParam Long addStoreId,
+                           @RequestParam String addBookTitle,
+                           @RequestParam Integer addBookCount,
+                           RedirectAttributes redirectAttributes) {
+
+        storeService.addStock(addStoreId, addBookTitle, addBookCount);
+        return "redirect:/store/" + addStoreId;
+    }
+
+    @PostMapping("/delete-stock")
+    public String deleteStock(@RequestParam Long storeId,
+                              @RequestParam Long bookId,
+                              RedirectAttributes redirectAttributes) {
+
+        storeService.deleteStock(storeId, bookId);
+        return "redirect:/store/" + storeId;
     }
 
 }
