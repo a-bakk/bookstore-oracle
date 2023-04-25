@@ -21,10 +21,10 @@ public class Author implements Serializable, Comparable<Author> {
     @EmbeddedId
     private AuthorId authorId;
 
-    // required for book modification's method
+    // required for book modification method
     @Override
     public int compareTo(Author other) {
-        return String.join(this.authorId.getFirstName(), this.authorId.getLastName())
-                .compareTo(String.join(other.authorId.getFirstName(), other.authorId.getLastName()));
+        return this.authorId.getFirstName().compareTo(other.authorId.getFirstName()) +
+            this.authorId.getLastName().compareTo(other.authorId.getLastName());
     }
 }
