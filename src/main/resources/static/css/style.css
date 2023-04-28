@@ -126,6 +126,6 @@
     margin: 0 auto;
 }
 
-#activePage {
-    
+#active {
+    color: #00e51f !important;
 }

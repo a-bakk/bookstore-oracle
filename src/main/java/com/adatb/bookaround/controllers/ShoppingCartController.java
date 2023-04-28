@@ -34,6 +34,7 @@ public class ShoppingCartController {
         }
         model.addAttribute("cartItems", shoppingCart.getItems());
         model.addAttribute("cartSum", shoppingCart.calculateSum());
+        model.addAttribute("activePage", "cart");
         model.addAttribute("currentCustomer", customerDetails);
         return "cart";
     }

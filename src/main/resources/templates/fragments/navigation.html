@@ -16,14 +16,16 @@
 <body>
 <nav class="navbar navbar-expand-lg bg-secondary navbar-dark fw-bold text-uppercase py-1" th:fragment="navigation">
     <div class="container">
-        <a th:href="@{/index}" class="navbar-brand text-white fs-2">Book<span class="h2 fw-bold" style="color: #38b048;">Around</span></a>
+        <div>
+            <a th:href="@{/index}" class="navbar-brand text-white fs-2">Book<span class="h2 fw-bold" style="color: #38b048;">Around</span></a>
+        </div>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div id = "navigation">
-            <ul class="navbar-nav ms-auto">
+        <div id="navigation">
+            <ul class="navbar-nav">
                 <li class="nav-item">
                     <a th:href="@{/index}" th:id = "${activePage == 'index' ? 'active' : ''}" class="nav-link text-white">Főoldal</a>
                 </li>
