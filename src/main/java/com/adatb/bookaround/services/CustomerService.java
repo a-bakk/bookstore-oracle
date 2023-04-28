@@ -150,6 +150,8 @@ public class CustomerService implements UserDetailsService {
         Customer customer = customerDao.find(customerId);
         if (customer == null)
             return false;
+        if (!wishlistDao.findWishlistByNameForCustomer(wishlistName, customerId).isEmpty())
+            return false;
         wishlist.setCustomer(customer);
         wishlist.setCreatedAt(LocalDateTime.now());
         wishlist.setName(wishlistName);
@@ -157,11 +159,13 @@ public class CustomerService implements UserDetailsService {
         return true;
     }
 
-    public boolean modifyWishlist(String wishListName, Long wishlistId) {
+    public boolean modifyWishlist(String wishlistName, Long wishlistId) {
         Wishlist wishlist = wishlistDao.find(wishlistId);
         if (wishlist == null)
             return false;
-        wishlist.setName(wishListName);
+        if (!wishlistDao.findWishlistByNameForCustomer(wishlistName, wishlistDao.find(wishlistId).getCustomer().getCustomerId()).isEmpty())
+            return false;
+        wishlist.setName(wishlistName);
         wishlistDao.update(wishlist);
         return true;
     }

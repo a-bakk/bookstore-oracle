@@ -1,11 +1,9 @@
 package com.adatb.bookaround.repositories;
 
-import com.adatb.bookaround.entities.Book;
-import com.adatb.bookaround.entities.Customer;
-import com.adatb.bookaround.entities.PartOf;
-import com.adatb.bookaround.entities.Wishlist;
+import com.adatb.bookaround.entities.*;
 import com.adatb.bookaround.models.WishlistWithContent;
 import jakarta.persistence.TypedQuery;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -13,6 +11,10 @@ import java.util.stream.Collectors;
 
 @Repository
 public class WishlistDao extends AbstractJpaDao<Wishlist> {
+
+    @Autowired
+    private CustomerDao customerDao;
+
     public WishlistDao() {
         this.setEntityClass(Wishlist.class);
     }
@@ -59,6 +61,16 @@ public class WishlistDao extends AbstractJpaDao<Wishlist> {
     public Integer findNumberOfWishlistsForCustomer(Long customerId) {
         var wishlists = findWishlistsForCustomer(customerId);
         return wishlists.isEmpty() ? 0 : wishlists.size();
+    }
+
+    public List<Wishlist> findWishlistByNameForCustomer(String wishlistName, Long customerId) {
+        return entityManager.createQuery("SELECT w " +
+                        "FROM Wishlist w " +
+                        "WHERE w.name = :wishlistName AND " +
+                        "w.customer = :customer", Wishlist.class)
+                .setParameter("wishlistName", wishlistName)
+                .setParameter("customer", customerDao.find(customerId))
+                .getResultList();
     }
 
     /**
