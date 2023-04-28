@@ -13,7 +13,10 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import java.time.LocalDateTime;
 
@@ -36,11 +39,13 @@ public class SecurityConfiguration {
     }
 
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+        redirectAttributes.addFlashAttribute("Sikeres bejelentkezés");
         return (request, response, authentication) -> {
             Customer customer = customerDao.findByEmail(authentication.getName());
             customer.setLastLogin(LocalDateTime.now());
             customerDao.update(customer);
-            response.sendRedirect("/profile");
+            response.sendRedirect("/index");
         };
     }
 
@@ -50,7 +55,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin()
                 .loginPage("/auth")
-                .defaultSuccessUrl("/profile", true)
+                .defaultSuccessUrl("/index", true)
                 .failureUrl("/auth?error=true")
                 .successHandler(authenticationSuccessHandler())
                 .and()

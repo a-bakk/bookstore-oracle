@@ -26,8 +26,22 @@
 
 
             <section class="p-5 bg-light" style="min-height: 100vh;">
+                <section th:if="${modifyProfileMessage ne null}" class="bg-light">
+                    <div class="alert alert-info text-center">
+                        <span th:text="${modifyProfileMessage}"></span>
+                    </div>
+                </section>
+
+                <section th:if="${modifyProfileErrorMessage ne null}" class="bg-light">
+                    <th:block th:each="message : ${#lists.toList(modifyProfileErrorMessage)}">
+                        <div class="alert alert-danger text-center">
+                            <span th:text="${message}"></span>
+                        </div>
+                    </th:block>
+                </section>
+
                 <div class="container text-center mb-5">
-                    <h1><a style="font-family: cursive;">Üdvözöllek, </a><a style="font-family: cursive;" th:text="${customerDetails.getFirstName()}"></a><a>!</a></h1>
+                    <h1><a style="font-family: cursive;">Üdvözöllek, </a><a style="font-family: cursive;" th:text="${currentCustomer.getFirstName()}"></a><a>!</a></h1>
                 </div>
 
                 <div class="container">
@@ -45,11 +59,11 @@
 
                                         <div class="col-md-10">
                                             <label for="lastname" class="labels">Vezetéknév</label>
-                                            <input type="text" id="lastname" name="lastname" class="form-control" th:value="${customerDetails.getLastName()}" required>
+                                            <input type="text" id="lastname" name="lastName" class="form-control" th:value="${currentCustomer.getLastName()}" required>
                                         </div>
                                         <div class="col-md-10">
                                             <label for="firstname" class="labels">Keresztnév</label>
-                                            <input type="text" id="firstname" name="firstname" class="form-control" th:value="${customerDetails.getFirstName()}" required>
+                                            <input type="text" id="firstname" name="firstName" class="form-control" th:value="${currentCustomer.getFirstName()}" required>
                                         </div>
                                     </div>
 
@@ -61,27 +75,27 @@
 
                                         <div class="col-md-10">
                                             <label for="email" class="labels">Email cím</label>
-                                            <input type="text" id="email" class="form-control" th:value="${customerDetails.getEmail()}" readonly required>
+                                            <input type="email" id="email" class="form-control" name="email" th:value="${currentCustomer.getEmail()}" readonly required>
                                         </div>
                                         <div class="col-md-10">
                                             <label for="country" class="labels">Ország</label>
-                                            <input type="text" id="country" name="country" class="form-control" th:value="${customerDetails.getCountry()}" required>
+                                            <input type="text" id="country" name="country" class="form-control" th:value="${currentCustomer.getCountry()}" required>
                                         </div>
                                         <div class="col-md-10">
                                             <label for="region" class="labels">Megye/Régió</label>
-                                            <input type="text" id="region" name="region" class="form-control" th:value="${customerDetails.getStateOrRegion()}" required>
+                                            <input type="text" id="region" name="stateOrRegion" class="form-control" th:value="${currentCustomer.getStateOrRegion()}" required>
                                         </div>
                                         <div class="col-md-10">
                                             <label for="postcode" class="labels">Irányítószám</label>
-                                            <input type="text" id="postcode" name="postcode" class="form-control" th:value="${customerDetails.getPostcode()}" required>
+                                            <input type="text" id="postcode" name="postcode" class="form-control" th:value="${currentCustomer.getPostcode()}" required>
                                         </div>
                                         <div class="col-md-10">
                                             <label for="city" class="labels">Város</label>
-                                            <input type="text" id="city" name="city" class="form-control" th:value="${customerDetails.getCity()}" required>
+                                            <input type="text" id="city" name="city" class="form-control" th:value="${currentCustomer.getCity()}" required>
                                         </div>
                                         <div class="col-md-10">
                                             <label for="street" class="labels">Utca</label>
-                                            <input type="text" id="street" name="street" class="form-control" th:value="${customerDetails.getStreet()}" required>
+                                            <input type="text" id="street" name="street" class="form-control" th:value="${currentCustomer.getStreet()}" required>
                                         </div>
                                     </div>
 
@@ -93,12 +107,12 @@
 
                                         <div class="col-md-10">
                                             <label for="password_1" class="labels">Új jelszó</label>
-                                            <input type="password" id="password_1" name="password_1" class="form-control">
+                                            <input type="password" id="password_1" name="password" class="form-control">
                                         </div>
                                         <div class="col-md-2"></div>
                                         <div class="col-md-10">
                                             <label for="password_2" class="labels">Jelszó megerősítése</label>
-                                            <input type="password" id="password_2" name="password_2" class="form-control">
+                                            <input type="password" id="password_2" name="repassword" class="form-control">
                                         </div>
                                     </div>
 
@@ -108,7 +122,7 @@
                                     <div>
                                         <div class="col-md-10">
                                             <label for="old_password" class="labels">Erősítsd meg a változtatásokat a régi jelszóval:</label>
-                                            <input type="password" id="old_password" name="old_password" class="form-control" required>
+                                            <input type="password" id="old_password" name="oldPassword" class="form-control" required>
                                         </div>
                                     </div>
 
@@ -116,27 +130,50 @@
 
                                     <div class="row col-md-12">
                                         <div style="margin-bottom: 3px;">
-                                            <input type="submit" value="Profil módosítása" class="btn btn-primary" style="width: 200px;">
+                                            <input type="submit" value="Profil módosítása" class="btn btn-primary" style="width: 30vw;">
                                         </div>
                                     </div>
+                                    <input type="hidden" name="userId" th:value="${currentCustomer.getCustomerId()}">
                                 </form>
                             </div>
                             <br>
                             <div>
-                                <form th:action="@{/delete-profile}" method="post">
-                                    <div class="row col-md-12">
-                                        <div style="margin-bottom: 3px;">
-                                            <input type="submit" value="Profil törlése" class="btn btn-danger" style="width: 200px;">
+                                <!-- Delete modal button -->
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                        data-bs-target="#deleteProfileModal" style="width: 30vw;">
+                                    Profil törlése
+                                </button>
+
+                                <!-- Delete modal -->
+                                <div class="modal fade" id="deleteProfileModal" tabindex="-1" aria-labelledby="deleteProfileModalLabel"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <form th:action="@{/delete-profile}" method="post">
+                                                <input type="hidden" name="customerId" th:value="${currentCustomer.getCustomerId()}">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="deleteProfileModalLabel">Profil törlése</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Biztosan törölni szeretnéd a profilod? A profilhoz köthető információk,
+                                                    így az adatok, rendelések mind törlődni fognak!
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
+                                                    <input type="submit" class="btn btn-primary" value="Törlés">
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                             <br>
                             <div>
                                 <form th:action="@{/logout}" method="post">
                                     <div class="row col-md-12">
                                         <div style="margin-bottom: 3px;">
-                                            <input type="submit" value="Kijelentkezés" class="btn btn-secondary" style="width: 200px;">
+                                            <input type="submit" value="Kijelentkezés" class="btn btn-secondary" style="width: 30vw;">
                                         </div>
                                     </div>
                                 </form>

@@ -30,6 +30,26 @@
             </div>
           </section>
 
+          <section th:if="${registerErrorMessage ne null}" class="bg-light">
+            <th:block th:each="message : ${#lists.toList(registerErrorMessage)}">
+              <div class="alert alert-danger text-center">
+                <span th:text="${message}"></span>
+              </div>
+            </th:block>
+          </section>
+
+          <section th:if="${registerMessage ne null}" class="bg-light">
+            <div class="alert alert-info text-center">
+              <span th:text="${registerMessage}"></span>
+            </div>
+          </section>
+
+          <section th:if="${loginMessage ne null}" class="bg-light">
+            <div class="alert alert-info text-center">
+              <span th:text="${loginMessage}"></span>
+            </div>
+          </section>
+
           <ul class="nav nav-pills mb-1 d-flex justify-content-between" id="pills-tab" role="tablist">
             <li class="nav-item" role="presentation">
               <button class="nav-link active text-uppercase fw-bold mx-5 text-dark" id="pills-login-tab"
@@ -80,7 +100,7 @@
           <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="pills-register-tab">
             <div class="container">
               <div class="row">
-                <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="col-sm-9 col-md-7 col-lg-6 mx-auto">
                   <div class="card border-0 shadow rounded-3 my-5">
                     <div class="card-body p-4 p-sm-5">
                       <h5 class="card-title text-center mb-5 fw-light fs-5">Regisztráció</h5>

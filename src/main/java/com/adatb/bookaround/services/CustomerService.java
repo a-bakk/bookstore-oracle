@@ -412,4 +412,11 @@ public class CustomerService implements UserDetailsService {
         }
     }
 
+    public boolean modifyCustomerById(Long customerId, CustomerCreate modifiedCustomer, String newPassword) {
+        if (newPassword == null) {
+            return customerDao.modifyCustomerById(customerId, modifiedCustomer, customerDao.find(customerId).getPassword());
+        } else {
+            return customerDao.modifyCustomerById(customerId, modifiedCustomer, newPassword);
+        }
+    }
 }

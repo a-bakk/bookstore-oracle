@@ -12,7 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -36,25 +39,54 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(CustomerCreate newUser) {
+    public String register(CustomerCreate newUser, RedirectAttributes redirectAttributes) {
+        int errorCount = 0;
+        List<String> registerErrorMessage = new ArrayList<>();
+
+        //Empty fields
+        if (newUser.getEmail().trim().equals("") || newUser.getFirstName().trim().equals("") ||
+                newUser.getLastName().trim().equals("") || newUser.getCountry().trim().equals("") ||
+                newUser.getStateOrRegion().trim().equals("") || newUser.getPostcode().trim().equals("") ||
+                newUser.getCity().trim().equals("") || newUser.getStreet().trim().equals("")) {
+            registerErrorMessage.add("Egy mező sem lehet üresen hagyva! (ne használj szóközt se)");
+            errorCount++;
+        }
+
+        //Email occupied
         if (this.customerDao.findByEmail(newUser.getEmail()) != null) {
-            //error message: email occupied
-            //redirectAttributes.addFlashAttribute("fail", "Another user with this email address already exists!");
-            logger.warn("Registration error: occupied email");
-            return "redirect:/auth";
+            registerErrorMessage.add("Email cím foglalt!");
+            errorCount++;
         }
 
-        if (AuthService.isValidEmail(newUser.getEmail()) && AuthService.isValidPassword(newUser.getPassword()) && Objects.equals(newUser.getPassword(), newUser.getRepassword())) {
+        //Invalid email format
+        if (!AuthService.isValidEmail(newUser.getEmail())) {
+            registerErrorMessage.add("Helytelen email cím!");
+            errorCount++;
+        }
+
+        //Invalid password format
+        if (!AuthService.isValidPassword(newUser.getPassword())) {
+            registerErrorMessage.add("A jelszónak legalább 6 karakterből kell állnia!");
+            errorCount++;
+        }
+
+        //Passwords missmatch
+        if (!Objects.equals(newUser.getPassword(), newUser.getRepassword())) {
+            registerErrorMessage.add("A jelszavaknak egyeznie kell!");
+            errorCount++;
+        }
+
+
+        //If no mistakes found then register
+        if (errorCount == 0) {
             this.authService.register(newUser);
-            //success message: registration successful
-            //redirectAttributes.addFlashAttribute("success", "Registration successful! You can now sign in.");
-            logger.warn("Registration successful");
+            redirectAttributes.addFlashAttribute("registerMessage", "Sikeres regisztráció!");
             return "redirect:/auth";
         }
 
-        logger.warn("Error: Registrated user's email: " + newUser.getEmail());
-        //error message: any errors occured
-        //redirectAttributes.addFlashAttribute("fail", "There has been an issue during registration. Please try again!");
+        redirectAttributes.addFlashAttribute("registerErrorMessage", registerErrorMessage);
+
+
         return "redirect:/auth";
     }
 

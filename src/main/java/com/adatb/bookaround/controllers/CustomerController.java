@@ -1,28 +1,40 @@
 package com.adatb.bookaround.controllers;
 
+import com.adatb.bookaround.models.CustomerCreate;
 import com.adatb.bookaround.models.CustomerDetails;
 import com.adatb.bookaround.models.ShoppingCart;
+import com.adatb.bookaround.repositories.CustomerDao;
 import com.adatb.bookaround.services.AuthService;
 import com.adatb.bookaround.services.CustomerService;
 import com.adatb.bookaround.services.StoreService;
 import com.adatb.bookaround.services.constants.OrderMode;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class CustomerController {
 
-    @Autowired
-    private StoreService storeService;
+    private static final Logger logger = LogManager.getLogger(CustomerService.class);
 
     @Autowired
+    private StoreService storeService;
+    @Autowired
     private CustomerService customerService;
+    @Autowired
+    private CustomerDao customerDao;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/place-order")
     public String showCreateOrder(Model model,
@@ -212,8 +224,92 @@ public class CustomerController {
             return "redirect:/auth";
         }
         model.addAttribute("activePage", "profile");
-        model.addAttribute("customerDetails", currentCustomer);
         model.addAttribute("currentCustomer", currentCustomer);
+        model.addAttribute("modifyCustomer", new CustomerCreate());
         return "profile";
+    }
+
+    @PostMapping("/modify-profile")
+    public String modifyProfile(Long userId, String firstName, String lastName,
+                                    String country, String stateOrRegion, String postcode,
+                                    String city, String street, String password, String repassword,
+                                    String oldPassword, RedirectAttributes redirectAttributes,
+                                    @AuthenticationPrincipal CustomerDetails currentCustomer) {
+        int errorCount = 0;
+        List<String> modifyProfileErrorMessage = new ArrayList<>();
+        String newPassword = null;
+
+
+        //Empty fields
+        if (firstName.isBlank() || lastName.isBlank() || country.isBlank() || stateOrRegion.isBlank() ||
+                postcode.isBlank() || city.isBlank() || street.isBlank()) {
+            modifyProfileErrorMessage.add("Egy mező sem lehet üresen hagyva! (ne használj szóközt se)");
+            errorCount++;
+        }
+
+
+        //if modify password
+        if (!password.isBlank() && !repassword.isBlank()) {
+            //Invalid password format
+            if (!AuthService.isValidPassword(password)) {
+                modifyProfileErrorMessage.add("A jelszónak legalább 6 karakterből kell állnia!");
+                errorCount++;
+            }
+
+            //Passwords missmatch
+            if (!Objects.equals(password, repassword)) {
+                modifyProfileErrorMessage.add("A jelszavaknak egyeznie kell!");
+                errorCount++;
+            } else {
+                newPassword = bCryptPasswordEncoder.encode(password);
+            }
+        }
+
+        if (!bCryptPasswordEncoder.matches(oldPassword, customerDao.find(userId).getPassword())) {
+            modifyProfileErrorMessage.add("Rossz régi jelszót adtál meg!");
+            errorCount++;
+        }
+
+        //If no mistakes found then modify
+        if (errorCount == 0) {
+            CustomerCreate modifiedCustomer = new CustomerCreate();
+            modifiedCustomer.setFirstName(firstName);
+            modifiedCustomer.setLastName(lastName);
+            modifiedCustomer.setCountry(country);
+            modifiedCustomer.setStateOrRegion(stateOrRegion);
+            modifiedCustomer.setPostcode(postcode);
+            modifiedCustomer.setCity(city);
+            modifiedCustomer.setStreet(street);
+
+            //update session profile stats
+            currentCustomer.setFirstName(firstName);
+            currentCustomer.setLastName(lastName);
+            currentCustomer.setCountry(country);
+            currentCustomer.setStateOrRegion(stateOrRegion);
+            currentCustomer.setPostcode(postcode);
+            currentCustomer.setCity(city);
+            currentCustomer.setStreet(street);
+            if (newPassword != null) {
+                currentCustomer.setPassword(newPassword);
+            }
+
+            if (!customerService.modifyCustomerById(userId, modifiedCustomer, newPassword)) {
+                modifyProfileErrorMessage.add("Valami hiba lépett fel a módosításban! Kérlek próbáld újra!");
+                redirectAttributes.addFlashAttribute("modifyProfileErrorMessage", modifyProfileErrorMessage);
+                return "redirect:/profile";
+            }
+
+            redirectAttributes.addFlashAttribute("modifyProfileMessage", "Sikeres módosítás!");
+            return "redirect:/profile";
+        }
+        redirectAttributes.addFlashAttribute("modifyProfileErrorMessage", modifyProfileErrorMessage);
+
+        return "redirect:/profile";
+    }
+
+    @PostMapping("delete-profile")
+    public String deleteProfile(Long customerId) {
+        customerService.deleteCustomerById(customerId);
+        return "redirect:/logout";
     }
 }

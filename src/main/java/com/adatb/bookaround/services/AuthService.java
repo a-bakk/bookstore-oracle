@@ -10,6 +10,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 @Service
@@ -32,10 +35,13 @@ public class AuthService {
     }
 
     public static boolean isValidPassword(String password) {
-        String passwordRegex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$";
+        String passwordRegex = "^[a-zA-Z0-9!@#$%^&*]{6,}$";
         Pattern pat = Pattern.compile(passwordRegex);
-        if (password == null)
+        if (password == null) {
             return false;
+        } else if (password.trim().length() < 6) {
+            return false;
+        }
         return pat.matcher(password).matches();
     }
 
