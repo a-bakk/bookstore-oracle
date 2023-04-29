@@ -484,6 +484,24 @@ BEGIN
                 END IF;
             END;
         ';
+        EXECUTE IMMEDIATE '
+        CREATE OR REPLACE TRIGGER discount_on_wishlist
+            AFTER UPDATE OF discounted_price ON book
+            FOR EACH ROW
+            WHEN (OLD.discounted_price IS NULL)
+        DECLARE
+            CURSOR wishlist_owners IS (SELECT w.customer_id
+                                        FROM wishlist w, partof p
+                                        WHERE w.wishlist_id = p.wishlist_id
+                                            AND p.book_id = :NEW.book_id
+                                        GROUP BY w.customer_id);
+        BEGIN
+            FOR wishlist_owner IN wishlist_owners LOOP
+                INSERT INTO notification (message, customer_id)
+                        VALUES (:NEW.title || '' című könyv a kívánságlistádon akciós lett!'', wishlist_owner.customer_id);
+            END LOOP;
+        END;
+        ';
         DBMS_OUTPUT.PUT_LINE('Az triggerek sikeresen létrejöttek!');
 
     ELSIF option_text = 'records' THEN
