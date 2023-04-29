@@ -41,6 +41,7 @@
                     <th>Író(k)</th>
                     <th>ISBN</th>
                     <th>Kosárban levő darabszám</th>
+                    <th>Darab ár</th>
                     <th>Ár</th>
                     <th></th>
                   </tr>
@@ -54,12 +55,16 @@
                           th:text="' | ' + ${author.getAuthorId().getFirstName()} + ' ' + ${author.getAuthorId().getLastName()}"></span>
                       </th:block>
                     </td>
-                    <td th:text="${item.getCount()}"></td>
                     <td th:text="${item.getBookModel().getBook().getIsbn()}"></td>
+                    <td th:text="${item.getCount()}"></td>
                     <td th:if="${item.getBookModel().getBook().getDiscountedPrice()} eq null"
-                      th:text="${item.getBookModel().getBook().getPrice()}"></td>
+                        th:text="${item.getBookModel().getBook().getPrice()}"></td>
                     <td th:if="${item.getBookModel().getBook().getDiscountedPrice()} ne null"
-                      th:text="${item.getBookModel().getBook().getDiscountedPrice()}"></td>
+                        th:text="${item.getBookModel().getBook().getDiscountedPrice()}"></td>
+                    <td th:if="${item.getBookModel().getBook().getDiscountedPrice()} eq null"
+                      th:text="${item.getBookModel().getBook().getPrice() * item.getCount()}"></td>
+                    <td th:if="${item.getBookModel().getBook().getDiscountedPrice()} ne null"
+                      th:text="${item.getBookModel().getBook().getDiscountedPrice() * item.getCount()}"></td>
                     <td>
                       <form th:action="@{/cart/removeItemFromCart}" method="post">
                         <input type="hidden" th:name="bookIdToRemove"
@@ -77,7 +82,12 @@
                 <h4 th:text="${cartSum} + ' Ft'"></h4>
               </div>
               <div class="col-md-4">
-                <a th:href="@{/place-order}" class="btn btn-success float-md-end mx-3">Rendelés</a>
+                <th:block th:if="${cartSum} eq 0">
+                  <a class="btn btn-success disabled float-md-end mx-3">Rendelés</a>
+                </th:block>
+                <th:block th:unless="${cartSum} eq 0">
+                  <a th:href="@{/place-order}" class="btn btn-success float-md-end mx-3">Rendelés</a>
+                </th:block>
               </div>
             </div>
           </div>

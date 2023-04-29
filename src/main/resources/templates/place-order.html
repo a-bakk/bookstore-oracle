@@ -35,6 +35,7 @@
                   <th>Cím</th>
                   <th>ISBN</th>
                   <th>Darabszám</th>
+                  <th>Darab ár</th>
                   <th>Ár</th>
                 </tr>
               </thead>
@@ -47,6 +48,10 @@
                     th:text="${item.getBookModel().getBook().getPrice()}"></td>
                   <td th:if="${item.getBookModel().getBook().getDiscountedPrice()} ne null"
                     th:text="${item.getBookModel().getBook().getDiscountedPrice()}"></td>
+                  <td th:if="${item.getBookModel().getBook().getDiscountedPrice()} eq null"
+                      th:text="${item.getBookModel().getBook().getPrice() * item.getCount()}"></td>
+                  <td th:if="${item.getBookModel().getBook().getDiscountedPrice()} ne null"
+                      th:text="${item.getBookModel().getBook().getDiscountedPrice() * item.getCount()}"></td>
                 </tr>
               </tbody>
             </table>
