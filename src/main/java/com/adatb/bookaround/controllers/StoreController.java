@@ -38,46 +38,61 @@ public class StoreController {
     @Autowired
     private StoreService storeService;
 
-    @GetMapping("/index")
-    public String showIndex(Model model, @AuthenticationPrincipal CustomerDetails customerDetails) {
-        model.addAttribute("stockList", storeService.getStockForEachStore());
-        model.addAttribute("bookList", bookService.getAllBookModels());
-        model.addAttribute("activePage", "index");
+        @GetMapping("/index")
+        public String showIndex(Model model, @AuthenticationPrincipal CustomerDetails customerDetails) {
+            model.addAttribute("stockList", storeService.getStockForEachStore());
+            model.addAttribute("bookList", bookService.getAllBookModels());
+            model.addAttribute("activePage", "index");
+            model.addAttribute("currentCustomer", customerDetails);
+            return "index";
+        }
+
+        @GetMapping("/latest-additions")
+        public String showLatestAdditions(Model model, @AuthenticationPrincipal CustomerDetails customerDetails) {
+            model.addAttribute("bookList", bookService.getLatestBooks());
+            model.addAttribute("activePage", "latest-additions");
+            model.addAttribute("currentCustomer", customerDetails);
+            return "latest-additions";
+        }
+
+        @GetMapping("/bestsellers")
+        public String showPopularBooks(Model model, @AuthenticationPrincipal CustomerDetails customerDetails) {
+            model.addAttribute("bookList", bookService.getPopularBooks());
+            model.addAttribute("activePage", "bestsellers");
+            model.addAttribute("genresWithNumberOfBooks", bookService.getGenreListAndNumberOfBooksPerGenre());
+            model.addAttribute("currentCustomer", customerDetails);
+            return "bestsellers";
+        }
+
+        @GetMapping("/notifications")
+        public String showNotificationsForCustomer(Model model,
+                @AuthenticationPrincipal CustomerDetails customerDetails,
+                RedirectAttributes redirectAttributes) {
+            if (!AuthService.isAuthenticated()) {
+                redirectAttributes.addFlashAttribute("requiresAuthentication",
+                        "A funkció eléréséhez előbb jelentkezzen be!");
+                return "redirect:/auth";
+            }
+            model.addAttribute("notificationList",
+                    customerService.getNotificationsByCustomerId(customerDetails.getCustomerId()));
+        model.addAttribute("activePage", "notifications");
         model.addAttribute("currentCustomer", customerDetails);
-        return "index";
+        return "notifications";
     }
 
-    @GetMapping("/latest-additions")
-    public String showLatestAdditions(Model model, @AuthenticationPrincipal CustomerDetails customerDetails) {
-        model.addAttribute("bookList", bookService.getLatestBooks());
-        model.addAttribute("activePage", "latest-additions");
-        model.addAttribute("currentCustomer", customerDetails);
-        return "latest-additions";
-    }
-
-    @GetMapping("/bestsellers")
-    public String showPopularBooks(Model model, @AuthenticationPrincipal CustomerDetails customerDetails) {
-        model.addAttribute("bookList", bookService.getPopularBooks());
-        model.addAttribute("activePage", "bestsellers");
-        model.addAttribute("genresWithNumberOfBooks", bookService.getGenreListAndNumberOfBooksPerGenre());
-        model.addAttribute("currentCustomer", customerDetails);
-        return "bestsellers";
-    }
-
-    @GetMapping("/notifications")
-    public String showNotificationsForCustomer(Model model,
-                                               @AuthenticationPrincipal CustomerDetails customerDetails,
-                                               RedirectAttributes redirectAttributes) {
+    @PostMapping("/delete-notification")
+    public String deleteNotification(Long notificationId, RedirectAttributes redirectAttributes,
+                                     @AuthenticationPrincipal CustomerDetails customerDetails) {
         if (!AuthService.isAuthenticated()) {
             redirectAttributes.addFlashAttribute("requiresAuthentication",
                     "A funkció eléréséhez előbb jelentkezzen be!");
             return "redirect:/auth";
         }
-        model.addAttribute("notificationList",
-                customerService.getNotificationsByCustomerId(customerDetails.getCustomerId()));
-        model.addAttribute("activePage", "notifications");
-        model.addAttribute("currentCustomer", customerDetails);
-        return "notifications";
+
+        storeService.deleteNotificationById(notificationId);
+        redirectAttributes.addFlashAttribute("notificationDeletionVerdict", "Értesítés törtlése sikeres!");
+
+        return "redirect:/notifications";
     }
 
     @GetMapping("/admin-panel")

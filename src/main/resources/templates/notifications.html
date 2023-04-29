@@ -28,9 +28,15 @@
 
                 <section class="p-5 bg-light" style="min-height: 100vh;">
                     <div class="container text-center mb-5">
-                        <h1 style="font-family: cursive;">Figyelmeztetések</h1>
+                        <h1 style="font-family: cursive;">Értesítések</h1>
                     </div>
-    
+
+                    <section th:if="${notificationDeletionVerdict}" class="bg-light p-3 px-5">
+                        <div class="container">
+                            <div th:text="${notificationDeletionVerdict}" class="alert alert-info text-center" />
+                        </div>
+                    </section>
+
                     <div class="container my-5">
                         <table class="table">
                             <thead>
@@ -42,7 +48,12 @@
                             <tbody>
                                 <tr th:each="notification : ${notificationList}">
                                     <td th:text="${notification.getMessage()}">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</td>
-                                    <td><button type="button" class="btn btn-danger">Törlés</button></td>
+                                    <td>
+                                        <form th:action="@{/delete-notification}" method="post">
+                                            <input type="hidden" name="notificationId" th:value="${notification.getNotificationId()}">
+                                            <button type="submit" class="btn btn-danger">Törlés</button>
+                                        </form>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

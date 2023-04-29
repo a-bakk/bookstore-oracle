@@ -30,6 +30,8 @@ public class StoreService {
     private BookDao bookDao;
     @Autowired
     private BusinessHoursDao businessHoursDao;
+    @Autowired
+    private NotificationDao notificationDao;
 
     public static boolean checkForEmptyString(String[] args) {
         for (String str : args) {
@@ -333,6 +335,10 @@ public class StoreService {
         }
 
         return stockDao.deleteStockFromStore(storeId, bookId);
+    }
+
+    public void deleteNotificationById(Long notificationId) {
+        notificationDao.delete(notificationId);
     }
 
 }
