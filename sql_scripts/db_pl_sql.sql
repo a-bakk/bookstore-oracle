@@ -1,12 +1,10 @@
 -- Adatbázis alapú rendszerek: Könyvesbolt
 -- Bakk Ábel, Ocztos Károly Levente
-
 -- Opciók:
 -- user: az adatbázishoz tartozó felhasználó létrehozása, melyhez az applikáció-specifikus táblák tartoznak
 -- tables: a táblák és sequencek létrehozása
 -- records: a rekordok beszúrása a létrehozott táblákba
 -- clean: a táblák és sequencek megfelelő sorrendben való droppolása
-
 SET SERVEROUTPUT ON;
 DECLARE
     option_text VARCHAR2(50);
@@ -288,8 +286,7 @@ BEGIN
             EXCEPTION
                 WHEN NO_DATA_FOUND THEN
                     out_result := 0;
-            END invoice_belongs_to_customer;
-        ';
+            END invoice_belongs_to_customer;';
         EXECUTE IMMEDIATE '
         CREATE OR REPLACE PROCEDURE stock_status_per_book (in_book_id IN NUMBER, out_status OUT VARCHAR2)
             IS
@@ -312,8 +309,7 @@ BEGIN
             EXCEPTION
             WHEN NO_DATA_FOUND THEN
                 out_status := ''NONE'';
-            END stock_status_per_book;
-        ';
+            END stock_status_per_book;';
         EXECUTE IMMEDIATE '
         CREATE OR REPLACE PROCEDURE store_size (in_store_id IN NUMBER, out_status OUT VARCHAR2)
             IS
@@ -336,8 +332,7 @@ BEGIN
             EXCEPTION
             WHEN NO_DATA_FOUND THEN
                 out_status := ''SMALL_STORE'';
-            END store_size;
-        ';
+            END store_size;';
         EXECUTE IMMEDIATE '
         CREATE OR REPLACE PROCEDURE unsold_books
         (number_of_books OUT NUMBER)
@@ -352,8 +347,7 @@ BEGIN
                 FROM contains c
             );
 
-        END unsold_books;
-        ';
+        END unsold_books;';
         EXECUTE IMMEDIATE '
         CREATE OR REPLACE PROCEDURE revenue_per_month
         (in_start_date IN DATE, in_end_date IN DATE, out_result OUT NUMBER)
@@ -370,8 +364,7 @@ BEGIN
         EXCEPTION
             WHEN NO_DATA_FOUND THEN
                 out_result := 0;
-        END revenue_per_month;
-        ';
+        END revenue_per_month;';
         EXECUTE IMMEDIATE '
         CREATE OR REPLACE FUNCTION count_orders_for_customer
         (in_customer_id IN NUMBER) RETURN NUMBER
@@ -386,8 +379,7 @@ BEGIN
         EXCEPTION
             WHEN NO_DATA_FOUND THEN
                 RETURN 0;
-        END count_orders_for_customer;
-        ';
+        END count_orders_for_customer;';
         DBMS_OUTPUT.PUT_LINE('Az eljárások sikeresen létrejöttek!');
         DBMS_OUTPUT.PUT_LINE('Triggerek létrehozása...');
         EXECUTE IMMEDIATE '
@@ -408,8 +400,7 @@ BEGIN
             WHERE c.customer_id = curr_customer_id
               AND count_orders_for_customer(curr_customer_id) > 5
               AND c.regular_since IS NULL;
-        END;
-        ';
+        END;';
         EXECUTE IMMEDIATE '
         CREATE OR REPLACE TRIGGER lose_regular_status
             BEFORE UPDATE OF last_login ON customer
@@ -418,8 +409,7 @@ BEGIN
             IF :OLD.last_login < (SYSDATE - 90) THEN
                 :new.regular_since := NULL;
             END IF;
-        END;
-        ';
+        END;';
         EXECUTE IMMEDIATE '
         CREATE OR REPLACE TRIGGER recalculate_value_if_regular
             BEFORE INSERT ON invoice
@@ -441,8 +431,7 @@ BEGIN
             IF curr_customer.regular_since IS NOT NULL THEN
                 :NEW.value := 0.9 * :NEW.value;
             END IF;
-        END;
-        ';
+        END;';
         EXECUTE IMMEDIATE '
         CREATE OR REPLACE TRIGGER notif_when_invoice_is_unpaid
             AFTER UPDATE OF last_login ON customer
@@ -463,8 +452,7 @@ BEGIN
                         (''2 napnál régebbi kifizetetlen számlája van!'', ord.customer_id);
                     END IF;
                 END LOOP;
-            END;
-        ';
+            END;';
         EXECUTE IMMEDIATE '
         CREATE OR REPLACE TRIGGER notif_when_payment_successful
             AFTER UPDATE OF paid ON invoice
@@ -482,8 +470,7 @@ BEGIN
                 INSERT INTO notification(message, customer_id) VALUES
                     (''Sikeresen kifizettet egy számlát!'', curr_customer_id);
                 END IF;
-            END;
-        ';
+            END;';
         EXECUTE IMMEDIATE '
         CREATE OR REPLACE TRIGGER discount_on_wishlist
             AFTER UPDATE OF discounted_price ON book
@@ -500,10 +487,8 @@ BEGIN
                 INSERT INTO notification (message, customer_id)
                         VALUES (:NEW.title || '' című könyv a kívánságlistádon akciós lett!'', wishlist_owner.customer_id);
             END LOOP;
-        END;
-        ';
+        END;';
         DBMS_OUTPUT.PUT_LINE('Az triggerek sikeresen létrejöttek!');
-
     ELSIF option_text = 'records' THEN
         DBMS_OUTPUT.PUT_LINE('Rekordok beszúrása...');
         EXECUTE IMMEDIATE 'INSERT INTO BOOK (TITLE, DESCRIPTION, COVER, WEIGHT, PRICE, NUMBER_OF_PAGES, PUBLISHED_AT, PUBLISHER, ISBN, LANGUAGE, DISCOUNTED_PRICE) VALUES (''Metró 2033'', ''Az egész világ romokban hever. Az emberiség majdnem teljesen elpusztult. Moszkva szellemvárossá változott, megmérgezte a radioaktív sugárzás, és szörnyek népesítik be. A kevés életben maradt ember a moszkvai metróban bújik meg - a Föld legnagyobb atombombabiztos óvóhelyén. A metró állomásai most városállamok, az alagutakban sötétség honol, és borzalom fészkel. Artyomnak az egész metróhálózaton át kell jutnia, hogy megmentse a szörnyű veszedelemtől az állomását, sőt talán az egész emberiséget.'', ''füles kartonált'', 540, 3990, 440, ''27-JUN-16'', ''Európa Könyvkiadó'', 9630791397, ''magyar'', null)';
@@ -561,7 +546,6 @@ BEGIN
         EXECUTE IMMEDIATE 'INSERT INTO BOOK (TITLE, DESCRIPTION, COVER, WEIGHT, PRICE, NUMBER_OF_PAGES, PUBLISHED_AT, PUBLISHER, ISBN, LANGUAGE, DISCOUNTED_PRICE) VALUES (''Öt nap'', ''Már négy év óta pipálgatja a halála előtti teendőinek hosszú listáján a tételeket, és most, mindössze öt nappal előtte még mindig eszébe jutnak dolgok, amiket meg kellett volna tennie. Mara Nichols sikeres ügyvéd, szerető feleség és egy örökbe fogadott kislány boldog édesanyja. Élete maga a megtestesült amerikai álom, egészen addig, amíg rejtélyes rosszulléteivel orvoshoz nem fordul. A diagnózis hihetetlen. Scott Coffman középiskolai tanár. Úgy érzi, végre minden kívánsága teljesült. Felesége sokévnyi hiábavaló próbálkozás után gyermeket vár. És egy éven át nevelhetik Curtist, a nagyszájú nyolcéves kisfiút, akinek az anyja börtönbe került. Igazi család ők hárman, nemsokára négyen. Scottnak és Marának is öt napja maradt, hogy búcsút vegyen a szeretteitől. Hogyan lehet elviselni az elviselhetetlent? Hogyan lehet lemondani arról, ami a legfontosabb az életünkben? És mennyi áldozatot tudunk hozni a szeretteinkért?'', ''puhatáblás'', 360, 3315, 432, ''13-APR-15'', ''Európa Kiadó'', 9789634051015, ''magyar'', null)';
         EXECUTE IMMEDIATE 'INSERT INTO BOOK (TITLE, DESCRIPTION, COVER, WEIGHT, PRICE, NUMBER_OF_PAGES, PUBLISHED_AT, PUBLISHER, ISBN, LANGUAGE, DISCOUNTED_PRICE) VALUES (''A barlang'', ''Natalie, a fiatal amerikai barlangászlány 2015-ben egy ukrajnai expedíción megdöbbentő leletekre bukkan a föld alatt: cipőket, edényeket és egy gabonamalmot talál, meg egy héber feliratú arany nyakláncot. A nyomok egy zsidó nagycsaládhoz vezetnek, melynek tagjai 1942-ben ott találtak menedéket Hitler katonái elől. Az egyik túlélő, az ekkor már nyolcvankilenc éves Joscha Burker megeleveníti Natalie előtt a tizenévesen átélt üldöztetés történetét, hogyan tartotta benne a reményt családja bátorsága, összetartása és hite, valamint a gettóba zárt kedvese iránt érzett szerelme a legsötétebb időkben is. Azt is elárulja Natalie-nak, mit jelent a barlangban talált aranylánc szív alakú medáljára vésett, héber 91-es szám...'', ''keménytáblás'', 450, 4241, 288, ''09-NOV-22'', ''Magánkiadás'', 9786150126234, ''magyar'', null)';
         EXECUTE IMMEDIATE 'INSERT INTO BOOK (TITLE, DESCRIPTION, COVER, WEIGHT, PRICE, NUMBER_OF_PAGES, PUBLISHED_AT, PUBLISHER, ISBN, LANGUAGE, DISCOUNTED_PRICE) VALUES (''Érkezés a sötétségbe'', ''Egy megmagyarázhatatlan csillagközi esemény alig pár óra alatt elpusztít minden szerves életet a Földön. Néhány ezer embernek azonban sikerül az utolsó pillanatban digitálisan lemásolnia a tudatát, így megmenekülnek a haláltól. Az apokalipszis után létezésük célját keresve munkagépekbe, katonai drónokba, szexrobotokba és más géptestekbe töltik le magukat, hogy új civilizációt építsenek a régi helyén. Ahogy telnek az évek, szövetségeket alapítanak, megvívják saját háborúikat, különféle célokat és ideológiákat dolgoznak ki, hol nosztalgiával tekintve a múltra, hol radikálisan szakítva vele. Grześ, a lengyel programozó kétségbeesetten próbálja feldolgozni a múlt elvesztését, közben végigkíséri az új emberiség formálódását és útkeresését. De vajon az apokalipszis túlélői még emberek, vagy már csak egy kipusztult faj árnyékai? A hús tesz bennünket emberré, vagy valami egészen más?'', ''fűzött'', 304, 3990, 299, ''30-MAR-21'', ''Gabo Könyvkiadó'', 9789635660315, ''magyar'', null)';
-
         EXECUTE IMMEDIATE 'INSERT INTO AUTHOR VALUES (1, ''Dimitry'', ''Glukhovsky'')';
         EXECUTE IMMEDIATE 'INSERT INTO AUTHOR VALUES (2, ''John'', ''Scalzi'')';
         EXECUTE IMMEDIATE 'INSERT INTO AUTHOR VALUES (3, ''John'', ''Scalzi'')';
@@ -618,7 +602,6 @@ BEGIN
         EXECUTE IMMEDIATE 'INSERT INTO AUTHOR VALUES (53, ''Julie Lawson'', ''Timmer'')';
         EXECUTE IMMEDIATE 'INSERT INTO AUTHOR VALUES (54, ''Damaris'', ''Kofmehl'')';
         EXECUTE IMMEDIATE 'INSERT INTO AUTHOR VALUES (55, ''Jacek'', ''Dukaj'')';
-
         EXECUTE IMMEDIATE 'INSERT INTO GENRE VALUES (1, ''szórakoztató irodalom'')';
         EXECUTE IMMEDIATE 'INSERT INTO GENRE VALUES (1, ''sci-fi'')';
         EXECUTE IMMEDIATE 'INSERT INTO GENRE VALUES (2, ''szórakoztató irodalom'')';
@@ -754,7 +737,6 @@ BEGIN
         EXECUTE IMMEDIATE 'INSERT INTO GENRE VALUES (54, ''regény'')';
         EXECUTE IMMEDIATE 'INSERT INTO GENRE VALUES (55, ''szórakoztató irodalom'')';
         EXECUTE IMMEDIATE 'INSERT INTO GENRE VALUES (55, ''sci-fi'')';
-
         EXECUTE IMMEDIATE 'INSERT INTO STORE (NAME, STREET, CITY, STATE_OR_REGION, POSTCODE, COUNTRY) VALUES (''BookAround Szeged Pláza Könyvesbolt'', ''Kossuth Lajos sgrt. 119'', ''Szeged'', ''Csongrád-Csanád vármegye'', ''6724'', ''Magyarország'')';
         EXECUTE IMMEDIATE 'INSERT INTO STORE (NAME, STREET, CITY, STATE_OR_REGION, POSTCODE, COUNTRY) VALUES (''Bookaround Westend Könyvesbolt'', ''Váci út 1-3'', ''Budapest'', ''Budapest'', ''1062'', ''Magyarország'')';
         EXECUTE IMMEDIATE 'INSERT INTO STORE (NAME, STREET, CITY, STATE_OR_REGION, POSTCODE, COUNTRY) VALUES (''Győri BookAround'', ''Árpád út 60'', ''Győr'', ''Győr-Moson-Sopron vármegye'', ''9022'', ''Magyarország'')';
@@ -785,7 +767,6 @@ BEGIN
         EXECUTE IMMEDIATE 'INSERT INTO STORE (NAME, STREET, CITY, STATE_OR_REGION, POSTCODE, COUNTRY) VALUES (''Budapest Ápád fejedelem Bookaround'', '' Árpád fejedelem utca 10'', ''Budapest'', ''Budapest'', ''1162'', ''Magyarország'')';
         EXECUTE IMMEDIATE 'INSERT INTO STORE (NAME, STREET, CITY, STATE_OR_REGION, POSTCODE, COUNTRY) VALUES (''Szegedi Kis-Bookaround'', ''Nagyrét út 7'', ''Szeged'', ''Csongrád-Csanád vármegye'', ''6721'', ''Magyarország'')';
         EXECUTE IMMEDIATE 'INSERT INTO STORE (NAME, STREET, CITY, STATE_OR_REGION, POSTCODE, COUNTRY) VALUES (''Budapesti Bookaround Csabai kapu Könyvesboltja'', ''Csabai kapu 23'', ''Budapest'', ''Budapest'', ''1026'', ''Magyarország'')';
-
         EXECUTE IMMEDIATE 'INSERT INTO STOCK VALUES (1, 1, 30)';
         EXECUTE IMMEDIATE 'INSERT INTO STOCK VALUES (2, 1, 20)';
         EXECUTE IMMEDIATE 'INSERT INTO STOCK VALUES (3, 1, 20)';
@@ -883,7 +864,6 @@ BEGIN
         EXECUTE IMMEDIATE 'INSERT INTO STOCK VALUES (31, 27, 14)';
         EXECUTE IMMEDIATE 'INSERT INTO STOCK VALUES (41, 30, 16)';
         EXECUTE IMMEDIATE 'INSERT INTO STOCK VALUES (42, 30, 20)';
-
         EXECUTE IMMEDIATE 'INSERT INTO BUSINESS_HOURS (DAY_OF_WEEK, OPENING_TIME, CLOSING_TIME, STORE_ID) VALUES (1, ''08:00 AM'', ''08:00 PM'', 1)';
         EXECUTE IMMEDIATE 'INSERT INTO BUSINESS_HOURS (DAY_OF_WEEK, OPENING_TIME, CLOSING_TIME, STORE_ID) VALUES (2, ''08:00 AM'', ''06:00 PM'', 1)';
         EXECUTE IMMEDIATE 'INSERT INTO BUSINESS_HOURS (DAY_OF_WEEK, OPENING_TIME, CLOSING_TIME, STORE_ID) VALUES (3, ''08:00 AM'', ''08:00 PM'', 1)';
@@ -902,7 +882,6 @@ BEGIN
         EXECUTE IMMEDIATE 'INSERT INTO BUSINESS_HOURS (DAY_OF_WEEK, OPENING_TIME, CLOSING_TIME, STORE_ID) VALUES (5, ''08:00 AM'', ''06:00 PM'', 3)';
         EXECUTE IMMEDIATE 'INSERT INTO BUSINESS_HOURS (DAY_OF_WEEK, OPENING_TIME, CLOSING_TIME, STORE_ID) VALUES (6, ''10:00 AM'', ''06:00 PM'', 3)';
         EXECUTE IMMEDIATE 'INSERT INTO BUSINESS_HOURS (DAY_OF_WEEK, OPENING_TIME, CLOSING_TIME, STORE_ID) VALUES (7, ''12:00 AM'', ''04:00 PM'', 3)';
-
         EXECUTE IMMEDIATE 'INSERT INTO CUSTOMER (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, CREATED_AT, LAST_LOGIN, ADMIN, STREET, CITY, STATE_OR_REGION, POSTCODE, COUNTRY, REGULAR_SINCE) VALUES (''admin@bookaround.com'', ''$2a$12$phBRcK.bDG.6jLthGprAw.zGKLjErxfnkYiuKgBouMIfbGnd42ezG'', ''John'', ''Doe'', ''11-MAR-23'', ''11-MAR-23'', 1, ''905 John Calvin Drive'', ''Oak Lawn'', ''Illinois'', ''60453'', ''United States of America'', null)';
         EXECUTE IMMEDIATE 'INSERT INTO CUSTOMER (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, CREATED_AT, LAST_LOGIN, ADMIN, STREET, CITY, STATE_OR_REGION, POSTCODE, COUNTRY, REGULAR_SINCE) VALUES (''sallayambrus@rhyta.com'', ''$2a$12$phBRcK.bDG.6jLthGprAw.zGKLjErxfnkYiuKgBouMIfbGnd42ezG'', ''Ambrus'', ''Sallay'', ''11-MAR-23'', ''11-MAR-23'', 0, ''59 Belgrád rkp.'', ''Vasvár'', ''Vas vármegye'', ''9800'', ''Magyarország'', null)';
         EXECUTE IMMEDIATE 'INSERT INTO CUSTOMER (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, CREATED_AT, LAST_LOGIN, ADMIN, STREET, CITY, STATE_OR_REGION, POSTCODE, COUNTRY, REGULAR_SINCE) VALUES (''smidpanna@dayrep.com'', ''$2a$12$phBRcK.bDG.6jLthGprAw.zGKLjErxfnkYiuKgBouMIfbGnd42ezG'', ''Panna'', ''Smid'', ''11-MAR-23'', ''11-MAR-23'', 0, ''80 Kárpát utca'', ''Lovászpatona'', ''Veszprém vármegye'', ''8553'', ''Magyarország'', null)';
@@ -933,26 +912,20 @@ BEGIN
         EXECUTE IMMEDIATE 'INSERT INTO CUSTOMER (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, CREATED_AT, LAST_LOGIN, ADMIN, STREET, CITY, STATE_OR_REGION, POSTCODE, COUNTRY, REGULAR_SINCE) VALUES (''BaloghGreta@rhyta.com'', ''$2a$12$AvBMWP6nfUMgWDk9T1930exjXuYDDOfq0L83aHM8Ubo/jmZi8W1kq'', ''Gréta'', ''Balogh'', ''17-MAR-23'', ''17-MAR-23'', 0, ''Bem rkp. 70.'', ''Gönc'', ''Borsod-Abaúj-Zemplén vármegye'', ''3895'', ''Magyarország'', null)';
         EXECUTE IMMEDIATE 'INSERT INTO CUSTOMER (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, CREATED_AT, LAST_LOGIN, ADMIN, STREET, CITY, STATE_OR_REGION, POSTCODE, COUNTRY, REGULAR_SINCE) VALUES (''PusztaiCsongor@teleworm.us'', ''$2a$12$Yp2SlXCJw0QAgzve.BBdmO6fqS6WfWEYQud6Hn4.TVOx/IPviYvH6'', ''Csongor'', ''Pusztai'', ''17-MAR-23'', ''17-MAR-23'', 0, ''Agip u. 88.'', ''Matty'', ''Baranya vármegye'', ''7854'', ''Magyarország'', null)';
         EXECUTE IMMEDIATE 'INSERT INTO CUSTOMER (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, CREATED_AT, LAST_LOGIN, ADMIN, STREET, CITY, STATE_OR_REGION, POSTCODE, COUNTRY, REGULAR_SINCE) VALUES (''NemesIrenke@armyspy.com'', ''$2a$12$GhIWJf49sJjopfkq/RIEJ.e3X0JJKN04ITHB8RRJNYsrAVgTyODee'', ''Irénke'', ''Nemes'', ''17-MAR-23'', ''17-MAR-23'', 0, ''Erzsébet krt. 67.'', ''Gyón'', ''Pest vármegye'', ''2373'', ''Magyarország'', null)';
-
         EXECUTE IMMEDIATE 'INSERT INTO NOTIFICATION (MESSAGE, CUSTOMER_ID) VALUES (''Metró 2033 című könyv a kívánságlistádon akciós lett!'', 1)';
-
         EXECUTE IMMEDIATE 'INSERT INTO ORDERS (CREATED_AT, SHIPPED, PICKUP, CUSTOMER_ID) VALUES (''11-MAR-23'', 0, 0, 1)';
         EXECUTE IMMEDIATE 'INSERT INTO ORDERS (CREATED_AT, SHIPPED, PICKUP, CUSTOMER_ID) VALUES (''11-MAR-23'', 1, 1, 3)';
         EXECUTE IMMEDIATE 'INSERT INTO ORDERS (CREATED_AT, SHIPPED, PICKUP, CUSTOMER_ID) VALUES (''11-MAR-23'', 0, 1, 2)';
-
         EXECUTE IMMEDIATE 'INSERT INTO INVOICE (VALUE, PAID, ORDER_ID) VALUES (1234, 0, 1)';
         EXECUTE IMMEDIATE 'INSERT INTO INVOICE (VALUE, PAID, ORDER_ID) VALUES (123, 1, 2)';
         EXECUTE IMMEDIATE 'INSERT INTO INVOICE (VALUE, PAID, ORDER_ID) VALUES (12345, 0, 3)';
-
         EXECUTE IMMEDIATE 'INSERT INTO CONTAINS VALUES (1, 2, 2)';
         EXECUTE IMMEDIATE 'INSERT INTO CONTAINS VALUES (1, 3, 1)';
         EXECUTE IMMEDIATE 'INSERT INTO CONTAINS VALUES (1, 4, 1)';
         EXECUTE IMMEDIATE 'INSERT INTO CONTAINS VALUES (2, 1, 1)';
         EXECUTE IMMEDIATE 'INSERT INTO CONTAINS VALUES (3, 1, 3)';
         EXECUTE IMMEDIATE 'INSERT INTO CONTAINS VALUES (3, 2, 1)';
-
         EXECUTE IMMEDIATE 'INSERT INTO WISHLIST (NAME, CREATED_AT, CUSTOMER_ID) VALUES (''Szülinaposak'', ''11-MAR-23'', 1)';
-
         EXECUTE IMMEDIATE 'INSERT INTO PARTOF VALUES (1, 1, ''11-MAR-23'')';
     ELSIF option_text = 'clean' THEN
         DBMS_OUTPUT.PUT_LINE('Táblák és sequencek elvetése...');
@@ -977,11 +950,9 @@ BEGIN
         EXECUTE IMMEDIATE 'DROP SEQUENCE STORE_SEQ';
         EXECUTE IMMEDIATE 'DROP SEQUENCE BUSINESS_HOURS_SEQ';
         EXECUTE IMMEDIATE 'DROP SEQUENCE NOTIFICATION_SEQ';
-
     ELSE
         DBMS_OUTPUT.PUT_LINE('Érvénytelen opció!');
     END IF;
-
     COMMIT;
 END;
 /
